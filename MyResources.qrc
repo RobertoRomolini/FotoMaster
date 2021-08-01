@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/Files">
+        <file>Files/editButton.png</file>
+        <file>Files/indietro.png</file>
+        <file>Files/whiteImage.jpg</file>
+        <file>Files/editButton2.png</file>
+        <file>Files/backupFolder.png</file>
+        <file>Files/eraser.png</file>
+        <file>Files/handMove.png</file>
+        <file>Files/eraserCursor.png</file>
+        <file>Files/pngTransparent.png</file>
+        <file>Files/gradient.png</file>
+        <file>Files/broomCursor.png</file>
+        <file>Files/broomIcon.png</file>
+        <file>Files/down.png</file>
+        <file>Files/left.png</file>
+        <file>Files/right.png</file>
+        <file>Files/up.png</file>
+        <file>Files/refreshIcon.png</file>
+    </qresource>
+</RCC>
