@@ -1,0 +1,10 @@
+[General]
+directoryMemory=D:/Desktop/New folder
+percAumento=8
+tolleranza=10
+tolleranceTable=15
+qualitaSalvataggio=85
+confrontoBianco=50
+latoMin=600
+latoMinMD=600
+dimMinFileSpinBox=500

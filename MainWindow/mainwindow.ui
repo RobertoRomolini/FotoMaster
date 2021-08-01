@@ -1,0 +1,1916 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1270</width>
+    <height>760</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1270</width>
+    <height>760</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Foto Master 3.0 - Developed by R. Romolini</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="directory">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>691</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;
+/*background-color: rgb(253, 253, 253);*/
+border-radius: 5px;
+
+background-color: rgb(200, 200, 200);
+</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="scegliCartella">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>20</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Scegli Cartella</string>
+    </property>
+   </widget>
+   <widget class="QPushButtonGreen" name="sostituisci1">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>70</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sostituisci 1</string>
+    </property>
+   </widget>
+   <widget class="QPushButtonGreen" name="sostituisci2">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>110</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sostituisci 2</string>
+    </property>
+   </widget>
+   <widget class="QPushButtonGreen" name="sostituisci3">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>150</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sostituisci 3</string>
+    </property>
+   </widget>
+   <widget class="QPushButtonRed" name="annullaModifiche">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>270</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Annulla Rinomina</string>
+    </property>
+   </widget>
+   <widget class="QTableWidgetShowDatabase" name="anteprimaFile">
+    <property name="geometry">
+     <rect>
+      <x>950</x>
+      <y>20</y>
+      <width>301</width>
+      <height>471</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableView
+{
+	border: 1px solid black;
+	background-color: rgb(245, 245, 245);
+	alternate-background-color: rgb(226, 226, 226);
+	selection-color: rgb(85, 170, 255);
+	font: 10pt 'Helvetica';
+	gridline-color:rgb(160, 160, 160);
+}
+QHeaderView
+{
+	background-color: rgb(200, 200, 200);
+	border-bottom: 1px solid black;
+}
+QHeaderView::section
+{
+	background-color: rgb(200, 200, 200);
+	border: 0px solid black;
+	font: 11pt 'Helvetica';
+	font-weight: bold;
+}
+QHeaderView::section:first
+{
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+QHeaderView::section:last
+{
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}</string>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustIgnored</enum>
+    </property>
+    <property name="autoScrollMargin">
+     <number>16</number>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::AllEditTriggers</set>
+    </property>
+    <property name="dragDropMode">
+     <enum>QAbstractItemView::DragDrop</enum>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+    <property name="gridStyle">
+     <enum>Qt::CustomDashLine</enum>
+    </property>
+    <property name="rowCount">
+     <number>0</number>
+    </property>
+    <property name="columnCount">
+     <number>2</number>
+    </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>141</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderHighlightSections">
+     <bool>true</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Trovare:</string>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Sostituire con:</string>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButtonGreen" name="sostituisci4">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>190</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sostituisci 4</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>320</y>
+      <width>191</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Sostituisci Singola Parola</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>350</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Trovare:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>400</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Sostituire con:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButtonGreen" name="sostituisciRapido">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>450</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sostituisci</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="trovareRapido">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>370</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;
+background-color: rgb(253, 253, 253);
+border-radius: 5px;</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="sostituireRapido">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>420</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;
+background-color: rgb(253, 253, 253);
+border-radius: 5px;</string>
+    </property>
+   </widget>
+   <widget class="QPushButtonGreen" name="sostituisci5">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>230</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sostituisci 5</string>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="modifica2">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>110</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="modifica3">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>150</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="modifica4">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>190</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="modifica5">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>230</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="modifica1">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>70</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QTableWidgetFileList" name="contenutoCartella">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>720</width>
+      <height>480</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableView
+{
+	border: 1px solid black;
+	background-color: rgb(245, 245, 245);
+	alternate-background-color: rgb(226, 226, 226);
+	selection-color: rgb(85, 170, 255);
+	font: 10pt 'Helvetica';
+}
+QHeaderView
+{
+	background-color: rgb(200, 200, 200);
+	border-bottom: 1px solid black;
+}
+QHeaderView::section
+{
+	background-color: rgb(200, 200, 200);
+	border: 0px solid black;
+	font: 10pt 'Helvetica';
+	font-weight: bold;
+}
+QHeaderView::section:first
+{
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+QHeaderView::section:middle
+{
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+QHeaderView::section:last
+{
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}</string>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="dragDropMode">
+     <enum>QAbstractItemView::DragDrop</enum>
+    </property>
+    <property name="defaultDropAction">
+     <enum>Qt::CopyAction</enum>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+    <property name="selectionBehavior">
+     <enum>QAbstractItemView::SelectRows</enum>
+    </property>
+    <property name="showGrid">
+     <bool>false</bool>
+    </property>
+    <property name="columnCount">
+     <number>0</number>
+    </property>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>20</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderMinimumSectionSize">
+     <number>20</number>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>20</number>
+    </attribute>
+   </widget>
+   <widget class="QPushButtonBlue" name="indietroDirectory">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>20</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="aggiorna">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>510</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Aggiorna</string>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="trasformaImmagini">
+    <property name="geometry">
+     <rect>
+      <x>551</x>
+      <y>578</y>
+      <width>161</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Trasforma Immagini</string>
+    </property>
+   </widget>
+   <widget class="Line" name="sostituisciBox">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>60</y>
+      <width>190</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;
+background-color: rgb(200, 200, 200);
+border-radius: 5px;</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="opzioniTabellaLine">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>553</y>
+      <width>480</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="selezionaDeseleziona">
+    <property name="geometry">
+     <rect>
+      <x>24</x>
+      <y>545</y>
+      <width>221</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Seleziona/Deseleziona tutto</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="backupFolder">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>20</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="selezionaTutto">
+    <property name="geometry">
+     <rect>
+      <x>970</x>
+      <y>517</y>
+      <width>181</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Seleziona tutto</string>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="dimensioneFile">
+    <property name="geometry">
+     <rect>
+      <x>953</x>
+      <y>650</y>
+      <width>163</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Mostra la dimensione dell'immagine&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Dimensione File (D. File)</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="dimMinFileSpinBox">
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>650</y>
+      <width>74</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+    </property>
+    <property name="suffix">
+     <string> Kb</string>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
+    </property>
+    <property name="value">
+     <number>500</number>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="mostraDimensione">
+    <property name="geometry">
+     <rect>
+      <x>953</x>
+      <y>610</y>
+      <width>167</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Mostra dimensione ed evidenzia se uno dei due lati è minore del valore indicato&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Mostra Dimensione (dim)</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="latoMinMD">
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>610</y>
+      <width>86</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+    </property>
+    <property name="suffix">
+     <string> Pixel</string>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="maximum">
+     <number>5000</number>
+    </property>
+    <property name="singleStep">
+     <number>20</number>
+    </property>
+    <property name="value">
+     <number>600</number>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="immaginiQuadrate">
+    <property name="geometry">
+     <rect>
+      <x>762</x>
+      <y>570</y>
+      <width>161</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controlla che le immagini siano quadrate&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Immagini Quadrate (Q)</string>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="sfondoBianco">
+    <property name="geometry">
+     <rect>
+      <x>762</x>
+      <y>610</y>
+      <width>141</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controlla che i quattro angoli siano di colore bianco&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Sfondo Bianco (B)</string>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="mostraImmagini">
+    <property name="geometry">
+     <rect>
+      <x>762</x>
+      <y>650</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Mostra l'anteprima dell'immagine nella tabella&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Mostra Anteprima Immagini</string>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="percentualeBianco">
+    <property name="geometry">
+     <rect>
+      <x>953</x>
+      <y>570</y>
+      <width>161</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Verdana</family>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controlla la percentuale di sfondo bianco e colora il risultato se maggiore della casella posta a destra&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>% Sfondo Bianco (%B)</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="confrontoBianco">
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>570</y>
+      <width>54</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+    </property>
+    <property name="suffix">
+     <string>%</string>
+    </property>
+    <property name="value">
+     <number>50</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>584</y>
+      <width>60</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Tolleranza</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="percAumento">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>582</y>
+      <width>61</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+    </property>
+    <property name="suffix">
+     <string>%</string>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="maximum">
+     <number>500</number>
+    </property>
+    <property name="value">
+     <number>8</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="tolleranza">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>582</y>
+      <width>61</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Aumenta la tolleranza del comando Centra e Riquadra&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+    </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+    <property name="value">
+     <number>10</number>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="centraRiquadra">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>583</y>
+      <width>127</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Centra l'immagine rimuovendo la parte bianca ed aggiungendo un bordo bianco in base alla percentuale indicata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Centra e Riquadra</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="ridimensionaMin">
+    <property name="geometry">
+     <rect>
+      <x>174</x>
+      <y>623</y>
+      <width>174</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Ridimensiona la foto se minore del valore indicato&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Ridimensiona se minore di</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="latoMin">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>622</y>
+      <width>86</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+    </property>
+    <property name="suffix">
+     <string> Pixel</string>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="maximum">
+     <number>4000</number>
+    </property>
+    <property name="singleStep">
+     <number>20</number>
+    </property>
+    <property name="value">
+     <number>600</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="qualitaSalvataggio">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>622</y>
+      <width>49</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>85</number>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="trasformaQualita">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>623</y>
+      <width>63</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se non spuntato setta la qualità al massimo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Qualità</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="trasformaJPG">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>583</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Verdana</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Trasforma in jpg</string>
+    </property>
+   </widget>
+   <widget class="Line" name="sostituisciRapidoBox">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>320</y>
+      <width>190</width>
+      <height>170</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;
+background-color: rgb(200, 200, 200);
+border-radius: 5px;</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="opzioniTabellaBox">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>500</y>
+      <width>500</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;
+background-color: rgb(200, 200, 200);
+border-radius: 5px;</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="trasformaImmaginiBox">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>572</y>
+      <width>710</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;
+background-color: rgb(200, 200, 200);
+border-radius: 5px;</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="trasformaImmaginiLine">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>614</y>
+      <width>690</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QCheckboxCustom" name="ridimensionaMax">
+    <property name="geometry">
+     <rect>
+      <x>451</x>
+      <y>623</y>
+      <width>174</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Ridimensiona la foto se minore del valore indicato&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Ridimensiona se maggiore di</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="latoMax">
+    <property name="geometry">
+     <rect>
+      <x>629</x>
+      <y>622</y>
+      <width>86</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+    </property>
+    <property name="suffix">
+     <string> Pixel</string>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
+    </property>
+    <property name="singleStep">
+     <number>20</number>
+    </property>
+    <property name="value">
+     <number>4500</number>
+    </property>
+   </widget>
+   <widget class="QPushButtonGreen" name="removeBg">
+    <property name="geometry">
+     <rect>
+      <x>551</x>
+      <y>665</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Invia a remove.bg</string>
+    </property>
+   </widget>
+   <widget class="Line" name="trasformaImmaginiBox_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>660</y>
+      <width>710</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;
+background-color: rgb(200, 200, 200);
+border-radius: 5px;</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="fileOutputRemoveBG">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>670</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QComboBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	font: 10pt 'Helvetica';
+}
+
+QComboBox::drop-down 
+{
+    border: 0px; /* This seems to replace the whole arrow of the combo box */
+}
+
+QComboBox::down-arrow
+{
+    border-image: url(:/Files/Files/down.png);
+	background-color: rgb(245, 245, 245);
+width: 15px;
+margin-right: 7px;
+}</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>jpg</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>png</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>zip</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="fileOutputDimensionRemoveBG">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>670</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QComboBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	font: 10pt 'Helvetica';
+}
+
+QComboBox::drop-down 
+{
+    border: 0px; /* This seems to replace the whole arrow of the combo box */
+}
+
+QComboBox::down-arrow
+{
+    border-image: url(:/Files/Files/down.png);
+	background-color: rgb(245, 245, 245);
+width: 15px;
+margin-right: 7px;
+}
+
+</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>full</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>preview</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>670</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Verdana</family>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Crediti Rimanenti:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="creditiRimanenti">
+    <property name="geometry">
+     <rect>
+      <x>156</x>
+      <y>670</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Verdana</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButtonBlue" name="refreshCrediti">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>667</y>
+      <width>27</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>opzioniTabellaBox</zorder>
+   <zorder>trasformaImmaginiBox</zorder>
+   <zorder>sostituisciRapidoBox</zorder>
+   <zorder>sostituisciBox</zorder>
+   <zorder>dimensioneFile</zorder>
+   <zorder>dimMinFileSpinBox</zorder>
+   <zorder>mostraDimensione</zorder>
+   <zorder>latoMinMD</zorder>
+   <zorder>immaginiQuadrate</zorder>
+   <zorder>sfondoBianco</zorder>
+   <zorder>mostraImmagini</zorder>
+   <zorder>percentualeBianco</zorder>
+   <zorder>confrontoBianco</zorder>
+   <zorder>label_4</zorder>
+   <zorder>percAumento</zorder>
+   <zorder>tolleranza</zorder>
+   <zorder>centraRiquadra</zorder>
+   <zorder>ridimensionaMin</zorder>
+   <zorder>latoMin</zorder>
+   <zorder>qualitaSalvataggio</zorder>
+   <zorder>trasformaQualita</zorder>
+   <zorder>directory</zorder>
+   <zorder>scegliCartella</zorder>
+   <zorder>sostituisci1</zorder>
+   <zorder>sostituisci2</zorder>
+   <zorder>sostituisci3</zorder>
+   <zorder>annullaModifiche</zorder>
+   <zorder>anteprimaFile</zorder>
+   <zorder>sostituisci4</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>sostituisciRapido</zorder>
+   <zorder>trovareRapido</zorder>
+   <zorder>sostituireRapido</zorder>
+   <zorder>sostituisci5</zorder>
+   <zorder>modifica2</zorder>
+   <zorder>modifica3</zorder>
+   <zorder>modifica4</zorder>
+   <zorder>modifica5</zorder>
+   <zorder>modifica1</zorder>
+   <zorder>contenutoCartella</zorder>
+   <zorder>indietroDirectory</zorder>
+   <zorder>aggiorna</zorder>
+   <zorder>trasformaImmagini</zorder>
+   <zorder>opzioniTabellaLine</zorder>
+   <zorder>selezionaDeseleziona</zorder>
+   <zorder>backupFolder</zorder>
+   <zorder>selezionaTutto</zorder>
+   <zorder>trasformaJPG</zorder>
+   <zorder>trasformaImmaginiLine</zorder>
+   <zorder>ridimensionaMax</zorder>
+   <zorder>latoMax</zorder>
+   <zorder>trasformaImmaginiBox_2</zorder>
+   <zorder>removeBg</zorder>
+   <zorder>fileOutputRemoveBG</zorder>
+   <zorder>fileOutputDimensionRemoveBG</zorder>
+   <zorder>label_5</zorder>
+   <zorder>creditiRimanenti</zorder>
+   <zorder>refreshCrediti</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1270</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menububo">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionEsci"/>
+   </widget>
+   <widget class="QMenu" name="menuModifica">
+    <property name="title">
+     <string>Modifica</string>
+    </property>
+    <addaction name="actionAggiornaLista"/>
+    <addaction name="actionAggiornaListaConOpzioni"/>
+    <addaction name="actionRipristina_impostazioni"/>
+    <addaction name="actionImpostazioni"/>
+   </widget>
+   <addaction name="menububo"/>
+   <addaction name="menuModifica"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionEsci">
+   <property name="text">
+    <string>Esci</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
+  </action>
+  <action name="actionRipristina_impostazioni">
+   <property name="text">
+    <string>Ripristina impostazioni</string>
+   </property>
+  </action>
+  <action name="actionImpostazioni">
+   <property name="text">
+    <string>Impostazioni</string>
+   </property>
+  </action>
+  <action name="actionAggiornaListaFile">
+   <property name="text">
+    <string>Aggiorna lista file</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionAggiornaLista">
+   <property name="text">
+    <string>Aggiorna lista</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionAggiornaListaConOpzioni">
+   <property name="text">
+    <string>Aggiorna lista con opzioni</string>
+   </property>
+   <property name="shortcut">
+    <string>F6</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QTableWidgetFileList</class>
+   <extends>QTableWidget</extends>
+   <header location="global">MainWindow/qtablewidgetfilelist.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QTableWidgetShowDatabase</class>
+   <extends>QTableWidget</extends>
+   <header location="global">MainWindow/qtablewidgetshowdatabase.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QCheckboxCustom</class>
+   <extends>QCheckBox</extends>
+   <header location="global">CustomWidgets/qcheckboxcustom.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QPushButtonRed</class>
+   <extends>QPushButton</extends>
+   <header location="global">CustomWidgets/qpushbuttonred.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QPushButtonBlue</class>
+   <extends>QPushButton</extends>
+   <header location="global">CustomWidgets/qpushbuttonblue.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QPushButtonGreen</class>
+   <extends>QPushButton</extends>
+   <header location="global">CustomWidgets/qpushbuttongreen.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
