@@ -6,7 +6,7 @@
 #include <QTableWidget>
 #include <QFileInfo>
 
-#include <MainWindow/EditorFoto/editorfoto.h>
+#include <WindowWidgets/EditorFoto/editorfoto.h>
 
 class QTableWidgetFileList : public QTableWidget
 {

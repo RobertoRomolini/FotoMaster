@@ -1883,12 +1883,12 @@ margin-right: 7px;
   <customwidget>
    <class>QTableWidgetFileList</class>
    <extends>QTableWidget</extends>
-   <header location="global">MainWindow/qtablewidgetfilelist.h</header>
+   <header location="global">WindowWidgets/MainWindow/qtablewidgetfilelist.h</header>
   </customwidget>
   <customwidget>
    <class>QTableWidgetShowDatabase</class>
    <extends>QTableWidget</extends>
-   <header location="global">MainWindow/qtablewidgetshowdatabase.h</header>
+   <header location="global">WindowWidgets/MainWindow/qtablewidgetshowdatabase.h</header>
   </customwidget>
   <customwidget>
    <class>QCheckboxCustom</class>

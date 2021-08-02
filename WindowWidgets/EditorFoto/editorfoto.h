@@ -2,7 +2,7 @@
 #define EDITORFOTO_H
 #include <QMainWindow>
 #include <QCoreApplication>
-#include <MainWindow/resizewindow.h>
+#include <Tools/resizewindow.h>
 #include "qgraphicsscenecustom.h"
 #include "qgraphicsviewcustom.h"
 #include "CustomWidgets/qeditorpushbutton.h"

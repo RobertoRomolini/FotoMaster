@@ -1,11 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
-#include "ModificaDati/modificadati.h"
-#include "EditorFoto/editorfoto.h"
+#include "WindowWidgets/ModificaDati/modificadati.h"
+#include "WindowWidgets/EditorFoto/editorfoto.h"
 #include "Tools/qimgorient.h"
-#include "options.h"
-#include "resizewindow.h"
+#include "WindowWidgets/Settings/options.h"
+#include "Tools/resizewindow.h"
 #include <QCoreApplication>
 #include <QtNetwork>
 

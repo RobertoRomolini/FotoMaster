@@ -23,15 +23,15 @@ SOURCES += \
     CustomWidgets/qpushbuttonblue.cpp \
     CustomWidgets/qpushbuttongreen.cpp \
     CustomWidgets/qpushbuttonred.cpp \
-    MainWindow/EditorFoto/editorfoto.cpp \
-    MainWindow/EditorFoto/qgraphicsscenecustom.cpp \
-    MainWindow/EditorFoto/qgraphicsviewcustom.cpp \
-    MainWindow/ModificaDati/modificadati.cpp \
-    MainWindow/mainwindow.cpp \
-    MainWindow/options.cpp \
-    MainWindow/qtablewidgetfilelist.cpp \
-    MainWindow/qtablewidgetshowdatabase.cpp \
-    MainWindow/resizewindow.cpp \
+    WindowWidgets/EditorFoto/editorfoto.cpp \
+    WindowWidgets/EditorFoto/qgraphicsscenecustom.cpp \
+    WindowWidgets/EditorFoto/qgraphicsviewcustom.cpp \
+    WindowWidgets/ModificaDati/modificadati.cpp \
+    WindowWidgets/MainWindow/mainwindow.cpp \
+    WindowWidgets/Settings/options.cpp \
+    WindowWidgets/MainWindow/qtablewidgetfilelist.cpp \
+    WindowWidgets/MainWindow/qtablewidgetshowdatabase.cpp \
+    Tools/resizewindow.cpp \
     Tools/qimgorient.cpp \
     main.cpp \
 
@@ -44,24 +44,24 @@ HEADERS += \
     CustomWidgets/qpushbuttonblue.h \
     CustomWidgets/qpushbuttongreen.h \
     CustomWidgets/qpushbuttonred.h \
-    MainWindow/EditorFoto/editorfoto.h \
-    MainWindow/EditorFoto/qgraphicsscenecustom.h \
-    MainWindow/EditorFoto/qgraphicsviewcustom.h \
-    MainWindow/ModificaDati/modificadati.h \
-    MainWindow/mainwindow.h \
-    MainWindow/options.h \
-    MainWindow/qtablewidgetfilelist.h \
-    MainWindow/qtablewidgetshowdatabase.h \
-    MainWindow/resizewindow.h \
+    WindowWidgets/EditorFoto/editorfoto.h \
+    WindowWidgets/EditorFoto/qgraphicsscenecustom.h \
+    WindowWidgets/EditorFoto/qgraphicsviewcustom.h \
+    WindowWidgets/ModificaDati/modificadati.h \
+    WindowWidgets/MainWindow/mainwindow.h \
+    WindowWidgets/Settings/options.h \
+    WindowWidgets/MainWindow/qtablewidgetfilelist.h \
+    WindowWidgets/MainWindow/qtablewidgetshowdatabase.h \
+    Tools/resizewindow.h \
     Tools/qimgorient.h \
 
 
 
 FORMS += \
-    MainWindow/EditorFoto/editorfoto.ui \
-    MainWindow/ModificaDati/modificadati.ui \
-    MainWindow/mainwindow.ui \
-    MainWindow/options.ui \
+    WindowWidgets/EditorFoto/editorfoto.ui \
+    WindowWidgets/ModificaDati/modificadati.ui \
+    WindowWidgets/MainWindow/mainwindow.ui \
+    WindowWidgets/Settings/options.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
