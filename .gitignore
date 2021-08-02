@@ -52,5 +52,9 @@ compile_commands.json
 
 *_qmlcache.qrc
 
+# Build folders
 /debug
 /release
+
+# Other files
+usersromoli*
