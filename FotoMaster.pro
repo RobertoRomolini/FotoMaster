@@ -29,11 +29,12 @@ SOURCES += \
     WindowWidgets/EditorFoto/qgraphicsviewcustom.cpp \
     WindowWidgets/ModificaDati/modificadati.cpp \
     WindowWidgets/MainWindow/mainwindow.cpp \
-    WindowWidgets/Settings/options.cpp \
     WindowWidgets/MainWindow/qtablewidgetfilelist.cpp \
     WindowWidgets/MainWindow/qtablewidgetshowdatabase.cpp \
     Tools/resizewindow.cpp \
     Tools/qimgorient.cpp \
+    WindowWidgets/Settings/optionsWidget.cpp \
+    WindowWidgets/Settings/settings.cpp \
     main.cpp \
 
 
@@ -51,11 +52,12 @@ HEADERS += \
     WindowWidgets/EditorFoto/qgraphicsviewcustom.h \
     WindowWidgets/ModificaDati/modificadati.h \
     WindowWidgets/MainWindow/mainwindow.h \
-    WindowWidgets/Settings/options.h \
     WindowWidgets/MainWindow/qtablewidgetfilelist.h \
     WindowWidgets/MainWindow/qtablewidgetshowdatabase.h \
     Tools/resizewindow.h \
     Tools/qimgorient.h \
+    WindowWidgets/Settings/optionsWidget.h \
+    WindowWidgets/Settings/settings.h
 
 
 
@@ -63,7 +65,7 @@ FORMS += \
     WindowWidgets/EditorFoto/editorfoto.ui \
     WindowWidgets/ModificaDati/modificadati.ui \
     WindowWidgets/MainWindow/mainwindow.ui \
-    WindowWidgets/Settings/options.ui \
+    WindowWidgets/Settings/optionsWidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
