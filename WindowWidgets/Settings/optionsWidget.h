@@ -1,9 +1,10 @@
-#ifndef OPTIONS_H
-#define OPTIONS_H
+#ifndef OPTIONSWIDGET_H
+#define OPTIONSWIDGET_H
 
 #include <QDialog>
 #include <QSettings>
 #include <QCoreApplication>
+#include <WindowWidgets/Settings/settings.h>
 
 namespace Ui {
 class Options;
@@ -17,16 +18,27 @@ public:
     explicit Options(QWidget *parent = nullptr);
     ~Options();
 
-    //Getters and Setters
+    // Getters and Setters
     QString getDirectoryBackup ();
+
+    int getPercAumento();
+    int getQualitaSalvataggio();
+    bool getTrasformaQualita();
+    int getLatoMin();
+    int getLatoMax();
+    bool getRidimensionaMin();
+    bool getRidimensionaMax();
+    int getRatioWidth();
+    int getRatioHeight();
+
     QString getUrlRemoveBG();
     QString getApiKeyRemoveBG();
-
 
 private slots:
     void on_chooseDirectory_clicked();
     void on_deleteDirectory_clicked();
     void on_saveSettings_clicked();
+    void on_reset_settings_clicked();
 
 private:
     Ui::Options *ui;
@@ -37,4 +49,4 @@ private:
 
 };
 
-#endif // OPTIONS_H
+#endif // OPTIONSWIDGET_H
