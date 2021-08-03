@@ -1,6 +1,6 @@
-#include "MainWindow/ModificaDati/modificadati.h"
+#include "WindowWidgets/ModificaDati/modificadati.h"
 #include "ui_modificadati.h"
-#include "MainWindow/mainwindow.h"
+#include "WindowWidgets/MainWindow/mainwindow.h"
 #include <QDebug>
 
 modificaDati::modificaDati(QWidget *parent) :

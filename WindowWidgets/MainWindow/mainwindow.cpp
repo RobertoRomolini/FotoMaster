@@ -13,11 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //------------------------------------------------------------------------------------------------------------------------------------------------//
-    //
-    //                                                                                   Crea le icone nei pushbutton
-    //
-    //------------------------------------------------------------------------------------------------------------------------------------------------//
+    //---------------------------------------------------//
+    //         Crea le icone nei pushbutton
+    //---------------------------------------------------//
     QIcon ButtonIcon(":/Files/Files/editButton.png");
     ui->modifica1->setIcon(ButtonIcon);
     ui->modifica1->setIconSize(QSize(22, 22));
@@ -476,7 +474,7 @@ void MainWindow::cancellaDatiFile (QString nomeFile)
 
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 //
-//                                                                               Collega azioni del menu a tendina
+//                                                      Collega azioni del menu a tendina
 //
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -503,6 +501,8 @@ void MainWindow::restoreSettings()
 
 void MainWindow::on_trasformaImmagini_clicked()
 {
+    this->logger->addLog("Click on button 'Trasforma Immagini'");
+
     //Controllo se la cartella è stata aggiornata prima di lanciare la funzione
     ui->contenutoCartella->checkTableUpdate(ui->directory->text());
 
@@ -525,7 +525,7 @@ void MainWindow::on_trasformaImmagini_clicked()
 
         if ( imageReader.canRead() && ui->contenutoCartella->item( i , 0 )->checkState() == Qt::Checked)
         {
-            qDebug () << "Inizio a lavorare la foto: " << fileList.at(i).absoluteFilePath();
+            this->logger->addLog("File name: " + fileList.at(i).absoluteFilePath() );
             QImage image (fileList.at(i).absoluteFilePath());
             QImage newImage (":/Files/Files/whiteImage.jpg");
 
@@ -551,23 +551,21 @@ void MainWindow::on_trasformaImmagini_clicked()
 
             if (ui->trasformaJPG->isChecked())
             {
-                qDebug () << "Inizio a salvare le immagini in JPG";
+                this->logger->addLog("'Trasforma in JPG' is checked");
+                this->logger->addLog("Save image in JPG format");
                 newImage = newImage.scaled(image.width() , image.height() , Qt::IgnoreAspectRatio);
                 painter.begin(&newImage);
                 painter.drawImage( 0 , 0  , image );
-                qDebug () << fileList.at(i).absoluteFilePath();
             }
 
             else if (ui->centraRiquadra->isChecked())
             {
-
                 int top=0;
                 int bottom = 0;
                 int left = 0;
                 int right = 0;
-                qDebug () << "Effettuo Centra e Riquadra";
-                qDebug () << "Larghezza foto: " << image.width();
-                qDebug () << "Altezza foto: " << image.height();
+                this->logger->addLog("'Centra e Riquadra' is checked");
+                this->logger->addLog("Image dimension: " + QString::number(image.width()) + "x" + QString::number(image.height()));
                 QColor pixel;
                 for ( int i=0 ; i<image.height() ; i++ )
                 {
@@ -858,22 +856,22 @@ void MainWindow::on_trasformaImmagini_clicked()
             //Elimino il file precedente
             if (QFile::remove(fileList.at(i).absoluteFilePath()))
             {
-                 qDebug () << "File eliminato: " << fileList.at(i).absoluteFilePath();
+                 this->logger->addLog("Delete the first file: " + fileList.at(i).absoluteFilePath());
             }
             else
             {
-                qDebug () << "Impossibile eliminare il file: "<< fileList.at(i).absoluteFilePath();
+                this->logger->addLog("Unable to delete the first file: " + fileList.at(i).absoluteFilePath());
             }
 
             //Salva l'immagine in base alla qualità se il checkbox è spuntato
             if (ui->trasformaQualita->isChecked())
             {
-                qDebug () << "Salvo l'immagine con qualità: " << ui->qualitaSalvataggio->value();
+                this->logger->addLog("Save image with quality: " + QString::number(ui->qualitaSalvataggio->value()));
                 newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , ui->qualitaSalvataggio->value());
             }
             else
             {
-                qDebug () << "Salvo l'immagine con qualità: 100";
+                this->logger->addLog("Save image with quality: 100");
                 newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , 100);
             }
             qDebug () << "______________________________" << Qt::endl;
@@ -886,7 +884,7 @@ void MainWindow::on_trasformaImmagini_clicked()
 
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 //
-//                                                                                 Metodi MainWindow sovrascritti
+//                                                Metodi MainWindow sovrascritti
 //
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -1056,17 +1054,15 @@ void MainWindow::setElementPosition()
 
 }
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------//
 //
+//                                          Private slots
 //
-//                                                                                                                                       Private slots
-//
-//
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------//
 
-//--------------------------------------------------------------------------------------------------------------//
-//                                               Azionano la sostituzione dei nomi dei file
-//--------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------//
+//                               Azionano la sostituzione dei nomi dei file
+//-----------------------------------------------------------------------------------------------------//
 
 void MainWindow::on_sostituisciRapido_clicked()
 {

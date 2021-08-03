@@ -1,4 +1,4 @@
-#include "MainWindow/EditorFoto/editorfoto.h"
+#include "WindowWidgets/EditorFoto/editorfoto.h"
 #include "ui_editorfoto.h"
 #include <QDebug>
 #include <QResizeEvent>

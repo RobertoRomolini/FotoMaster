@@ -23,6 +23,7 @@ SOURCES += \
     CustomWidgets/qpushbuttonblue.cpp \
     CustomWidgets/qpushbuttongreen.cpp \
     CustomWidgets/qpushbuttonred.cpp \
+    Tools/logger.cpp \
     WindowWidgets/EditorFoto/editorfoto.cpp \
     WindowWidgets/EditorFoto/qgraphicsscenecustom.cpp \
     WindowWidgets/EditorFoto/qgraphicsviewcustom.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     CustomWidgets/qpushbuttonblue.h \
     CustomWidgets/qpushbuttongreen.h \
     CustomWidgets/qpushbuttonred.h \
+    Tools/logger.h \
     WindowWidgets/EditorFoto/editorfoto.h \
     WindowWidgets/EditorFoto/qgraphicsscenecustom.h \
     WindowWidgets/EditorFoto/qgraphicsviewcustom.h \

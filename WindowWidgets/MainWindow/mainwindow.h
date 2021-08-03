@@ -5,6 +5,7 @@
 #include "WindowWidgets/EditorFoto/editorfoto.h"
 #include "Tools/qimgorient.h"
 #include "WindowWidgets/Settings/options.h"
+#include "Tools/logger.h"
 #include "Tools/resizewindow.h"
 #include <QCoreApplication>
 #include <QtNetwork>
@@ -24,7 +25,7 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    //Remove BG
+    // Remove BG
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     QNetworkAccessManager *managerCrediti = new QNetworkAccessManager(this);
     void chiamataRemoveBg ();
@@ -33,25 +34,28 @@ private:
     void rispostaCreditiRemoveBg(QNetworkReply *reply);
 
 
-    //Sostituisci le parole dei nomi file come nel database
+    // Sostituisci le parole dei nomi file come nel database
     void sostituisci(QString);
     void cancellaDatiFile (QString nomeFile);
 
-    //Istanza pagina modifica dati database
+    // Istanza pagina modifica dati database
     modificaDati *database = new modificaDati (this);
 
-    //Istanza pagina opzioni
+    // Istanza pagina opzioni
     Options *options = new Options (this);
 
-    //Classe per trasformare finestra responsive
+    // Classe per trasformare finestra responsive
     ResizeWindow *resizeWindow = new ResizeWindow("MainWindow");
 
-    //File di salvataggio impostazioni
+    // File di salvataggio impostazioni
     QSettings* settings = new QSettings(qApp->applicationDirPath() + "/temp/config.desktop", QSettings::IniFormat);
     void setElementPosition();
 
-    //Collega azioni del menu a tendina
+    // Collega azioni del menu a tendina
     void restoreSettings();
+
+    // Logger
+    Logger *logger = new Logger(qApp->applicationDirPath() + "/temp/log.log");
 
 private slots:
     //Azionano la sostituzione dei nomi dei file
