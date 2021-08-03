@@ -4,7 +4,7 @@
 #include "WindowWidgets/ModificaDati/modificadati.h"
 #include "WindowWidgets/EditorFoto/editorfoto.h"
 #include "Tools/qimgorient.h"
-#include "WindowWidgets/Settings/options.h"
+#include "WindowWidgets/Settings/optionsWidget.h"
 #include "Tools/logger.h"
 #include "Tools/resizewindow.h"
 #include <QCoreApplication>
@@ -53,9 +53,6 @@ private:
 
     // Collega azioni del menu a tendina
     void restoreSettings();
-
-    // Logger
-    Logger *logger = new Logger(qApp->applicationDirPath() + "/temp/log.log");
 
 private slots:
     //Azionano la sostituzione dei nomi dei file

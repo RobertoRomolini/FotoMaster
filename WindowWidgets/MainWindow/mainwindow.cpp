@@ -184,14 +184,10 @@ MainWindow::MainWindow(QWidget *parent)
     //                                                                    Setta le impostazioni dall'ultima chiusura
     //
     //------------------------------------------------------------------------------------------------------------------------------------------------//
-    ui->percAumento->setValue( settings->value("percAumento").toInt());
     ui->tolleranza->setValue( settings->value("tolleranza").toInt());
-    ui->qualitaSalvataggio->setValue( settings->value("qualitaSalvataggio").toInt());
-    ui->latoMin->setValue( settings->value("latoMin").toInt());
     ui->confrontoBianco->setValue( settings->value("confrontoBianco").toInt());
     ui->latoMinMD->setValue( settings->value("latoMinMD").toInt());
     ui->dimMinFileSpinBox->setValue( settings->value("dimMinFileSpinBox").toInt());
-    ui->latoMax->setValue( settings->value("latoMax").toInt());
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //
@@ -481,13 +477,7 @@ void MainWindow::cancellaDatiFile (QString nomeFile)
 //Ripristina i valori predefiniti
 void MainWindow::restoreSettings()
 {
-    ui->percAumento->setValue(8);
     ui->tolleranza->setValue(15);
-    ui->qualitaSalvataggio->setValue(85);
-    ui->trasformaQualita->setChecked(true);
-    ui->latoMin->setValue(600);
-    ui->latoMax->setValue(4500);
-    ui->ridimensionaMin->setChecked(true);
     ui->confrontoBianco->setValue( 50);
     ui->latoMinMD->setValue( 600);
     ui->dimMinFileSpinBox->setValue(500);
@@ -501,7 +491,7 @@ void MainWindow::restoreSettings()
 
 void MainWindow::on_trasformaImmagini_clicked()
 {
-    this->logger->addLog("Click on button 'Trasforma Immagini'");
+    Logger::addLog("Click on button 'Trasforma Immagini'");
 
     //Controllo se la cartella è stata aggiornata prima di lanciare la funzione
     ui->contenutoCartella->checkTableUpdate(ui->directory->text());
@@ -525,7 +515,7 @@ void MainWindow::on_trasformaImmagini_clicked()
 
         if ( imageReader.canRead() && ui->contenutoCartella->item( i , 0 )->checkState() == Qt::Checked)
         {
-            this->logger->addLog("File name: " + fileList.at(i).absoluteFilePath() );
+            Logger::addLog("File name: " + fileList.at(i).absoluteFilePath() );
             QImage image (fileList.at(i).absoluteFilePath());
             QImage newImage (":/Files/Files/whiteImage.jpg");
 
@@ -551,8 +541,8 @@ void MainWindow::on_trasformaImmagini_clicked()
 
             if (ui->trasformaJPG->isChecked())
             {
-                this->logger->addLog("'Trasforma in JPG' is checked");
-                this->logger->addLog("Save image in JPG format");
+                Logger::addLog("'Trasforma in JPG' is checked");
+                Logger::addLog("Save image in JPG format");
                 newImage = newImage.scaled(image.width() , image.height() , Qt::IgnoreAspectRatio);
                 painter.begin(&newImage);
                 painter.drawImage( 0 , 0  , image );
@@ -564,8 +554,8 @@ void MainWindow::on_trasformaImmagini_clicked()
                 int bottom = 0;
                 int left = 0;
                 int right = 0;
-                this->logger->addLog("'Centra e Riquadra' is checked");
-                this->logger->addLog("Image dimension: " + QString::number(image.width()) + "x" + QString::number(image.height()));
+                Logger::addLog("'Centra e Riquadra' is checked");
+                Logger::addLog("Image dimension: " + QString::number(image.width()) + "x" + QString::number(image.height()));
                 QColor pixel;
                 for ( int i=0 ; i<image.height() ; i++ )
                 {
@@ -657,13 +647,13 @@ void MainWindow::on_trasformaImmagini_clicked()
                     int newDimensionHalf = 0;
                     if ( newHeight > newWidth || newHeight == newWidth )
                     {
-                        newDimension = newHeight +((newHeight * ui->percAumento->value())/100);
-                        newDimensionHalf = newHeight +((newHeight * (ui->percAumento->value()/2))/100);
+                        newDimension = newHeight +((newHeight * options->getPercAumento())/100);
+                        newDimensionHalf = newHeight +((newHeight * (options->getPercAumento()/2))/100);
                     }
                     else if ( newHeight < newWidth )
                     {
-                        newDimension = newWidth +((newWidth * ui->percAumento->value())/100);
-                        newDimensionHalf = newWidth +((newWidth * (ui->percAumento->value()/2))/100);
+                        newDimension = newWidth +((newWidth * options->getPercAumento())/100);
+                        newDimensionHalf = newWidth +((newWidth * (options->getPercAumento()/2))/100);
                     }
                     newImage = newImage.scaled ( newDimension , newDimension , Qt::IgnoreAspectRatio );
                     qDebug () << "newDimensionHalf" << newDimensionHalf;
@@ -837,16 +827,16 @@ void MainWindow::on_trasformaImmagini_clicked()
             }
 
             // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-            if (ui->ridimensionaMin->isChecked() && newImage.width() < ui->latoMin->value())
+            if (options->getRidimensionaMin() && newImage.width() < options->getLatoMin())
             {
-                qDebug () << "La foto è minore di " << ui->latoMin->value() << " pixel. Procedo all'ingrandimento";
-                newImage = newImage.scaledToHeight( ui->latoMin->value() , Qt::SmoothTransformation );
+                qDebug () << "La foto è minore di " << options->getLatoMin() << " pixel. Procedo all'ingrandimento";
+                newImage = newImage.scaledToHeight( options->getLatoMin() , Qt::SmoothTransformation );
                 qDebug () << "La nuova dimensione è: " << newImage.width() << "x" << newImage.height();
             }
-            else if (ui->ridimensionaMax->isChecked() && newImage.width() > ui->latoMax->value())
+            else if (options->getRidimensionaMax() && newImage.width() > options->getLatoMax())
             {
-                qDebug () << "La foto è maggiore di " << ui->latoMin->value() << " pixel. Procedo alla riduzione.";
-                newImage = newImage.scaledToHeight( ui->latoMax->value() , Qt::SmoothTransformation );
+                qDebug () << "La foto è maggiore di " << options->getLatoMax() << " pixel. Procedo alla riduzione.";
+                newImage = newImage.scaledToHeight( options->getLatoMax() , Qt::SmoothTransformation );
                 qDebug () << "La nuova dimensione è: " << newImage.width() << "x" << newImage.height();
             }
 
@@ -856,22 +846,22 @@ void MainWindow::on_trasformaImmagini_clicked()
             //Elimino il file precedente
             if (QFile::remove(fileList.at(i).absoluteFilePath()))
             {
-                 this->logger->addLog("Delete the first file: " + fileList.at(i).absoluteFilePath());
+                 Logger::addLog("Delete the first file: " + fileList.at(i).absoluteFilePath());
             }
             else
             {
-                this->logger->addLog("Unable to delete the first file: " + fileList.at(i).absoluteFilePath());
+                Logger::addLog("Unable to delete the first file: " + fileList.at(i).absoluteFilePath());
             }
 
             //Salva l'immagine in base alla qualità se il checkbox è spuntato
-            if (ui->trasformaQualita->isChecked())
+            if (options->getTrasformaQualita())
             {
-                this->logger->addLog("Save image with quality: " + QString::number(ui->qualitaSalvataggio->value()));
-                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , ui->qualitaSalvataggio->value());
+                Logger::addLog("Save image with quality: " + QString::number(options->getQualitaSalvataggio()));
+                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , options->getQualitaSalvataggio());
             }
             else
             {
-                this->logger->addLog("Save image with quality: 100");
+                Logger::addLog("Save image with quality: 100");
                 newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , 100);
             }
             qDebug () << "______________________________" << Qt::endl;
@@ -890,15 +880,10 @@ void MainWindow::on_trasformaImmagini_clicked()
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    settings->setValue("percAumento" , ui->percAumento->value() );
     settings->setValue("tolleranza" , ui->tolleranza->value() );
-    settings->setValue("qualitaSalvataggio" , ui->qualitaSalvataggio->value() );
     settings->setValue("confrontoBianco" , ui->confrontoBianco->value() );
-    settings->setValue("latoMin" , ui->latoMin->value() );
     settings->setValue("latoMinMD" , ui->latoMinMD->value() );
     settings->setValue("dimMinFileSpinBox" , ui->dimMinFileSpinBox->value() );
-    settings->setValue("latoMax" , ui->latoMax->value() );
-
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -907,20 +892,11 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     //Muove solo Y
     resizeWindow->moveWidgetY(ui->centraRiquadra);
-    resizeWindow->moveWidgetY(ui->percAumento);
     resizeWindow->moveWidgetY(ui->tolleranza);
     resizeWindow->moveWidgetY(ui->label_4);
     resizeWindow->moveWidgetY(ui->trasformaImmagini);
-    resizeWindow->moveWidgetY(ui->percAumento);
-    resizeWindow->moveWidgetY(ui->trasformaQualita);
-    resizeWindow->moveWidgetY(ui->latoMin);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox);
-    resizeWindow->moveWidgetY(ui->trasformaImmaginiLine);
-    resizeWindow->moveWidgetY(ui->qualitaSalvataggio);
-    resizeWindow->moveWidgetY(ui->ridimensionaMin);
     resizeWindow->moveWidgetY(ui->trasformaJPG);
-    resizeWindow->moveWidgetY(ui->latoMax);
-    resizeWindow->moveWidgetY(ui->ridimensionaMax);
 
     resizeWindow->moveWidgetY(ui->label_5);
     resizeWindow->moveWidgetY(ui->refreshCrediti);
@@ -929,9 +905,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->fileOutputRemoveBG);
     resizeWindow->moveWidgetY(ui->removeBg);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox_2);
-
-
-
 
     //Muove solo X
     resizeWindow->moveWidgetY(ui->selezionaDeseleziona);
@@ -1020,7 +993,6 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->opzioniTabellaBox);
     resizeWindow->setObjectGeometry(ui->opzioniTabellaLine);
     resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox);
-    resizeWindow->setObjectGeometry(ui->trasformaImmaginiLine);
     resizeWindow->setObjectGeometry(ui->sostituisciBox);
     resizeWindow->setObjectGeometry(ui->sostituisciRapidoBox);
     resizeWindow->setObjectGeometry(ui->selezionaTutto);
@@ -1033,17 +1005,10 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->scegliCartella);
     resizeWindow->setObjectGeometry(ui->anteprimaFile);
     resizeWindow->setObjectGeometry(ui->centraRiquadra);
-    resizeWindow->setObjectGeometry(ui->percAumento);
     resizeWindow->setObjectGeometry(ui->tolleranza);
     resizeWindow->setObjectGeometry(ui->label_4);
     resizeWindow->setObjectGeometry(ui->trasformaImmagini);
-    resizeWindow->setObjectGeometry(ui->trasformaQualita);
-    resizeWindow->setObjectGeometry(ui->ridimensionaMin);
-    resizeWindow->setObjectGeometry(ui->latoMin);
-    resizeWindow->setObjectGeometry(ui->qualitaSalvataggio);
     resizeWindow->setObjectGeometry(ui->trasformaJPG);
-    resizeWindow->setObjectGeometry(ui->latoMax);
-    resizeWindow->setObjectGeometry(ui->ridimensionaMax);
     resizeWindow->setObjectGeometry(ui->label_5);
     resizeWindow->setObjectGeometry(ui->refreshCrediti);
     resizeWindow->setObjectGeometry(ui->creditiRimanenti);

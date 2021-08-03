@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1270</width>
-    <height>760</height>
+    <height>720</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1270</width>
-    <height>760</height>
+    <height>720</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -633,7 +633,7 @@ border-radius: 5px;</string>
     <property name="geometry">
      <rect>
       <x>953</x>
-      <y>650</y>
+      <y>630</y>
       <width>163</width>
       <height>20</height>
      </rect>
@@ -654,7 +654,7 @@ border-radius: 5px;</string>
     <property name="geometry">
      <rect>
       <x>1130</x>
-      <y>650</y>
+      <y>630</y>
       <width>74</width>
       <height>22</height>
      </rect>
@@ -724,7 +724,7 @@ QSpinBox::down-button:hover
     <property name="geometry">
      <rect>
       <x>953</x>
-      <y>610</y>
+      <y>600</y>
       <width>167</width>
       <height>20</height>
      </rect>
@@ -745,7 +745,7 @@ QSpinBox::down-button:hover
     <property name="geometry">
      <rect>
       <x>1130</x>
-      <y>610</y>
+      <y>600</y>
       <width>86</width>
       <height>22</height>
      </rect>
@@ -842,7 +842,7 @@ QSpinBox::down-button:hover
     <property name="geometry">
      <rect>
       <x>762</x>
-      <y>610</y>
+      <y>600</y>
       <width>141</width>
       <height>20</height>
      </rect>
@@ -863,7 +863,7 @@ QSpinBox::down-button:hover
     <property name="geometry">
      <rect>
       <x>762</x>
-      <y>650</y>
+      <y>630</y>
       <width>191</width>
       <height>20</height>
      </rect>
@@ -990,79 +990,6 @@ QSpinBox::down-button:hover
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QSpinBox" name="percAumento">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>582</y>
-      <width>61</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Helvetica</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QSpinBox
-{
-	background-color: rgb(245, 245, 245);
-	border: 1px solid black;
-	border-radius: 5px;
-	padding-right: 15px;
-	font: 10pt 'Helvetica';
-}
-
-QSpinBox::up-button
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/up.png);
-    border-width: 1px;
-	margin-right: 2px;
-}
-
-QSpinBox::up-button:hover
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/up.png);
-    border-width: 1px;
-	background-color: #6C6C6C;
-}
-
-QSpinBox::down-button
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/down.png);
-    border-width: 1px;
-	margin-right: 2px;
-}
-
-QSpinBox::down-button:hover
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/down.png);
-    border-width: 1px;
-	background-color: #6C6C6C;
-}</string>
-    </property>
-    <property name="suffix">
-     <string>%</string>
-    </property>
-    <property name="minimum">
-     <number>0</number>
-    </property>
-    <property name="maximum">
-     <number>500</number>
-    </property>
-    <property name="value">
-     <number>8</number>
-    </property>
-   </widget>
    <widget class="QSpinBox" name="tolleranza">
     <property name="geometry">
      <rect>
@@ -1136,7 +1063,7 @@ QSpinBox::down-button:hover
    <widget class="QCheckboxCustom" name="centraRiquadra">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>260</x>
       <y>583</y>
       <width>127</width>
       <height>20</height>
@@ -1157,204 +1084,10 @@ QSpinBox::down-button:hover
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QCheckboxCustom" name="ridimensionaMin">
-    <property name="geometry">
-     <rect>
-      <x>174</x>
-      <y>623</y>
-      <width>174</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Ridimensiona la foto se minore del valore indicato&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Ridimensiona se minore di</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="latoMin">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>622</y>
-      <width>86</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Helvetica</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QSpinBox
-{
-	background-color: rgb(245, 245, 245);
-	border: 1px solid black;
-	border-radius: 5px;
-	padding-right: 15px;
-	font: 10pt 'Helvetica';
-}
-
-QSpinBox::up-button
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/up.png);
-    border-width: 1px;
-	margin-right: 2px;
-}
-
-QSpinBox::up-button:hover
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/up.png);
-    border-width: 1px;
-	background-color: #6C6C6C;
-}
-
-QSpinBox::down-button
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/down.png);
-    border-width: 1px;
-	margin-right: 2px;
-}
-
-QSpinBox::down-button:hover
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/down.png);
-    border-width: 1px;
-	background-color: #6C6C6C;
-}</string>
-    </property>
-    <property name="suffix">
-     <string> Pixel</string>
-    </property>
-    <property name="minimum">
-     <number>10</number>
-    </property>
-    <property name="maximum">
-     <number>4000</number>
-    </property>
-    <property name="singleStep">
-     <number>20</number>
-    </property>
-    <property name="value">
-     <number>600</number>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="qualitaSalvataggio">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>622</y>
-      <width>49</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Helvetica</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QSpinBox
-{
-	background-color: rgb(245, 245, 245);
-	border: 1px solid black;
-	border-radius: 5px;
-	padding-right: 15px;
-	font: 10pt 'Helvetica';
-}
-
-QSpinBox::up-button
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/up.png);
-    border-width: 1px;
-	margin-right: 2px;
-}
-
-QSpinBox::up-button:hover
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/up.png);
-    border-width: 1px;
-	background-color: #6C6C6C;
-}
-
-QSpinBox::down-button
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/down.png);
-    border-width: 1px;
-	margin-right: 2px;
-}
-
-QSpinBox::down-button:hover
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/down.png);
-    border-width: 1px;
-	background-color: #6C6C6C;
-}</string>
-    </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>100</number>
-    </property>
-    <property name="value">
-     <number>85</number>
-    </property>
-   </widget>
-   <widget class="QCheckboxCustom" name="trasformaQualita">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>623</y>
-      <width>63</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se non spuntato setta la qualità al massimo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Qualità</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QCheckboxCustom" name="trasformaJPG">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>60</x>
       <y>583</y>
       <width>121</width>
       <height>20</height>
@@ -1397,7 +1130,7 @@ border-radius: 5px;</string>
       <x>750</x>
       <y>500</y>
       <width>500</width>
-      <height>201</height>
+      <height>164</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1415,7 +1148,7 @@ border-radius: 5px;</string>
       <x>20</x>
       <y>572</y>
       <width>710</width>
-      <height>81</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1427,127 +1160,11 @@ border-radius: 5px;</string>
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="Line" name="trasformaImmaginiLine">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>614</y>
-      <width>690</width>
-      <height>1</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QCheckboxCustom" name="ridimensionaMax">
-    <property name="geometry">
-     <rect>
-      <x>451</x>
-      <y>623</y>
-      <width>174</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Ridimensiona la foto se minore del valore indicato&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Ridimensiona se maggiore di</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="latoMax">
-    <property name="geometry">
-     <rect>
-      <x>629</x>
-      <y>622</y>
-      <width>86</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Helvetica</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QSpinBox
-{
-	background-color: rgb(245, 245, 245);
-	border: 1px solid black;
-	border-radius: 5px;
-	padding-right: 15px;
-	font: 10pt 'Helvetica';
-}
-
-QSpinBox::up-button
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/up.png);
-    border-width: 1px;
-	margin-right: 2px;
-}
-
-QSpinBox::up-button:hover
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/up.png);
-    border-width: 1px;
-	background-color: #6C6C6C;
-}
-
-QSpinBox::down-button
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/down.png);
-    border-width: 1px;
-	margin-right: 2px;
-}
-
-QSpinBox::down-button:hover
-{
-	subcontrol-origin: border;
-    border-image: url(:/Files/Files/down.png);
-    border-width: 1px;
-	background-color: #6C6C6C;
-}</string>
-    </property>
-    <property name="suffix">
-     <string> Pixel</string>
-    </property>
-    <property name="minimum">
-     <number>10</number>
-    </property>
-    <property name="maximum">
-     <number>9999</number>
-    </property>
-    <property name="singleStep">
-     <number>20</number>
-    </property>
-    <property name="value">
-     <number>4500</number>
-    </property>
-   </widget>
    <widget class="QPushButtonGreen" name="removeBg">
     <property name="geometry">
      <rect>
       <x>551</x>
-      <y>665</y>
+      <y>628</y>
       <width>161</width>
       <height>31</height>
      </rect>
@@ -1560,7 +1177,7 @@ QSpinBox::down-button:hover
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>660</y>
+      <y>623</y>
       <width>710</width>
       <height>41</height>
      </rect>
@@ -1578,7 +1195,7 @@ border-radius: 5px;</string>
     <property name="geometry">
      <rect>
       <x>410</x>
-      <y>670</y>
+      <y>633</y>
       <width>101</width>
       <height>22</height>
      </rect>
@@ -1634,7 +1251,7 @@ margin-right: 7px;
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>670</y>
+      <y>633</y>
       <width>101</width>
       <height>22</height>
      </rect>
@@ -1687,7 +1304,7 @@ margin-right: 7px;
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>670</y>
+      <y>633</y>
       <width>111</width>
       <height>21</height>
      </rect>
@@ -1706,7 +1323,7 @@ margin-right: 7px;
     <property name="geometry">
      <rect>
       <x>156</x>
-      <y>670</y>
+      <y>633</y>
       <width>51</width>
       <height>21</height>
      </rect>
@@ -1727,7 +1344,7 @@ margin-right: 7px;
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>667</y>
+      <y>630</y>
       <width>27</width>
       <height>27</height>
      </rect>
@@ -1750,13 +1367,8 @@ margin-right: 7px;
    <zorder>percentualeBianco</zorder>
    <zorder>confrontoBianco</zorder>
    <zorder>label_4</zorder>
-   <zorder>percAumento</zorder>
    <zorder>tolleranza</zorder>
    <zorder>centraRiquadra</zorder>
-   <zorder>ridimensionaMin</zorder>
-   <zorder>latoMin</zorder>
-   <zorder>qualitaSalvataggio</zorder>
-   <zorder>trasformaQualita</zorder>
    <zorder>directory</zorder>
    <zorder>scegliCartella</zorder>
    <zorder>sostituisci1</zorder>
@@ -1786,9 +1398,6 @@ margin-right: 7px;
    <zorder>backupFolder</zorder>
    <zorder>selezionaTutto</zorder>
    <zorder>trasformaJPG</zorder>
-   <zorder>trasformaImmaginiLine</zorder>
-   <zorder>ridimensionaMax</zorder>
-   <zorder>latoMax</zorder>
    <zorder>trasformaImmaginiBox_2</zorder>
    <zorder>removeBg</zorder>
    <zorder>fileOutputRemoveBG</zorder>
