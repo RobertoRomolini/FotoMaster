@@ -9,17 +9,16 @@ class Logger : public QObject
 {
     Q_OBJECT
 public:
-    explicit Logger(QString logFilename, QObject *parent = 0);
-    void addLog(QString logMessage);
+    Logger(QObject *parent = 0);
+    static void addLog(QString logMessage);
 
-    bool getShouldLog();
-    void setShouldLog(bool newShouldLog);
+    static void setShouldLog(bool newShouldLog);
 
 private:
-    bool shouldLog = true;
-    QString logFilename;
+    static bool shouldLog;
 
-
+    static void checkDateLogs();
+    static QString getLogFilename();
 };
 
 #endif // LOGGER_H
