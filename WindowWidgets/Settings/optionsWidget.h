@@ -4,9 +4,7 @@
 #include <QDialog>
 #include <QSettings>
 #include <QCoreApplication>
-#include <QFileDialog>
 #include <WindowWidgets/Settings/settings.h>
-#include <WindowWidgets/Settings/settingsconst.h>
 
 namespace Ui {
 class Options;
@@ -20,6 +18,22 @@ public:
     explicit Options(QWidget *parent = nullptr);
     ~Options();
 
+    // Getters and Setters
+    QString getDirectoryBackup ();
+
+    int getPercAumento();
+    int getQualitaSalvataggio();
+    bool getTrasformaQualita();
+    int getLatoMin();
+    int getLatoMax();
+    bool getRidimensionaMin();
+    bool getRidimensionaMax();
+    int getRatioWidth();
+    int getRatioHeight();
+
+    QString getUrlRemoveBG();
+    QString getApiKeyRemoveBG();
+
 private slots:
     void on_chooseDirectory_clicked();
     void on_deleteDirectory_clicked();
@@ -28,6 +42,11 @@ private slots:
 
 private:
     Ui::Options *ui;
+
+
+    //File di salvataggio impostazioni
+    QSettings *optionSettings = new QSettings(qApp->applicationDirPath() + "/temp/optionSettings.desktop", QSettings::IniFormat);
+
 };
 
 #endif // OPTIONSWIDGET_H

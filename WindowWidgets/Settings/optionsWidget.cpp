@@ -1,6 +1,8 @@
 #include "optionsWidget.h"
 #include "ui_options.h"
 
+#include <QFileDialog>
+
 Options::Options(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Options)
@@ -12,32 +14,98 @@ Options::Options(QWidget *parent) :
     //                        Imposto le impostazioni da file
     //-------------------------------------------------------------------------------//
     // Generale
-    QString directoryBackup = Settings::getSettingsString(SettingsConst::directoryBackup);
+    QString directoryBackup = optionSettings->value("directoryBackup").toString();
     if ( QDir(directoryBackup).exists()) //se la directory non esiste il programma crasha
     {
         ui->directoryBackup->setText(directoryBackup);
     }
 
     // Trasforma Immagini
-
-    ui->percAumento->setValue(Settings::getSettingsInt(SettingsConst::percAumento));
-    ui->qualitaSalvataggio->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
-    ui->trasformaQualita->setChecked(Settings::getSettingsBool(SettingsConst::trasformaQualita));
-    ui->latoMin->setValue(Settings::getSettingsInt(SettingsConst::latoMin));
-    ui->latoMax->setValue(Settings::getSettingsInt(SettingsConst::latoMax));
-    ui->ridimensionaMin->setChecked(Settings::getSettingsBool(SettingsConst::ridimensionaMin));
-    ui->ridimensionaMax->setChecked(Settings::getSettingsBool(SettingsConst::ridimensionaMax));
-    ui->ratioWidth->setValue(Settings::getSettingsInt(SettingsConst::ratioWidth));
-    ui->ratioHeight->setValue(Settings::getSettingsInt(SettingsConst::ratioHeight));
+    ui->percAumento->setValue(optionSettings->value("percAumento").toInt());
+    ui->qualitaSalvataggio->setValue(optionSettings->value("qualitaSalvataggio").toInt());
+    ui->trasformaQualita->setChecked(optionSettings->value("trasformaQualita").toBool());
+    ui->latoMin->setValue(optionSettings->value("latoMin").toInt());
+    ui->latoMax->setValue(optionSettings->value("latoMax").toInt());
+    ui->ridimensionaMin->setChecked(optionSettings->value("ridimensionaMin").toBool());
+    ui->ridimensionaMax->setChecked(optionSettings->value("ridimensionaMax").toBool());
+    ui->ratioWidth->setValue(optionSettings->value("ratioWidth").toInt());
+    ui->ratioHeight->setValue(optionSettings->value("ratioHeight").toInt());
 
     // Remove BG
-    ui->apiKeyRemoveBG->setText(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG));
-    ui->urlRemoveBG->setText(Settings::getSettingsString(SettingsConst::urlRemoveBG));
+    ui->apiKeyRemoveBG->setText(optionSettings->value("apiKeyRemoveBG").toString());
+    ui->urlRemoveBG->setText(optionSettings->value("urlRemoveBG").toString());
+
+    qDebug() << Settings::getSetting("percAumento");
+
 }
 
 Options::~Options()
 {
     delete ui;
+}
+
+//--------------------------------------------------------------------------//
+//                             Getters and Setters
+//--------------------------------------------------------------------------//
+
+QString Options::getDirectoryBackup()
+{
+    return optionSettings->value("directoryBackup").toString();
+}
+
+int Options::getPercAumento()
+{
+    return ui->percAumento->value();
+}
+
+int Options::getQualitaSalvataggio()
+{
+    return ui->qualitaSalvataggio->value();
+}
+
+bool Options::getTrasformaQualita()
+{
+    return ui->trasformaQualita->isChecked();
+}
+
+int Options::getLatoMin()
+{
+    return ui->latoMin->value();
+}
+
+int Options::getLatoMax()
+{
+    return ui->latoMax->value();
+}
+
+bool Options::getRidimensionaMin()
+{
+    return ui->ridimensionaMin->isChecked();
+}
+
+bool Options::getRidimensionaMax()
+{
+    return ui->ridimensionaMax->isChecked();
+}
+
+int Options::getRatioWidth()
+{
+    return ui->ratioWidth->value();
+}
+
+int Options::getRatioHeight()
+{
+    return ui->ratioHeight->value();
+}
+
+QString Options::getApiKeyRemoveBG()
+{
+    return optionSettings->value("apiKeyRemoveBG").toString();
+}
+
+QString Options::getUrlRemoveBG()
+{
+    return optionSettings->value("urlRemoveBG").toString();
 }
 
 //--------------------------------------------------------------------------//
@@ -61,22 +129,22 @@ void Options::on_deleteDirectory_clicked()
 void Options::on_saveSettings_clicked()
 {
     // Generale
-    Settings::setSettings(SettingsConst::directoryBackup, ui->directoryBackup->text());
+    optionSettings->setValue("directoryBackup" , ui->directoryBackup->text());
 
     // Trasforma Immagini
-    Settings::setSettings(SettingsConst::percAumento, ui->percAumento->value());
-    Settings::setSettings(SettingsConst::qualitaSalvataggio, ui->qualitaSalvataggio->value());
-    Settings::setSettings(SettingsConst::trasformaQualita, ui->trasformaQualita->isChecked());
-    Settings::setSettings(SettingsConst::latoMin, ui->latoMin->value());
-    Settings::setSettings(SettingsConst::latoMax, ui->latoMax->value());
-    Settings::setSettings(SettingsConst::ridimensionaMin, ui->ridimensionaMin->isChecked());
-    Settings::setSettings(SettingsConst::ridimensionaMax, ui->ridimensionaMax->isChecked());
-    Settings::setSettings(SettingsConst::ratioWidth, ui->ratioWidth->value());
-    Settings::setSettings(SettingsConst::ratioHeight, ui->ratioHeight->value());
+    optionSettings->setValue("percAumento" , ui->percAumento->value());
+    optionSettings->setValue("qualitaSalvataggio" , ui->qualitaSalvataggio->value());
+    optionSettings->setValue("trasformaQualita" , ui->trasformaQualita->isChecked());
+    optionSettings->setValue("latoMin" , ui->latoMin->value());
+    optionSettings->setValue("latoMax" , ui->latoMax->value());
+    optionSettings->setValue("ridimensionaMin" , ui->ridimensionaMin->isChecked());
+    optionSettings->setValue("ridimensionaMax" , ui->ridimensionaMax->isChecked());
+    optionSettings->setValue("ratioWidth" , ui->ratioWidth->value());
+    optionSettings->setValue("ratioHeight" , ui->ratioHeight->value());
 
     // Remove BG
-    Settings::setSettings(SettingsConst::apiKeyRemoveBG, ui->apiKeyRemoveBG->text());
-    Settings::setSettings(SettingsConst::urlRemoveBG, ui->urlRemoveBG->text());
+    optionSettings->setValue("apiKeyRemoveBG" , ui->apiKeyRemoveBG->text());
+    optionSettings->setValue("urlRemoveBG" , ui->urlRemoveBG->text());
 
     this->close();
 }
