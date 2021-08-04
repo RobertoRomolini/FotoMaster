@@ -23,6 +23,7 @@ SOURCES += \
     CustomWidgets/qpushbuttonblue.cpp \
     CustomWidgets/qpushbuttongreen.cpp \
     CustomWidgets/qpushbuttonred.cpp \
+    Tools/imageprocessor.cpp \
     Tools/logger.cpp \
     WindowWidgets/EditorFoto/editorfoto.cpp \
     WindowWidgets/EditorFoto/qgraphicsscenecustom.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
     Tools/qimgorient.cpp \
     WindowWidgets/Settings/optionsWidget.cpp \
     WindowWidgets/Settings/settings.cpp \
+    WindowWidgets/Settings/settingsconst.cpp \
     main.cpp \
 
 
@@ -46,6 +48,7 @@ HEADERS += \
     CustomWidgets/qpushbuttonblue.h \
     CustomWidgets/qpushbuttongreen.h \
     CustomWidgets/qpushbuttonred.h \
+    Tools/imageprocessor.h \
     Tools/logger.h \
     WindowWidgets/EditorFoto/editorfoto.h \
     WindowWidgets/EditorFoto/qgraphicsscenecustom.h \
@@ -57,7 +60,8 @@ HEADERS += \
     Tools/resizewindow.h \
     Tools/qimgorient.h \
     WindowWidgets/Settings/optionsWidget.h \
-    WindowWidgets/Settings/settings.h
+    WindowWidgets/Settings/settings.h \
+    WindowWidgets/Settings/settingsconst.h
 
 
 

@@ -5,26 +5,34 @@ Settings::Settings(QObject *parent) : QObject(parent)
 
 }
 
-bool Settings::getSettingsBool(QString value)
-{
+QSettings *settings = new QSettings(qApp->applicationDirPath() + "/temp/settings.desktop", QSettings::IniFormat);
 
+bool Settings::getSettingsBool(QString name)
+{
+    return settings->value(name).toBool();
 }
 
-QString Settings::getSettingsString(QString value)
+QString Settings::getSettingsString(QString name)
 {
-
+    return settings->value(name).toString();
 }
 
-int Settings::getSettingsInt(QString value)
+int Settings::getSettingsInt(QString name)
 {
-    QSettings settings(getSettingsFilename() , QSettings::IniFormat);
-    return settings.value(value).toInt();
+    return settings->value(name).toInt();
 }
 
-//-----------------------------------------------------------------------------//
-//                          Internal Private methods
-//-----------------------------------------------------------------------------//
-QString Settings::getSettingsFilename()
+void Settings::setSettings(QString name, int value)
 {
-    return qApp->applicationDirPath() + "/temp/optionSettings.desktop";
+    settings->setValue(name, value);
+}
+
+void Settings::setSettings(QString name, QString value)
+{
+    settings->setValue(name, value);
+}
+
+void Settings::setSettings(QString name, bool value)
+{
+    settings->setValue(name, value);
 }

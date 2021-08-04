@@ -1,11 +1,5 @@
 #include "mainwindow.h"
-#include "CustomWidgets/qmoveimagepushbutton.h"
 #include "ui_mainwindow.h"
-#include <QDebug>
-#include <QDir>
-#include <QMouseEvent>
-
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -68,13 +62,14 @@ MainWindow::MainWindow(QWidget *parent)
     //                                                       Apre la directory di default o in alternativa l'ultima cercata
     //
     //------------------------------------------------------------------------------------------------------------------------------------------------//
-    if (options->getDirectoryBackup() != "" && QDir(options->getDirectoryBackup()).exists() )
+    QString directoryBackup(Settings::getSettingsString(SettingsConst::directoryBackup));
+    if (directoryBackup != "" && QDir(directoryBackup).exists() )
     {
-        ui->directory->setText(options->getDirectoryBackup());
+        ui->directory->setText(directoryBackup);
     }
     else
     {
-        QString line = settings->value("directoryMemory").toString();
+        QString line = Settings::getSettingsString(SettingsConst::directoryMemory);
         if ( QDir(line).exists()) //se la directory non esiste il programma crasha
         {
             ui->directory->setText(line);
@@ -180,19 +175,15 @@ MainWindow::MainWindow(QWidget *parent)
     } );
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
-    //
-    //                                                                    Setta le impostazioni dall'ultima chiusura
-    //
+    //                                             Setta le impostazioni dall'ultima chiusura
     //------------------------------------------------------------------------------------------------------------------------------------------------//
-    ui->tolleranza->setValue( settings->value("tolleranza").toInt());
-    ui->confrontoBianco->setValue( settings->value("confrontoBianco").toInt());
-    ui->latoMinMD->setValue( settings->value("latoMinMD").toInt());
-    ui->dimMinFileSpinBox->setValue( settings->value("dimMinFileSpinBox").toInt());
+    ui->tolleranza->setValue(Settings::getSettingsInt(SettingsConst::tolleranza));
+    ui->confrontoBianco->setValue(Settings::getSettingsInt(SettingsConst::confrontoBianco));
+    ui->latoMinMD->setValue(Settings::getSettingsInt(SettingsConst::latoMinMD));
+    ui->dimMinFileSpinBox->setValue(Settings::getSettingsInt(SettingsConst::dimMinFileSpinBox));
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
-    //
-    //                                                                  Comunica alla tabella i valori di Mainwindow
-    //
+    //                                            Comunica alla tabella i valori di Mainwindow
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     ui->contenutoCartella->setLatoMinMD(ui->latoMinMD->value());
     ui->contenutoCartella->setDimMinFileSpinBox(ui->dimMinFileSpinBox->value());
@@ -326,8 +317,8 @@ void MainWindow::chiamataRemoveBg()
                     multiPart->append(imagePart);
 
                     QNetworkRequest request;
-                    request.setUrl(QUrl(options->getUrlRemoveBG()));
-                    request.setRawHeader("X-Api-Key", options->getApiKeyRemoveBG().toUtf8());
+                    request.setUrl(QUrl(Settings::getSettingsString(SettingsConst::urlRemoveBG)));
+                    request.setRawHeader("X-Api-Key", Settings::getSettingsString(SettingsConst::apiKeyRemoveBG).toUtf8());
 
 
                     QNetworkReply *reply = manager->post(request , multiPart);
@@ -402,7 +393,7 @@ void MainWindow::chiamataCreditiRemoveBg()
 {
     QNetworkRequest request;
     request.setUrl(QUrl("https://api.remove.bg/v1.0/account"));
-    request.setRawHeader("X-Api-Key", options->getApiKeyRemoveBG().toUtf8());
+    request.setRawHeader("X-Api-Key", Settings::getSettingsString(SettingsConst::apiKeyRemoveBG).toUtf8());
 
     connect(managerCrediti, &QNetworkAccessManager::finished, this, &MainWindow::rispostaCreditiRemoveBg);
     managerCrediti->get(request);
@@ -647,13 +638,13 @@ void MainWindow::on_trasformaImmagini_clicked()
                     int newDimensionHalf = 0;
                     if ( newHeight > newWidth || newHeight == newWidth )
                     {
-                        newDimension = newHeight +((newHeight * options->getPercAumento())/100);
-                        newDimensionHalf = newHeight +((newHeight * (options->getPercAumento()/2))/100);
+                        newDimension = newHeight +((newHeight * Settings::getSettingsInt(SettingsConst::percAumento))/100);
+                        newDimensionHalf = newHeight +((newHeight * (Settings::getSettingsInt(SettingsConst::percAumento)/2))/100);
                     }
                     else if ( newHeight < newWidth )
                     {
-                        newDimension = newWidth +((newWidth * options->getPercAumento())/100);
-                        newDimensionHalf = newWidth +((newWidth * (options->getPercAumento()/2))/100);
+                        newDimension = newWidth +((newWidth * Settings::getSettingsInt(SettingsConst::percAumento))/100);
+                        newDimensionHalf = newWidth +((newWidth * (Settings::getSettingsInt(SettingsConst::percAumento)/2))/100);
                     }
                     newImage = newImage.scaled ( newDimension , newDimension , Qt::IgnoreAspectRatio );
                     qDebug () << "newDimensionHalf" << newDimensionHalf;
@@ -827,16 +818,16 @@ void MainWindow::on_trasformaImmagini_clicked()
             }
 
             // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-            if (options->getRidimensionaMin() && newImage.width() < options->getLatoMin())
+            if (Settings::getSettingsBool(SettingsConst::ridimensionaMin) && newImage.width() < Settings::getSettingsInt(SettingsConst::latoMin))
             {
-                qDebug () << "La foto è minore di " << options->getLatoMin() << " pixel. Procedo all'ingrandimento";
-                newImage = newImage.scaledToHeight( options->getLatoMin() , Qt::SmoothTransformation );
+                qDebug () << "La foto è minore di " << Settings::getSettingsInt(SettingsConst::latoMin) << " pixel. Procedo all'ingrandimento";
+                newImage = newImage.scaledToHeight( Settings::getSettingsInt(SettingsConst::latoMin) , Qt::SmoothTransformation );
                 qDebug () << "La nuova dimensione è: " << newImage.width() << "x" << newImage.height();
             }
-            else if (options->getRidimensionaMax() && newImage.width() > options->getLatoMax())
+            else if (Settings::getSettingsBool(SettingsConst::ridimensionaMax) && newImage.width() > Settings::getSettingsInt(SettingsConst::latoMax))
             {
-                qDebug () << "La foto è maggiore di " << options->getLatoMax() << " pixel. Procedo alla riduzione.";
-                newImage = newImage.scaledToHeight( options->getLatoMax() , Qt::SmoothTransformation );
+                qDebug () << "La foto è maggiore di " << Settings::getSettingsInt(SettingsConst::latoMax) << " pixel. Procedo alla riduzione.";
+                newImage = newImage.scaledToHeight(Settings::getSettingsInt(SettingsConst::latoMax), Qt::SmoothTransformation );
                 qDebug () << "La nuova dimensione è: " << newImage.width() << "x" << newImage.height();
             }
 
@@ -854,10 +845,10 @@ void MainWindow::on_trasformaImmagini_clicked()
             }
 
             //Salva l'immagine in base alla qualità se il checkbox è spuntato
-            if (options->getTrasformaQualita())
+            if (Settings::getSettingsBool(SettingsConst::trasformaQualita))
             {
-                Logger::addLog("Save image with quality: " + QString::number(options->getQualitaSalvataggio()));
-                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , options->getQualitaSalvataggio());
+                Logger::addLog("Save image with quality: " + QString::number(Settings::getSettingsInt(SettingsConst::qualitaSalvataggio)));
+                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
             }
             else
             {
@@ -872,18 +863,16 @@ void MainWindow::on_trasformaImmagini_clicked()
     ui->contenutoCartella->tableResize();
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------------------//
-//
-//                                                Metodi MainWindow sovrascritti
-//
-//------------------------------------------------------------------------------------------------------------------------------------------------//
-
+//-------------------------------------------------------------------------------------------------------------//
+//                                         Overrided methods
+//-------------------------------------------------------------------------------------------------------------//
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    settings->setValue("tolleranza" , ui->tolleranza->value() );
-    settings->setValue("confrontoBianco" , ui->confrontoBianco->value() );
-    settings->setValue("latoMinMD" , ui->latoMinMD->value() );
-    settings->setValue("dimMinFileSpinBox" , ui->dimMinFileSpinBox->value() );
+    Settings::setSettings(SettingsConst::tolleranza, ui->tolleranza->value());
+    Settings::setSettings(SettingsConst::confrontoBianco, ui->confrontoBianco->value());
+    Settings::setSettings(SettingsConst::latoMinMD, ui->latoMinMD->value());
+    Settings::setSettings(SettingsConst::dimMinFileSpinBox, ui->dimMinFileSpinBox->value());
+
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -1087,11 +1076,11 @@ void MainWindow::on_annullaModifiche_clicked()
 
 void MainWindow::on_scegliCartella_clicked()
 {
-    QString line = settings->value("directoryMemory"  ).toString();
+    QString line = Settings::getSettingsString(SettingsConst::directoryMemory);
     QString filename = QFileDialog::getExistingDirectory(this, "Scegli Cartella" , line);
     if (line != filename && filename != "")
     {
-        settings->setValue("directoryMemory" , filename );
+        Settings::setSettings(SettingsConst::directoryMemory, filename);
     }
     if (filename.isEmpty())
         return;
@@ -1130,7 +1119,7 @@ void MainWindow::on_indietroDirectory_clicked()
     directory.truncate(directory.lastIndexOf(QChar('/')));
     ui->directory->setText(directory);
     ui->contenutoCartella->aggiornaLista(ui->directory->text());
-    settings->setValue("directoryMemory" , directory );
+    Settings::setSettings(SettingsConst::directoryMemory, directory);
 }
 
 //--------------------------------------------------------------------------------------------------------------//
@@ -1146,7 +1135,7 @@ void MainWindow::on_contenutoCartella_itemDoubleClicked(QTableWidgetItem *item)
     {
         ui->directory->setText(directory);
         ui->contenutoCartella->aggiornaLista(ui->directory->text());
-        settings->setValue("directoryMemory" , directory );
+        Settings::setSettings(SettingsConst::directoryMemory, directory);
     }
 }
 

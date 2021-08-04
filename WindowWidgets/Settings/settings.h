@@ -11,13 +11,16 @@ class Settings : public QObject
 public:
     explicit Settings(QObject *parent = nullptr);
 
-    static int getSettingsInt(QString value);
-    static bool getSettingsBool(QString value);
-    static QString getSettingsString(QString value);
+    static int getSettingsInt(QString name);
+    static bool getSettingsBool(QString name);
+    static QString getSettingsString(QString name);
 
+    static void setSettings(QString name, int value);
+    static void setSettings(QString name, QString value);
+    static void setSettings(QString name, bool value);
 
 private:
-    static QString getSettingsFilename();
+
 
 };
 

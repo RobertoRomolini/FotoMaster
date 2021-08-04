@@ -5,10 +5,17 @@
 #include "WindowWidgets/EditorFoto/editorfoto.h"
 #include "Tools/qimgorient.h"
 #include "WindowWidgets/Settings/optionsWidget.h"
+#include "WindowWidgets/Settings/settings.h"
+#include "WindowWidgets/Settings/settingsconst.h"
+#include "CustomWidgets/qmoveimagepushbutton.h"
 #include "Tools/logger.h"
 #include "Tools/resizewindow.h"
 #include <QCoreApplication>
 #include <QtNetwork>
+#include <QDebug>
+#include <QDir>
+#include <QMouseEvent>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -47,8 +54,7 @@ private:
     // Classe per trasformare finestra responsive
     ResizeWindow *resizeWindow = new ResizeWindow("MainWindow");
 
-    // File di salvataggio impostazioni
-    QSettings* settings = new QSettings(qApp->applicationDirPath() + "/temp/config.desktop", QSettings::IniFormat);
+    // Salva la posizione degli elementi
     void setElementPosition();
 
     // Collega azioni del menu a tendina
