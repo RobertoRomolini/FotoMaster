@@ -21,7 +21,10 @@ public:
     static const QString ratioHeight;
     static const QString apiKeyRemoveBG;
     static const QString urlRemoveBG;
-
+    static const QString tolleranza;
+    static const QString confrontoBianco;
+    static const QString latoMinMD;
+    static const QString dimMinFileSpinBox;
 };
 
 #endif // SETTINGSCONST_H

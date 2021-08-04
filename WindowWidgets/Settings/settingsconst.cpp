@@ -15,3 +15,8 @@ const QString SettingsConst::ratioWidth = "ratioWidth";
 const QString SettingsConst::ratioHeight = "ratioHeight";
 const QString SettingsConst::apiKeyRemoveBG = "apiKeyRemoveBG";
 const QString SettingsConst::urlRemoveBG = "urlRemoveBG";
+const QString SettingsConst::tolleranza = "tolleranza";
+const QString SettingsConst::confrontoBianco = "confrontoBianco";
+const QString SettingsConst::latoMinMD = "latoMinMD";
+const QString SettingsConst::dimMinFileSpinBox = "dimMinFileSpinBox";
+
