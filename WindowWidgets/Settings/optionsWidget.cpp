@@ -1,5 +1,5 @@
 #include "optionsWidget.h"
-#include "ui_options.h"
+#include "ui_optionsWidget.h"
 
 Options::Options(QWidget *parent) :
     QDialog(parent),
@@ -19,7 +19,6 @@ Options::Options(QWidget *parent) :
     }
 
     // Trasforma Immagini
-
     ui->percAumento->setValue(Settings::getSettingsInt(SettingsConst::percAumento));
     ui->qualitaSalvataggio->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
     ui->trasformaQualita->setChecked(Settings::getSettingsBool(SettingsConst::trasformaQualita));
@@ -73,6 +72,7 @@ void Options::on_saveSettings_clicked()
     Settings::setSettings(SettingsConst::ridimensionaMax, ui->ridimensionaMax->isChecked());
     Settings::setSettings(SettingsConst::ratioWidth, ui->ratioWidth->value());
     Settings::setSettings(SettingsConst::ratioHeight, ui->ratioHeight->value());
+    Settings::setSettings(SettingsConst::imageOutputFormat, ui->imageOutputFormat->checkedButton()->text());
 
     // Remove BG
     Settings::setSettings(SettingsConst::apiKeyRemoveBG, ui->apiKeyRemoveBG->text());
