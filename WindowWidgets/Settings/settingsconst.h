@@ -26,6 +26,8 @@ public:
     static const QString latoMinMD;
     static const QString dimMinFileSpinBox;
     static const QString imageOutputFormat;
+    static const QString radioButtonJpg;
+    static const QString radioButtonPng;
 };
 
 #endif // SETTINGSCONST_H

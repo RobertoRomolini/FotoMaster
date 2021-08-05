@@ -20,4 +20,6 @@ const QString SettingsConst::confrontoBianco = "confrontoBianco";
 const QString SettingsConst::latoMinMD = "latoMinMD";
 const QString SettingsConst::dimMinFileSpinBox = "dimMinFileSpinBox";
 const QString SettingsConst::imageOutputFormat = "imageOutputFormat";
+const QString SettingsConst::radioButtonJpg = "radioButtonJpg";
+const QString SettingsConst::radioButtonPng = "radioButtonPng";
 
