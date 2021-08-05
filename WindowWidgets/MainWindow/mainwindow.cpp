@@ -532,10 +532,9 @@ void MainWindow::on_trasformaImmagini_clicked()
             }
             image.save(qApp->applicationDirPath() + "/backup/" + fileList.at(i).fileName()  , 0 , 100); //save image backup
 
-            if (ui->trasformaJPG->isChecked())
+            if (ui->changeImageFormat->isChecked())
             {
-                Logger::addLog("'Trasforma in JPG' is checked");
-                Logger::addLog("Save image in JPG format");
+                Logger::addLog("'Trasforma' is checked");
                 newImage = newImage.scaled(image.width() , image.height() , Qt::IgnoreAspectRatio);
                 painter.begin(&newImage);
                 painter.drawImage( 0 , 0  , image );
@@ -918,19 +917,19 @@ void MainWindow::on_trasformaImmagini_clicked()
                 Logger::addLog("Unable to delete the first file: " + fileList.at(i).absoluteFilePath());
             }
 
-            //Salva l'immagine in base alla qualità se il checkbox è spuntato
+            //Salva l'immagine in base alla qualità se il checkbox è spuntato e in base al formato di output scelto
+            QString imageOutputFormat(Settings::getSettingsString(SettingsConst::imageOutputFormat));
             if (Settings::getSettingsBool(SettingsConst::trasformaQualita))
             {
-                Logger::addLog("Save image with quality: " + QString::number(Settings::getSettingsInt(SettingsConst::qualitaSalvataggio)));
-                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
+                Logger::addLog("Save image in " + imageOutputFormat + " format with quality: " + QString::number(Settings::getSettingsInt(SettingsConst::qualitaSalvataggio)));
+                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat , nullptr, Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
             }
             else
             {
-                Logger::addLog("Save image with quality: 100");
-                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg" , "jpg" , 100);
+                Logger::addLog("Save image in " + imageOutputFormat + " format with quality: 100");
+                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat, nullptr, 100);
             }
-            qDebug () << "______________________________" << Qt::endl;
-            QFile newFile (ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg");
+            QFile newFile (ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat);
             ui->contenutoCartella->aggiornaSingoloFile(QFileInfo(newFile) , newImage , i );
         }
     }
@@ -959,7 +958,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->label_4);
     resizeWindow->moveWidgetY(ui->trasformaImmagini);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox);
-    resizeWindow->moveWidgetY(ui->trasformaJPG);
+    resizeWindow->moveWidgetY(ui->changeImageFormat);
 
     resizeWindow->moveWidgetY(ui->label_5);
     resizeWindow->moveWidgetY(ui->refreshCrediti);
@@ -1071,7 +1070,7 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->tolleranza);
     resizeWindow->setObjectGeometry(ui->label_4);
     resizeWindow->setObjectGeometry(ui->trasformaImmagini);
-    resizeWindow->setObjectGeometry(ui->trasformaJPG);
+    resizeWindow->setObjectGeometry(ui->changeImageFormat);
     resizeWindow->setObjectGeometry(ui->label_5);
     resizeWindow->setObjectGeometry(ui->refreshCrediti);
     resizeWindow->setObjectGeometry(ui->creditiRimanenti);

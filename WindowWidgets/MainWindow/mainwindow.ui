@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Foto Master 3.0 - Developed by R. Romolini</string>
+   <string>Foto Master 3.1 Beta - Developed by R. Romolini</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLineEdit" name="directory">
@@ -1087,7 +1087,7 @@ QSpinBox::down-button:hover
      <string notr="true">trasformaImmaginiGroup</string>
     </attribute>
    </widget>
-   <widget class="QRadioButtonCustom" name="trasformaJPG">
+   <widget class="QRadioButtonCustom" name="changeImageFormat">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -1106,7 +1106,7 @@ QSpinBox::down-button:hover
      </font>
     </property>
     <property name="text">
-     <string>Trasforma in jpg</string>
+     <string>Trasforma</string>
     </property>
     <attribute name="buttonGroup">
      <string notr="true">trasformaImmaginiGroup</string>
@@ -1403,7 +1403,7 @@ margin-right: 7px;
    <zorder>selezionaDeseleziona</zorder>
    <zorder>backupFolder</zorder>
    <zorder>selezionaTutto</zorder>
-   <zorder>trasformaJPG</zorder>
+   <zorder>changeImageFormat</zorder>
    <zorder>trasformaImmaginiBox_2</zorder>
    <zorder>removeBg</zorder>
    <zorder>fileOutputRemoveBG</zorder>
