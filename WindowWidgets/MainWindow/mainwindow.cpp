@@ -1305,33 +1305,4 @@ void MainWindow::on_confrontoBianco_valueChanged(int arg1)
     ui->contenutoCartella->setConfrontoBianco(arg1);
 }
 
-//--------------------------------------------------------------------------------------------------------------//
-//                                   Ogni pulsanti impedisce che ce ne siano 2 o più attivi
-//--------------------------------------------------------------------------------------------------------------//
-
-void MainWindow::on_centraRiquadra_stateChanged(int state)
-{
-    if (state)
-    {
-
-        ui->trasformaJPG->setCheckState(Qt::Unchecked);
-    }
-    else
-    {
-        ui->trasformaJPG->setCheckState(Qt::Checked);
-    }
-}
-
-void MainWindow::on_trasformaJPG_stateChanged(int state)
-{
-    if (state)
-    {
-        ui->centraRiquadra->setCheckState(Qt::Unchecked);
-    }
-    else
-    {
-        ui->centraRiquadra->setCheckState(Qt::Checked);
-    }
-}
-
 

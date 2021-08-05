@@ -103,10 +103,6 @@ private slots:
     void on_dimMinFileSpinBox_valueChanged(int arg1);
     void on_confrontoBianco_valueChanged(int arg1);
 
-    //Ogni pulsanti impedisce che ce ne siano 2 o più attivi
-    void on_centraRiquadra_stateChanged(int state);
-    void on_trasformaJPG_stateChanged(int state);
-
 protected:
     //Metodi classe sovrascritti
     virtual void resizeEvent(QResizeEvent *);

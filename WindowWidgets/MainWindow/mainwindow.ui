@@ -1060,7 +1060,7 @@ QSpinBox::down-button:hover
      <number>10</number>
     </property>
    </widget>
-   <widget class="QCheckboxCustom" name="centraRiquadra">
+   <widget class="QRadioButtonCustom" name="centraRiquadra">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -1083,8 +1083,11 @@ QSpinBox::down-button:hover
     <property name="checked">
      <bool>true</bool>
     </property>
+    <attribute name="buttonGroup">
+     <string notr="true">trasformaImmaginiGroup</string>
+    </attribute>
    </widget>
-   <widget class="QCheckboxCustom" name="trasformaJPG">
+   <widget class="QRadioButtonCustom" name="trasformaJPG">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -1105,6 +1108,9 @@ QSpinBox::down-button:hover
     <property name="text">
      <string>Trasforma in jpg</string>
     </property>
+    <attribute name="buttonGroup">
+     <string notr="true">trasformaImmaginiGroup</string>
+    </attribute>
    </widget>
    <widget class="Line" name="sostituisciRapidoBox">
     <property name="geometry">
@@ -1519,7 +1525,15 @@ margin-right: 7px;
    <extends>QPushButton</extends>
    <header location="global">CustomWidgets/qpushbuttongreen.h</header>
   </customwidget>
+  <customwidget>
+   <class>QRadioButtonCustom</class>
+   <extends>QRadioButton</extends>
+   <header location="global">CustomWidgets/qradiobuttoncustom.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="trasformaImmaginiGroup"/>
+ </buttongroups>
 </ui>
