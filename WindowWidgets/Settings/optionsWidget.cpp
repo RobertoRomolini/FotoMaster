@@ -28,6 +28,8 @@ Options::Options(QWidget *parent) :
     ui->ridimensionaMax->setChecked(Settings::getSettingsBool(SettingsConst::ridimensionaMax));
     ui->ratioWidth->setValue(Settings::getSettingsInt(SettingsConst::ratioWidth));
     ui->ratioHeight->setValue(Settings::getSettingsInt(SettingsConst::ratioHeight));
+    ui->radioButtonJpg->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonJpg));
+    ui->radioButtonPng->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonPng));
 
     // Remove BG
     ui->apiKeyRemoveBG->setText(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG));
@@ -73,6 +75,8 @@ void Options::on_saveSettings_clicked()
     Settings::setSettings(SettingsConst::ratioWidth, ui->ratioWidth->value());
     Settings::setSettings(SettingsConst::ratioHeight, ui->ratioHeight->value());
     Settings::setSettings(SettingsConst::imageOutputFormat, ui->imageOutputFormat->checkedButton()->text());
+    Settings::setSettings(SettingsConst::radioButtonJpg, ui->radioButtonJpg->isChecked());
+    Settings::setSettings(SettingsConst::radioButtonPng, ui->radioButtonPng->isChecked());
 
     // Remove BG
     Settings::setSettings(SettingsConst::apiKeyRemoveBG, ui->apiKeyRemoveBG->text());
