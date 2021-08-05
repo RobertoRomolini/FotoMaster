@@ -20,7 +20,7 @@ public:
     static void setSettings(QString name, bool value);
 
 private:
-
+    static QString getSettingsPath();
 
 };
 
