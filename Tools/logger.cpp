@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <QFileInfo>
+#include <QTextStream>
 
 Logger::Logger(QObject *parent) : QObject(parent)
 {
