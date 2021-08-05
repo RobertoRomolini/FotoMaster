@@ -30,7 +30,6 @@ void QTableWidgetShowDatabase::vediAnteprima (QString fileCSV)
         lineCount++;
         setRowCount(lineCount);
         QString line = in.readLine();
-        QFont font;
         QString element1 = line.split(";").first();
         QString element2 = line.split(";").last();
         QTableWidgetItem *pCell1 = new QTableWidgetItem;
