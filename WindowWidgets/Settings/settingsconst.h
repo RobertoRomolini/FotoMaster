@@ -25,6 +25,7 @@ public:
     static const QString confrontoBianco;
     static const QString latoMinMD;
     static const QString dimMinFileSpinBox;
+    static const QString imageOutputFormat;
 };
 
 #endif // SETTINGSCONST_H

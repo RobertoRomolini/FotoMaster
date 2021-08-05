@@ -19,4 +19,5 @@ const QString SettingsConst::tolleranza = "tolleranza";
 const QString SettingsConst::confrontoBianco = "confrontoBianco";
 const QString SettingsConst::latoMinMD = "latoMinMD";
 const QString SettingsConst::dimMinFileSpinBox = "dimMinFileSpinBox";
+const QString SettingsConst::imageOutputFormat = "imageOutputFormat";
 
