@@ -509,7 +509,7 @@ void MainWindow::on_trasformaImmagini_clicked()
             Logger::addLog("File name: " + fileList.at(i).absoluteFilePath() );
 
             QImage image (fileList.at(i).absoluteFilePath());
-            QImage newImage (":/Files/Files/whiteImage.jpg");
+            QImage newImage (":/Files/Files/pngTransparent.png");
 
             QPainter painter;
             QImgOrient imageOrientation; //check the orientation of the image
@@ -553,10 +553,15 @@ void MainWindow::on_trasformaImmagini_clicked()
                     for ( int j=0 ; j<image.width(); j++ )
                     {
                         pixel =  image.pixelColor( j , i );
-                        if ( pixel.red() <= 255 - ui->tolleranza->value() && pixel.green() <= 255 - ui->tolleranza->value() && pixel.blue() <= 255 - ui->tolleranza->value())
+
+                        if (pixel.red() <= 255 - ui->tolleranza->value() &&
+                             pixel.green() <= 255 - ui->tolleranza->value() &&
+                             pixel.blue() <= 255 - ui->tolleranza->value() &&
+                             pixel.alphaF() > 0.02)
                         {
                             top = i;
-                            qDebug () << "Il colore del pixel a cui mi sono fermato Top è: RGB " << pixel.red() << "," << pixel.green() << "," << pixel.blue();
+                            qDebug () << "Il colore del pixel a cui mi sono fermato Top: RGBA "
+                                << pixel.red() << "," << pixel.green() << "," << pixel.blue() << "," << pixel.alphaF();
                             j=image.width();
                             i=image.height();
                         }
@@ -568,10 +573,14 @@ void MainWindow::on_trasformaImmagini_clicked()
                     for ( int j=0 ; j<image.width(); j++ )
                     {
                         pixel =  image.pixelColor( j , i );
-                        if (pixel.red() <= 255 - ui->tolleranza->value() && pixel.green() <= 255 - ui->tolleranza->value() && pixel.blue() <= 255 - ui->tolleranza->value())
+                        if (pixel.red() <= 255 - ui->tolleranza->value() &&
+                             pixel.green() <= 255 - ui->tolleranza->value() &&
+                             pixel.blue() <= 255 - ui->tolleranza->value() &&
+                             pixel.alphaF() > 0.02)
                         {
                             bottom = image.height() - i -1;
-                            qDebug () << "Il colore del pixel a cui mi sono fermato Bottom è: RGB " << pixel.red() << "," << pixel.green() << "," << pixel.blue();
+                            qDebug () << "Il colore del pixel a cui mi sono fermato Bottom: RGBA "
+                                << pixel.red() << "," << pixel.green() << "," << pixel.blue() << "," << pixel.alphaF();
                             j=image.width();
                             i=0;
                         }
@@ -583,10 +592,14 @@ void MainWindow::on_trasformaImmagini_clicked()
                     for ( int j=0 ; j<image.height(); j++ )
                     {
                         pixel =  image.pixelColor( i , j );
-                        if (pixel.red() <= 255 - ui->tolleranza->value() && pixel.green() <= 255 - ui->tolleranza->value() && pixel.blue() <= 255 - ui->tolleranza->value())
+                        if (pixel.red() <= 255 - ui->tolleranza->value() &&
+                             pixel.green() <= 255 - ui->tolleranza->value() &&
+                             pixel.blue() <= 255 - ui->tolleranza->value() &&
+                             pixel.alphaF() > 0.02)
                         {
                             left = i;
-                            qDebug () << "Il colore del pixel a cui mi sono fermato Left è: RGB " << pixel.red() << "," << pixel.green() << "," << pixel.blue();
+                            qDebug () << "Il colore del pixel a cui mi sono fermato Left: RGBA "
+                                << pixel.red() << "," << pixel.green() << "," << pixel.blue() << "," << pixel.alphaF();
                             j=image.height();
                             i=image.width();
                         }
@@ -598,10 +611,14 @@ void MainWindow::on_trasformaImmagini_clicked()
                     for ( int j=0 ; j<image.height(); j++ )
                     {
                         pixel =  image.pixelColor( i , j );
-                        if (pixel.red() <= 255 - ui->tolleranza->value() && pixel.green() <= 255 - ui->tolleranza->value() && pixel.blue() <= 255 - ui->tolleranza->value())
+                        if (pixel.red() <= 255 - ui->tolleranza->value() &&
+                             pixel.green() <= 255 - ui->tolleranza->value() &&
+                             pixel.blue() <= 255 - ui->tolleranza->value() &&
+                             pixel.alphaF() > 0.02)
                         {
                             right = image.width()- i -1;
-                            qDebug () << "Il colore del pixel a cui mi sono fermato Right è: RGB " << pixel.red() << "," << pixel.green() << "," << pixel.blue();
+                            qDebug () << "Il colore del pixel a cui mi sono fermato Right: RGBA "
+                                << pixel.red() << "," << pixel.green() << "," << pixel.blue() << "," << pixel.alphaF();
                             j=image.height();
                             i=0;
                         }
@@ -890,18 +907,32 @@ void MainWindow::on_trasformaImmagini_clicked()
             }
 
             // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-//            if (Settings::getSettingsBool(SettingsConst::ridimensionaMin) && newImage.width() < Settings::getSettingsInt(SettingsConst::latoMin))
-//            {
-//                qDebug () << "La foto è minore di " << Settings::getSettingsInt(SettingsConst::latoMin) << " pixel. Procedo all'ingrandimento";
-//                newImage = newImage.scaledToHeight( Settings::getSettingsInt(SettingsConst::latoMin) , Qt::SmoothTransformation );
-//                qDebug () << "La nuova dimensione è: " << newImage.width() << "x" << newImage.height();
-//            }
-//            else if (Settings::getSettingsBool(SettingsConst::ridimensionaMax) && newImage.width() > Settings::getSettingsInt(SettingsConst::latoMax))
-//            {
-//                qDebug () << "La foto è maggiore di " << Settings::getSettingsInt(SettingsConst::latoMax) << " pixel. Procedo alla riduzione.";
-//                newImage = newImage.scaledToHeight(Settings::getSettingsInt(SettingsConst::latoMax), Qt::SmoothTransformation );
-//                qDebug () << "La nuova dimensione è: " << newImage.width() << "x" << newImage.height();
-//            }
+            if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
+            {
+                int latoMin = Settings::getSettingsInt(SettingsConst::latoMin);
+
+                if (newImage.width() < latoMin)
+                {
+                    newImage = newImage.scaledToWidth(latoMin , Qt::SmoothTransformation );
+                }
+                else if (newImage.height() < latoMin)
+                {
+                    newImage = newImage.scaledToHeight(latoMin , Qt::SmoothTransformation );
+                }
+            }
+            else if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
+            {
+                int latoMax = Settings::getSettingsInt(SettingsConst::latoMax);
+
+                if (newImage.width() > latoMax)
+                {
+                    newImage = newImage.scaledToWidth(latoMax , Qt::SmoothTransformation );
+                }
+                else if (newImage.height() > latoMax)
+                {
+                    newImage = newImage.scaledToHeight(latoMax , Qt::SmoothTransformation );
+                }
+            }
 
             //Assegno un nuovo file per poterlo eliminare
             imageReader.setFileName("");

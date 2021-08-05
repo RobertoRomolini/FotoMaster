@@ -1092,7 +1092,7 @@ QSpinBox::down-button:hover
      <rect>
       <x>60</x>
       <y>583</y>
-      <width>121</width>
+      <width>181</width>
       <height>20</height>
      </rect>
     </property>
@@ -1106,7 +1106,7 @@ QSpinBox::down-button:hover
      </font>
     </property>
     <property name="text">
-     <string>Trasforma</string>
+     <string>Trasforma solo formato</string>
     </property>
     <attribute name="buttonGroup">
      <string notr="true">trasformaImmaginiGroup</string>
@@ -1496,16 +1496,6 @@ margin-right: 7px;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QTableWidgetFileList</class>
-   <extends>QTableWidget</extends>
-   <header location="global">WindowWidgets/MainWindow/qtablewidgetfilelist.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QTableWidgetShowDatabase</class>
-   <extends>QTableWidget</extends>
-   <header location="global">WindowWidgets/MainWindow/qtablewidgetshowdatabase.h</header>
-  </customwidget>
-  <customwidget>
    <class>QCheckboxCustom</class>
    <extends>QCheckBox</extends>
    <header location="global">CustomWidgets/qcheckboxcustom.h</header>
@@ -1529,6 +1519,16 @@ margin-right: 7px;
    <class>QRadioButtonCustom</class>
    <extends>QRadioButton</extends>
    <header location="global">CustomWidgets/qradiobuttoncustom.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QTableWidgetFileList</class>
+   <extends>QTableWidget</extends>
+   <header location="global">WindowWidgets/MainWindow/qtablewidgetfilelist.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QTableWidgetShowDatabase</class>
+   <extends>QTableWidget</extends>
+   <header location="global">WindowWidgets/MainWindow/qtablewidgetshowdatabase.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

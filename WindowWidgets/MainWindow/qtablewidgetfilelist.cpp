@@ -70,7 +70,6 @@ void QTableWidgetFileList::aggiornaLista(QString directory)
             tableMostraImmagini (fileList.at(i) , image, i, imageColumn);
             tableSfondoBianco(fileList.at(i) , image, i, sfondoBiaColumn);
             tablePercentualeBianco(fileList.at(i) , image , i , percenBiaColumn );
-            qDebug () << "___________________________________________________" << Qt::endl;
         }
     }
     tableResize();
@@ -87,7 +86,6 @@ void QTableWidgetFileList::aggiornaSingoloFile(QFileInfo file , QImage image , i
     tableSfondoBianco(file , image, row, sfondoBiaColumn );
     tablePercentualeBianco(file , image , row , percenBiaColumn );
     tableDimensioneFile(file, row , fileDimColumn);
-    qDebug () << "___________________________________________________" << Qt::endl;
 }
 
 void QTableWidgetFileList::tableResize()
@@ -148,7 +146,6 @@ void QTableWidgetFileList::tableHeader()
     imageColumn = 0;
     if ( mostraImmagini )
     {
-        qDebug () << "Mostra anteprima immagini è spuntato";
         setColumnCount(columnCount() +1 );
         QTableWidgetItem *mostraImmagine = new QTableWidgetItem ("Anteprima",QTableWidgetItem::Type);
         setHorizontalHeaderItem(columnCount()-1 , mostraImmagine );
@@ -158,7 +155,6 @@ void QTableWidgetFileList::tableHeader()
     quadColumn = 0;
     if (immaginiQuadrate)
     {
-        qDebug () << "Immagini Quadrate è spuntato";
         setColumnCount(columnCount() + 1 );
         QTableWidgetItem *nomeQuadrato = new QTableWidgetItem (QString ("Q"),QTableWidgetItem::Type);
         nomeQuadrato->setToolTip("Immagini Quadrate");
@@ -169,7 +165,6 @@ void QTableWidgetFileList::tableHeader()
     sfondoBiaColumn = 0;
     if (sfondoBianco)
     {
-        qDebug () << "Sfondo Bianco è spuntato";
         setColumnCount(columnCount() + 1 );
         QTableWidgetItem *nomeBianco = new QTableWidgetItem (QString ("B"),QTableWidgetItem::Type);
         nomeBianco->setToolTip("Sfondo Bianco");
@@ -180,7 +175,6 @@ void QTableWidgetFileList::tableHeader()
     percenBiaColumn = 0;
     if (percentualeBianco)
     {
-        qDebug () << "% Sfondo Bianco è spuntato";
         setColumnCount(columnCount() + 1 );
         QTableWidgetItem *percentualeBianco = new QTableWidgetItem (QString ("%B"),QTableWidgetItem::Type);
         percentualeBianco->setToolTip("% Sfondo Bianco");
@@ -191,7 +185,6 @@ void QTableWidgetFileList::tableHeader()
     dimColumn = 0;
     if (mostraDimensione)
     {
-        qDebug () << "Mostra dimensione è spuntato";
         setColumnCount(columnCount() +1 );
         QTableWidgetItem *mostraDim = new QTableWidgetItem (QString ("Dim"),QTableWidgetItem::Type);
         setHorizontalHeaderItem(columnCount()-1 , mostraDim );
@@ -202,7 +195,6 @@ void QTableWidgetFileList::tableHeader()
     fileDimColumn = 0;
     if (dimensioneFile)
     {
-        qDebug () << "Mostra dimensione file è spuntato";
         setColumnCount(columnCount() +1 );
         QTableWidgetItem *mostraDimFile = new QTableWidgetItem (QString ("D. File"),QTableWidgetItem::Type);
         setHorizontalHeaderItem(columnCount()-1 , mostraDimFile );
@@ -230,14 +222,12 @@ void QTableWidgetFileList::tableFileName(QFileInfo file, int row, int column)
         QTableWidgetItem *nameItem = new QTableWidgetItem (file.fileName());
         nameItem->setFont(font);
         setItem( row , column , nameItem );
-        qDebug () << "nameItem" << file.fileName();
     }
     else if (file.isDir() )
     {
         QTableWidgetItem *folderItem = new QTableWidgetItem (file.absoluteFilePath());
         folderItem->setFont(font);
         setItem( row , column , folderItem );
-        qDebug () << "folderItem" << file.absoluteFilePath();
     }
     if (file.absoluteFilePath() == this->mainDirectory) //Cancella la stessa directory in cui ci troviamo
     {
@@ -350,12 +340,10 @@ void QTableWidgetFileList::tableDimensioneFile(QFileInfo file , int row, int col
         if (size <= dimMinFileSpinBox)
         {
             dimFile->setForeground(green);
-            qDebug () << "La dimensione del file è maggiore di: " << dimMinFileSpinBox;
         }
         else
         {
             dimFile->setForeground(red);
-            qDebug () << "La dimensione del file è minore di: " << dimMinFileSpinBox;
         }
         setItem( row , column , dimFile );
     }
@@ -379,7 +367,7 @@ void QTableWidgetFileList::tableImmaginiQuadrate(QFileInfo file  , int row, int 
                 si->setFont(font);
                 si->setForeground(green);
                 setItem( row , column , si );
-                qDebug () << "L'immagine è quadrata";
+                qDebug () << "L'immagine e' quadrata";
             }
             else
             {
@@ -389,7 +377,7 @@ void QTableWidgetFileList::tableImmaginiQuadrate(QFileInfo file  , int row, int 
                 no->setFont(font);
                 no->setForeground(red);
                 setItem( row , column , no  );
-                qDebug () << "L'immagine non è quadrata";
+                qDebug () << "L'immagine non e' quadrata";
             }
         }
     }
@@ -447,44 +435,44 @@ void QTableWidgetFileList::tableSfondoBianco(QFileInfo file , QImage image, int 
         for ( int i=0 ; i<image.height() ; i++ ) // controllo lato sinistro
         {
             pixel =  image.pixelColor( 0 , i );
-            if ( pixel != white )
+            if ( pixel != white && pixel.alphaF() > 0.02 )
             {
                 left->setStyleSheet(left->redButton);
                 left->checked = false;
-                qDebug () << "Il lato sinistro non è bianco";
+                qDebug () << "Il lato sinistro non e' bianco";
                 break;
             }
         }
         for ( int i=0 ; i<image.width() ; i++ ) // controllo lato superiore
         {
             pixel =  image.pixelColor( i , 0 );
-            if ( pixel != white )
+            if ( pixel != white && pixel.alphaF() > 0.02)
             {
                 top->setStyleSheet(top->redButton);
                 top->checked = false;
-                qDebug () << "Il lato superiore non è bianco";
+                qDebug () << "Il lato superiore non e' bianco";
                 break;
             }
         }
         for ( int i=0 ; i<image.height() ; i++ ) // controllo lato destro
         {
             pixel =  image.pixelColor( image.width()-1 , i );
-            if ( pixel != white )
+            if ( pixel != white && pixel.alphaF() > 0.02)
             {
                 right->setStyleSheet(right->redButton);
                 right->checked = false;
-                qDebug () << "Il lato destro non è bianco";
+                qDebug () << "Il lato destro non e' bianco";
                 break;
             }
         }
         for ( int i=0 ; i<image.width() ; i++ ) // controllo lato inferiore
         {
             pixel =  image.pixelColor(  i , image.height()-1 );
-            if ( pixel != white )
+            if ( pixel != white && pixel.alphaF() > 0.02)
             {
                 down->setStyleSheet(down->redButton);
                 down->checked = false;
-                qDebug () << "Il lato sotto non è bianco";
+                qDebug () << "Il lato sotto non e' bianco";
                 break;
             }
         }
@@ -566,8 +554,6 @@ void QTableWidgetFileList::tablePercentualeBianco(QFileInfo file , QImage image 
             percWhite->setForeground(green);
         }
         setItem( row , column , percWhite );
-        qDebug () << "La percentuale di sfondo bianco dell'immagine  è: " << text;
-
     }
 }
 
@@ -620,8 +606,6 @@ void QTableWidgetFileList::deleteFile()
                     QFile deleteImage (absoluthPathFile);
                     deleteImage.copy(qApp->applicationDirPath() + "/backup/" + item( indexes.at(i).row() , 3 )->text());
                     deleteImage.remove();
-                    qDebug () << "Cancello l'articolo: " << absoluthPathFile;
-                    qDebug () << "____________________________________________________________________________________" << Qt::endl;
                 }
                 else
                 {
@@ -679,10 +663,9 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
             for ( int j=0 ; j<image.height(); j++ )
             {
                 pixel =  image.pixelColor( i , j );
-                if (pixel.red() <= 240 && pixel.green() <= 240 && pixel.blue() <= 240)
+                if (pixel.red() <= 240 && pixel.green() <= 240 && pixel.blue() <= 240 && pixel.alphaF() > 0.02)
                 {
                     left = i;
-                    qDebug () << "Il colore del pixel a cui mi sono fermato Left è: RGB " << pixel.red() << "," << pixel.green() << "," << pixel.blue();
                     j=image.height();
                     i=image.width();
                 }
@@ -693,14 +676,12 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
         if (left != 0)
         {
             int newWidth = image.width() - left;
-            qDebug () << "newWidth: " << newWidth;
             QRect rect ( left , 0 , newWidth , image.height() );
-            qDebug () << "Rect: " << rect;
             newImage = image.copy(rect);
         }
         else
         {
-            newImage.load(":/Files/Files/whiteImage.jpg");
+            newImage.load(":/Files/Files/pngTransparent.png");
             newImage = newImage.scaled(image.width()+20 , image.height() , Qt::IgnoreAspectRatio);
             painter.begin(&newImage);
             painter.drawImage( 20 , 0 , image );
@@ -714,10 +695,9 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
             for ( int j=0 ; j<image.width(); j++ )
             {
                 pixel =  image.pixelColor( j , i );
-                if (pixel.red() <= 240 && pixel.green() <= 240 && pixel.blue() <= 240)
+                if (pixel.red() <= 240 && pixel.green() <= 240 && pixel.blue() <= 240 && pixel.alphaF() > 0.02)
                 {
                     top = i;
-                    qDebug () << "Il colore del pixel a cui mi sono fermato Top è: RGB " << pixel.red() << "," << pixel.green() << "," << pixel.blue();
                     j=image.width();
                     i=image.height();
                 }
@@ -726,14 +706,12 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
         if (top != 0)
         {
             int newHeight = image.height() - top;
-            qDebug () << "newHeight: " << newHeight;
             QRect rect ( 0 , top , image.width() , newHeight );
-            qDebug () << "Rect: " << rect;
             newImage = image.copy(rect);
         }
         else
         {
-            newImage.load(":/Files/Files/whiteImage.jpg");
+            newImage.load(":/Files/Files/pngTransparent.png");
             newImage = newImage.scaled(image.width() , image.height()+20 , Qt::IgnoreAspectRatio);
             painter.begin(&newImage);
             painter.drawImage( 0 , 20 , image );
@@ -747,10 +725,9 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
             for ( int j=0 ; j<image.height(); j++ )
             {
                 pixel =  image.pixelColor( i , j );
-                if (pixel.red() <= 240 && pixel.green() <= 240 && pixel.blue() <= 240)
+                if (pixel.red() <= 240 && pixel.green() <= 240 && pixel.blue() <= 240 && pixel.alphaF() > 0.02)
                 {
                     right = image.width()- i -1;
-                    qDebug () << "Il colore del pixel a cui mi sono fermato Right è: RGB " << pixel.red() << "," << pixel.green() << "," << pixel.blue();
                     j=image.height();
                     i=0;
                 }
@@ -760,14 +737,12 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
         if (right != 0)
         {
             int newWidth = image.width() - right;
-            qDebug () << "newWidth: " << newWidth;
             QRect rect ( 0 , 0 , newWidth , image.height() );
-            qDebug () << "Rect: " << rect;
             newImage = image.copy(rect);
         }
         else
         {
-            newImage.load(":/Files/Files/whiteImage.jpg");
+            newImage.load(":/Files/Files/pngTransparent.png");
             newImage = newImage.scaled(image.width()+20 , image.height() , Qt::IgnoreAspectRatio);
             painter.begin(&newImage);
             painter.drawImage( 0 , 0 , image );
@@ -781,10 +756,9 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
             for ( int j=0 ; j<image.width(); j++ )
             {
                 pixel =  image.pixelColor( j , i );
-                if (pixel.red() <= 240 && pixel.green() <= 240 && pixel.blue() <= 240)
+                if (pixel.red() <= 240 && pixel.green() <= 240 && pixel.blue() <= 240 && pixel.alphaF() > 0.02)
                 {
                     down = image.height() - i -1;
-                    qDebug () << "Il colore del pixel a cui mi sono fermato Bottom è: RGB " << pixel.red() << "," << pixel.green() << "," << pixel.blue();
                     j=image.width();
                     i=0;
                 }
@@ -801,7 +775,7 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
         }
         else
         {
-            newImage.load(":/Files/Files/whiteImage.jpg");
+            newImage.load(":/Files/Files/pngTransparent.png");
             newImage = newImage.scaled(image.width() , image.height()+20 , Qt::IgnoreAspectRatio);
             painter.begin(&newImage);
             painter.drawImage( 0 , 0 , image );
