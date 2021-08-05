@@ -249,7 +249,7 @@ bool QGraphicsSceneCustom::event(QEvent *event)
         emit signalEnterMouse();
         return true;
         break;
-    case QEvent::GraphicsSceneLeave:
+    case QEvent::Leave:
         emit signalLeaveMouse();
         return true;
         break;
