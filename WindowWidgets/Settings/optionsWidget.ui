@@ -142,8 +142,8 @@ border-radius: 5px;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
-       <width>174</width>
+       <y>70</y>
+       <width>241</width>
        <height>20</height>
       </rect>
      </property>
@@ -156,7 +156,7 @@ border-radius: 5px;</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Ridimensiona la foto se minore del valore indicato&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Ridimensiona se minore di</string>
+      <string>Ridimensiona se un lato è minore di</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -166,8 +166,8 @@ border-radius: 5px;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
-       <width>191</width>
+       <y>100</y>
+       <width>251</width>
        <height>20</height>
       </rect>
      </property>
@@ -180,7 +180,7 @@ border-radius: 5px;</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Ridimensiona la foto se minore del valore indicato&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Ridimensiona se maggiore di</string>
+      <string>Ridimensiona se un lato è maggiore di</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -283,8 +283,8 @@ QSpinBox::down-button:hover
     <widget class="QSpinBox" name="latoMin">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>40</y>
+       <x>240</x>
+       <y>69</y>
        <width>86</width>
        <height>22</height>
       </rect>
@@ -359,8 +359,8 @@ QSpinBox::down-button:hover
     <widget class="QSpinBox" name="latoMax">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>70</y>
+       <x>255</x>
+       <y>99</y>
        <width>86</width>
        <height>22</height>
       </rect>
@@ -436,7 +436,7 @@ QSpinBox::down-button:hover
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>100</y>
+       <y>130</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -509,7 +509,7 @@ QSpinBox::down-button:hover
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>104</y>
+       <y>134</y>
        <width>181</width>
        <height>16</height>
       </rect>
@@ -540,7 +540,7 @@ QSpinBox::down-button:hover
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>133</y>
+       <y>163</y>
        <width>141</width>
        <height>16</height>
       </rect>
@@ -558,7 +558,7 @@ QSpinBox::down-button:hover
      <property name="geometry">
       <rect>
        <x>210</x>
-       <y>133</y>
+       <y>163</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -576,7 +576,7 @@ QSpinBox::down-button:hover
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>130</y>
+       <y>160</y>
        <width>41</width>
        <height>22</height>
       </rect>
@@ -618,7 +618,7 @@ QSpinBox::down-button:hover
      <property name="geometry">
       <rect>
        <x>224</x>
-       <y>130</y>
+       <y>160</y>
        <width>41</width>
        <height>22</height>
       </rect>
@@ -655,6 +655,56 @@ QSpinBox::down-button:hover
      <property name="value">
       <number>3</number>
      </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Salva immagine in:</string>
+     </property>
+    </widget>
+    <widget class="QRadioButtonCustom" name="radioButtonJpg">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>40</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>jpg</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">imageOutputFormat</string>
+     </attribute>
+    </widget>
+    <widget class="QRadioButtonCustom" name="radioButtonPng">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>40</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>png</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">imageOutputFormat</string>
+     </attribute>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_2">
@@ -759,7 +809,15 @@ border-radius: 5px;</string>
    <extends>QPushButton</extends>
    <header location="global">CustomWidgets/qpushbuttongreen.h</header>
   </customwidget>
+  <customwidget>
+   <class>QRadioButtonCustom</class>
+   <extends>QRadioButton</extends>
+   <header location="global">CustomWidgets/qradiobuttoncustom.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="imageOutputFormat"/>
+ </buttongroups>
 </ui>
