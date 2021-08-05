@@ -22,9 +22,9 @@
   <widget class="QPushButtonGreen" name="saveSettings">
    <property name="geometry">
     <rect>
-     <x>490</x>
+     <x>460</x>
      <y>310</y>
-     <width>111</width>
+     <width>141</width>
      <height>23</height>
     </rect>
    </property>
@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -526,9 +526,9 @@ QSpinBox::down-button:hover
     <widget class="QPushButtonBlue" name="reset_settings">
      <property name="geometry">
       <rect>
-       <x>490</x>
+       <x>460</x>
        <y>240</y>
-       <width>111</width>
+       <width>141</width>
        <height>23</height>
       </rect>
      </property>
@@ -701,6 +701,22 @@ QSpinBox::down-button:hover
      </property>
      <property name="text">
       <string>png</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">imageOutputFormat</string>
+     </attribute>
+    </widget>
+    <widget class="QRadioButtonCustom" name="radioButtonWebp">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>40</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>webp</string>
      </property>
      <attribute name="buttonGroup">
       <string notr="true">imageOutputFormat</string>

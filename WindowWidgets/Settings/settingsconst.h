@@ -28,6 +28,7 @@ public:
     static const QString imageOutputFormat;
     static const QString radioButtonJpg;
     static const QString radioButtonPng;
+    static const QString radioButtonWebp;
 };
 
 #endif // SETTINGSCONST_H
