@@ -503,7 +503,6 @@ void MainWindow::on_trasformaImmagini_clicked()
         }
 
         QImageReader imageReader (fileList.at(i).absoluteFilePath());
-        imageReader.setAllocationLimit(1024);
 
         if ( imageReader.canRead() && ui->contenutoCartella->item( i , 0 )->checkState() == Qt::Checked)
         {
