@@ -11,7 +11,7 @@
 class ImageProcessor
 {
 public:
-    explicit ImageProcessor(QString filename);
+    explicit ImageProcessor(QString filename, QString outputformat);
 
     void fixOrientationImage();
     void saveNewImage(QString filePath, int quality = 100);
@@ -35,7 +35,7 @@ private:
     QImage newImage;
     QString filename;
 
-    void setNewImage();
+    void setNewImage(QString filename);
 };
 
 #endif // IMAGEPROCESSOR_H

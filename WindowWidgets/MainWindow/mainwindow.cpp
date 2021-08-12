@@ -510,7 +510,9 @@ void MainWindow::on_trasformaImmagini_clicked()
         {
             Logger::addLog("File name: " + fileList.at(i).absoluteFilePath() );
 
-            ImageProcessor image (fileList.at(i).absoluteFilePath());
+            QString imageOutputFormat(Settings::getSettingsString(SettingsConst::imageOutputFormat));
+
+            ImageProcessor image (fileList.at(i).absoluteFilePath(), imageOutputFormat);
 
             image.fixOrientationImage();
 
@@ -556,7 +558,6 @@ void MainWindow::on_trasformaImmagini_clicked()
             }
 
             //Salva l'immagine in base alla qualità se il checkbox è spuntato e in base al formato di output scelto
-            QString imageOutputFormat(Settings::getSettingsString(SettingsConst::imageOutputFormat));
             QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat);
             if (Settings::getSettingsBool(SettingsConst::trasformaQualita))
             {

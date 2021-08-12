@@ -3,28 +3,27 @@
 
 #include <QFileInfo>
 
-ImageProcessor::ImageProcessor(QString filename)
+ImageProcessor::ImageProcessor(QString filename, QString outputformat)
 {
     this->image.load(filename);
-    this->filename = filename;
-    this->setNewImage();
+    this->setNewImage(outputformat);
 }
 
 void ImageProcessor::fixOrientationImage()
 {
-    QImgOrient imageOrientation; //check the orientation of the image
+    QImgOrient imageOrientation;
     QTransform imageRotate;
-    if ( imageOrientation.orientation(filename) == 8) //check image orientation
+    if ( imageOrientation.orientation(filename) == 8)
     {
          imageRotate.rotate(270);
          this->image = image.transformed(imageRotate);
     }
-    if ( imageOrientation.orientation(filename) == 6) //check image orientation
+    if ( imageOrientation.orientation(filename) == 6)
     {
          imageRotate.rotate(90);
          this->image = image.transformed(imageRotate);
     }
-    if ( imageOrientation.orientation(filename) == 3 ) //check image orientation
+    if ( imageOrientation.orientation(filename) == 3 )
     {
          imageRotate.rotate(180);
          this->image = image.transformed(imageRotate);
@@ -459,10 +458,9 @@ QImage ImageProcessor::getNewImage()
 //-----------------------------------------------------------------------------------------//
 //                                     Private Methods
 //-----------------------------------------------------------------------------------------//
-void ImageProcessor::setNewImage()
+void ImageProcessor::setNewImage(QString outputFormat)
 {
-    QImageReader imageReader(filename);
-    if (imageReader.format() == "jpeg")
+    if (outputFormat == "jpg")
     {
         newImage.load(":/Files/Files/whiteImage.jpg");
     }
