@@ -655,6 +655,8 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
     QImage newImage;
     QColor pixel;
     QImage image (fileName);
+    QImageReader imageReader(fileName);
+
     if (orientation == 1)//left
     {
         int left = 0;
@@ -680,8 +682,15 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
             newImage = image.copy(rect);
         }
         else
-        {
-            newImage.load(":/Files/Files/pngTransparent.png");
+        {           
+            if (imageReader.format() == "jpeg")
+            {
+                newImage.load(":/Files/Files/whiteImage.jpg");
+            }
+            else
+            {
+                newImage.load(":/Files/Files/pngTransparent.png");
+            }
             newImage = newImage.scaled(image.width()+20 , image.height() , Qt::IgnoreAspectRatio);
             painter.begin(&newImage);
             painter.drawImage( 20 , 0 , image );
@@ -711,7 +720,14 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
         }
         else
         {
-            newImage.load(":/Files/Files/pngTransparent.png");
+            if (imageReader.format() == "jpeg")
+            {
+                newImage.load(":/Files/Files/whiteImage.jpg");
+            }
+            else
+            {
+                newImage.load(":/Files/Files/pngTransparent.png");
+            }
             newImage = newImage.scaled(image.width() , image.height()+20 , Qt::IgnoreAspectRatio);
             painter.begin(&newImage);
             painter.drawImage( 0 , 20 , image );
@@ -742,7 +758,14 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
         }
         else
         {
-            newImage.load(":/Files/Files/pngTransparent.png");
+            if (imageReader.format() == "jpeg")
+            {
+                newImage.load(":/Files/Files/whiteImage.jpg");
+            }
+            else
+            {
+                newImage.load(":/Files/Files/pngTransparent.png");
+            }
             newImage = newImage.scaled(image.width()+20 , image.height() , Qt::IgnoreAspectRatio);
             painter.begin(&newImage);
             painter.drawImage( 0 , 0 , image );
@@ -775,7 +798,14 @@ void QTableWidgetFileList::moveImage(QString fileName , int row , int orientatio
         }
         else
         {
-            newImage.load(":/Files/Files/pngTransparent.png");
+            if (imageReader.format() == "jpeg")
+            {
+                newImage.load(":/Files/Files/whiteImage.jpg");
+            }
+            else
+            {
+                newImage.load(":/Files/Files/pngTransparent.png");
+            }
             newImage = newImage.scaled(image.width() , image.height()+20 , Qt::IgnoreAspectRatio);
             painter.begin(&newImage);
             painter.drawImage( 0 , 0 , image );

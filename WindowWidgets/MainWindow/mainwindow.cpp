@@ -299,7 +299,7 @@ void MainWindow::chiamataRemoveBg()
 
                     QHttpPart size;
                     size.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"size\""));
-                    size.setBody(ui->fileOutputDimensionRemoveBG->currentText().toUtf8());
+                    size.setBody(Settings::getSettingsString(SettingsConst::removeBgImageSize).toUtf8());
 
                     QHttpPart imagePart;
                     imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; filename=\""+ fileList.at(i).fileName() +"\"; name=\"image_file\";"));
@@ -509,7 +509,15 @@ void MainWindow::on_trasformaImmagini_clicked()
             Logger::addLog("File name: " + fileList.at(i).absoluteFilePath() );
 
             QImage image (fileList.at(i).absoluteFilePath());
-            QImage newImage (":/Files/Files/pngTransparent.png");
+            QImage newImage;
+            if (imageReader.format() == "jpeg")
+            {
+                newImage.load(":/Files/Files/whiteImage.jpg");
+            }
+            else
+            {
+                newImage.load(":/Files/Files/pngTransparent.png");
+            }
 
             QPainter painter;
             QImgOrient imageOrientation; //check the orientation of the image
@@ -993,7 +1001,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->label_5);
     resizeWindow->moveWidgetY(ui->refreshCrediti);
     resizeWindow->moveWidgetY(ui->creditiRimanenti);
-    resizeWindow->moveWidgetY(ui->fileOutputDimensionRemoveBG);
     resizeWindow->moveWidgetY(ui->fileOutputRemoveBG);
     resizeWindow->moveWidgetY(ui->removeBg);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox_2);
@@ -1104,7 +1111,6 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->label_5);
     resizeWindow->setObjectGeometry(ui->refreshCrediti);
     resizeWindow->setObjectGeometry(ui->creditiRimanenti);
-    resizeWindow->setObjectGeometry(ui->fileOutputDimensionRemoveBG);
     resizeWindow->setObjectGeometry(ui->fileOutputRemoveBG);
     resizeWindow->setObjectGeometry(ui->removeBg);
     resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox_2);
