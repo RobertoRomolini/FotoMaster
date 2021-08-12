@@ -26,6 +26,7 @@ SOURCES += \
     CustomWidgets/qradiobuttoncustom.cpp \
     Tools/imageprocessor.cpp \
     Tools/logger.cpp \
+    Tools/simplecrypt.cpp \
     WindowWidgets/EditorFoto/editorfoto.cpp \
     WindowWidgets/EditorFoto/qgraphicsscenecustom.cpp \
     WindowWidgets/EditorFoto/qgraphicsviewcustom.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     CustomWidgets/qradiobuttoncustom.h \
     Tools/imageprocessor.h \
     Tools/logger.h \
+    Tools/simplecrypt.h \
     WindowWidgets/EditorFoto/editorfoto.h \
     WindowWidgets/EditorFoto/qgraphicsscenecustom.h \
     WindowWidgets/EditorFoto/qgraphicsviewcustom.h \
