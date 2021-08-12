@@ -35,6 +35,8 @@ Options::Options(QWidget *parent) :
     // Remove BG
     ui->apiKeyRemoveBG->setText(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG));
     ui->urlRemoveBG->setText(Settings::getSettingsString(SettingsConst::urlRemoveBG));
+    ui->radioButtonSizePreview->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonSizePreview));
+    ui->radioButtonSizeFull->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonSizeFull));
 }
 
 Options::~Options()
@@ -83,6 +85,9 @@ void Options::on_saveSettings_clicked()
     // Remove BG
     Settings::setSettings(SettingsConst::apiKeyRemoveBG, ui->apiKeyRemoveBG->text());
     Settings::setSettings(SettingsConst::urlRemoveBG, ui->urlRemoveBG->text());
+    Settings::setSettings(SettingsConst::removeBgImageSize, ui->removeBgImageSize->checkedButton()->text());
+    Settings::setSettings(SettingsConst::radioButtonSizePreview, ui->radioButtonSizePreview->isChecked());
+    Settings::setSettings(SettingsConst::radioButtonSizeFull, ui->radioButtonSizeFull->isChecked());
 
     this->close();
 }
@@ -96,6 +101,7 @@ void Options::on_reset_settings_clicked()
     ui->latoMax->setValue(4500);
     ui->ridimensionaMin->setChecked(true);
     ui->ridimensionaMax->setChecked(true);
+    ui->radioButtonSizeFull->setChecked(true);
 }
 
 

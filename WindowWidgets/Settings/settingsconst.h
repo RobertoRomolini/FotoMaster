@@ -29,6 +29,9 @@ public:
     static const QString radioButtonJpg;
     static const QString radioButtonPng;
     static const QString radioButtonWebp;
+    static const QString radioButtonSizePreview;
+    static const QString radioButtonSizeFull;
+    static const QString removeBgImageSize;
 };
 
 #endif // SETTINGSCONST_H

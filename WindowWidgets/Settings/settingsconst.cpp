@@ -23,4 +23,8 @@ const QString SettingsConst::imageOutputFormat = "imageOutputFormat";
 const QString SettingsConst::radioButtonJpg = "radioButtonJpg";
 const QString SettingsConst::radioButtonPng = "radioButtonPng";
 const QString SettingsConst::radioButtonWebp = "radioButtonWebp";
+const QString SettingsConst::radioButtonSizePreview = "radioButtonSizePreview";
+const QString SettingsConst::radioButtonSizeFull = "radioButtonSizeFull";
+const QString SettingsConst::removeBgImageSize = "removeBgImageSize";
+
 

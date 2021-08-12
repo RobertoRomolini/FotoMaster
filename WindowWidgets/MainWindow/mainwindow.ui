@@ -533,9 +533,9 @@ QHeaderView::section:last
    <widget class="QPushButtonBlue" name="trasformaImmagini">
     <property name="geometry">
      <rect>
-      <x>551</x>
+      <x>560</x>
       <y>578</y>
-      <width>161</width>
+      <width>160</width>
       <height>30</height>
      </rect>
     </property>
@@ -1153,7 +1153,7 @@ border-radius: 5px;</string>
      <rect>
       <x>20</x>
       <y>572</y>
-      <width>710</width>
+      <width>720</width>
       <height>41</height>
      </rect>
     </property>
@@ -1169,9 +1169,9 @@ border-radius: 5px;</string>
    <widget class="QPushButtonGreen" name="removeBg">
     <property name="geometry">
      <rect>
-      <x>551</x>
+      <x>560</x>
       <y>628</y>
-      <width>161</width>
+      <width>160</width>
       <height>31</height>
      </rect>
     </property>
@@ -1184,7 +1184,7 @@ border-radius: 5px;</string>
      <rect>
       <x>20</x>
       <y>623</y>
-      <width>710</width>
+      <width>720</width>
       <height>41</height>
      </rect>
     </property>
@@ -1200,9 +1200,9 @@ border-radius: 5px;</string>
    <widget class="QComboBox" name="fileOutputRemoveBG">
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>470</x>
       <y>633</y>
-      <width>101</width>
+      <width>61</width>
       <height>22</height>
      </rect>
     </property>
@@ -1253,63 +1253,10 @@ margin-right: 7px;
      </property>
     </item>
    </widget>
-   <widget class="QComboBox" name="fileOutputDimensionRemoveBG">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>633</y>
-      <width>101</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Helvetica</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QComboBox
-{
-	background-color: rgb(245, 245, 245);
-	border: 1px solid black;
-	border-radius: 5px;
-	font: 10pt 'Helvetica';
-}
-
-QComboBox::drop-down 
-{
-    border: 0px; /* This seems to replace the whole arrow of the combo box */
-}
-
-QComboBox::down-arrow
-{
-    border-image: url(:/Files/Files/down.png);
-	background-color: rgb(245, 245, 245);
-width: 15px;
-margin-right: 7px;
-}
-
-</string>
-    </property>
-    <item>
-     <property name="text">
-      <string>full</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>preview</string>
-     </property>
-    </item>
-   </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>60</x>
       <y>633</y>
       <width>111</width>
       <height>21</height>
@@ -1328,9 +1275,9 @@ margin-right: 7px;
    <widget class="QLabel" name="creditiRimanenti">
     <property name="geometry">
      <rect>
-      <x>156</x>
+      <x>176</x>
       <y>633</y>
-      <width>51</width>
+      <width>61</width>
       <height>21</height>
      </rect>
     </property>
@@ -1345,11 +1292,14 @@ margin-right: 7px;
     <property name="text">
      <string/>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
    </widget>
    <widget class="QPushButtonBlue" name="refreshCrediti">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>250</x>
       <y>630</y>
       <width>27</width>
       <height>27</height>
@@ -1407,7 +1357,6 @@ margin-right: 7px;
    <zorder>trasformaImmaginiBox_2</zorder>
    <zorder>removeBg</zorder>
    <zorder>fileOutputRemoveBG</zorder>
-   <zorder>fileOutputDimensionRemoveBG</zorder>
    <zorder>label_5</zorder>
    <zorder>creditiRimanenti</zorder>
    <zorder>refreshCrediti</zorder>

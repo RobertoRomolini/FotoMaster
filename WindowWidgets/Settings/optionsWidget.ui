@@ -22,9 +22,9 @@
   <widget class="QPushButtonGreen" name="saveSettings">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>450</x>
      <y>310</y>
-     <width>141</width>
+     <width>151</width>
      <height>23</height>
     </rect>
    </property>
@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -523,19 +523,6 @@ QSpinBox::down-button:hover
       <string>Percentuale margine dal bordo</string>
      </property>
     </widget>
-    <widget class="QPushButtonBlue" name="reset_settings">
-     <property name="geometry">
-      <rect>
-       <x>460</x>
-       <y>240</y>
-       <width>141</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Reset Impostazioni</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
@@ -754,6 +741,9 @@ border-radius: 5px;</string>
        <height>21</height>
       </rect>
      </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
     </widget>
     <widget class="QLineEdit" name="urlRemoveBG">
      <property name="geometry">
@@ -801,7 +791,70 @@ border-radius: 5px;</string>
       <string>API Key RemoveBG</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Dimensione immagine:</string>
+     </property>
+    </widget>
+    <widget class="QRadioButtonCustom" name="radioButtonSizeFull">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>90</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>full</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">removeBgImageSize</string>
+     </attribute>
+    </widget>
+    <widget class="QRadioButtonCustom" name="radioButtonSizePreview">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>90</y>
+       <width>71</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>preview</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">removeBgImageSize</string>
+     </attribute>
+    </widget>
    </widget>
+  </widget>
+  <widget class="QPushButtonBlue" name="reset_settings">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>151</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Reset Impostazioni</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>
@@ -835,5 +888,6 @@ border-radius: 5px;</string>
  <connections/>
  <buttongroups>
   <buttongroup name="imageOutputFormat"/>
+  <buttongroup name="removeBgImageSize"/>
  </buttongroups>
 </ui>
