@@ -26,7 +26,7 @@ public:
     void scaledNewImageToMin(int latoMin);
     void scaledNewImageToMax(int latoMax);
 
-    void centerImage(int tolleranza, double ratioHeight, double ratioWidth, int percAumento);
+    void centerImage(int tolleranza, double ratioHeight, double ratioWidth, int percAumento, double percentualeBasso = -1);
 
     QImage getNewImage();
 

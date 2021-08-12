@@ -32,6 +32,12 @@ public:
     static const QString radioButtonSizePreview;
     static const QString radioButtonSizeFull;
     static const QString removeBgImageSize;
+    static const QString percentualeBasso;
+    static const QString allineaBasso;
+    static const QString changeImageFormat;
+    static const QString centraRiquadra;
+
+
 };
 
 #endif // SETTINGSCONST_H

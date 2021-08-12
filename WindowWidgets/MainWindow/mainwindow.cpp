@@ -183,6 +183,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->confrontoBianco->setValue(Settings::getSettingsInt(SettingsConst::confrontoBianco));
     ui->latoMinMD->setValue(Settings::getSettingsInt(SettingsConst::latoMinMD));
     ui->dimMinFileSpinBox->setValue(Settings::getSettingsInt(SettingsConst::dimMinFileSpinBox));
+    ui->allineaBasso->setChecked(Settings::getSettingsBool(SettingsConst::allineaBasso));
+    ui->centraRiquadra->setChecked(Settings::getSettingsBool(SettingsConst::centraRiquadra));
+    ui->changeImageFormat->setChecked(Settings::getSettingsBool(SettingsConst::changeImageFormat));
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //                                            Comunica alla tabella i valori di Mainwindow
@@ -370,9 +373,6 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
         QFile::rename(absoluthFilePath  , ui->directory->text() + "/originali/" +fileInfo.fileName());
     }
 
-
-
-
     if (ui->fileOutputRemoveBG->currentText().toUtf8() == "zip")
     {
         QFile file (ui->directory->text() + "/" + fileInfo.completeBaseName() +"." + ui->fileOutputRemoveBG->currentText().toUtf8());
@@ -524,14 +524,25 @@ void MainWindow::on_trasformaImmagini_clicked()
                 image.modifyImageFormat();
             }
 
-            else if (ui->centraRiquadra->isChecked())
+            else
             {
-                Logger::addLog("'Centra e Riquadra' is checked");
-
-                image.centerImage(ui->tolleranza->value(),
-                                  Settings::getSettingsInt(SettingsConst::ratioHeight),
-                                  Settings::getSettingsInt(SettingsConst::ratioWidth),
-                                  Settings::getSettingsInt(SettingsConst::percAumento));
+                if (ui->centraRiquadra->isChecked())
+                {
+                    Logger::addLog("'Centra' is checked");
+                    image.centerImage(ui->tolleranza->value(),
+                                      Settings::getSettingsInt(SettingsConst::ratioHeight),
+                                      Settings::getSettingsInt(SettingsConst::ratioWidth),
+                                      Settings::getSettingsInt(SettingsConst::percAumento));
+                }
+                else if (ui->allineaBasso->isChecked())
+                {
+                      Logger::addLog("'Allinea dal basso' is checked");
+                      image.centerImage(ui->tolleranza->value(),
+                                        Settings::getSettingsInt(SettingsConst::ratioHeight),
+                                        Settings::getSettingsInt(SettingsConst::ratioWidth),
+                                        Settings::getSettingsInt(SettingsConst::percAumento),
+                                        Settings::getSettingsInt(SettingsConst::percentualeBasso));
+                }
 
                 // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
                 if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
@@ -585,6 +596,9 @@ void MainWindow::closeEvent(QCloseEvent *)
     Settings::setSettings(SettingsConst::confrontoBianco, ui->confrontoBianco->value());
     Settings::setSettings(SettingsConst::latoMinMD, ui->latoMinMD->value());
     Settings::setSettings(SettingsConst::dimMinFileSpinBox, ui->dimMinFileSpinBox->value());
+    Settings::setSettings(SettingsConst::allineaBasso, ui->allineaBasso->isChecked());
+    Settings::setSettings(SettingsConst::centraRiquadra, ui->centraRiquadra->isChecked());
+    Settings::setSettings(SettingsConst::changeImageFormat, ui->changeImageFormat->isChecked());
 
 }
 
@@ -599,6 +613,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->trasformaImmagini);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox);
     resizeWindow->moveWidgetY(ui->changeImageFormat);
+    resizeWindow->moveWidgetY(ui->allineaBasso);
 
     resizeWindow->moveWidgetY(ui->label_5);
     resizeWindow->moveWidgetY(ui->refreshCrediti);
@@ -716,6 +731,7 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->fileOutputRemoveBG);
     resizeWindow->setObjectGeometry(ui->removeBg);
     resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox_2);
+    resizeWindow->setObjectGeometry(ui->allineaBasso);
 
 }
 

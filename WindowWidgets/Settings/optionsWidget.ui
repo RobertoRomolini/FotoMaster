@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -709,6 +709,97 @@ QSpinBox::down-button:hover
       <string notr="true">imageOutputFormat</string>
      </attribute>
     </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>190</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Percentuale di margine da basso</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="percentualeBasso">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>188</y>
+       <width>61</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Helvetica</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSpinBox
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-right: 15px;
+	font: 10pt 'Helvetica';
+}
+
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::up-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/up.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}
+
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	margin-right: 2px;
+}
+
+QSpinBox::down-button:hover
+{
+	subcontrol-origin: border;
+    border-image: url(:/Files/Files/down.png);
+    border-width: 1px;
+	background-color: #6C6C6C;
+}</string>
+     </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>50</number>
+     </property>
+     <property name="value">
+      <number>22</number>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -887,7 +978,7 @@ border-radius: 5px;</string>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="imageOutputFormat"/>
   <buttongroup name="removeBgImageSize"/>
+  <buttongroup name="imageOutputFormat"/>
  </buttongroups>
 </ui>

@@ -163,7 +163,7 @@ void ImageProcessor::scaledNewImageToMax(int latoMax)
     }
 }
 
-void ImageProcessor::centerImage(int tolleranza, double ratioHeight, double ratioWidth, int percAumento)
+void ImageProcessor::centerImage(int tolleranza, double ratioHeight, double ratioWidth, int percAumento, double percentualeBasso)
 {
     QPainter painter;
 
@@ -207,17 +207,42 @@ void ImageProcessor::centerImage(int tolleranza, double ratioHeight, double rati
         if ( top != 0 && bottom != 0 && left != 0 && right != 0 )
         {
             qDebug () << "L'oggetto non tocca i bordi, procedo rimuovendo la parte eccedente";
-            if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
+            if (percentualeBasso == -1)
             {
-                newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
-                painter.begin(&newImage);
-                painter.drawImage((newWidthIncreased - newWidth)/2, ((newWidthIncreased * ratio) - newHeight)/2 , image );
+                if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
+                {
+                    newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
+                    painter.begin(&newImage);
+                    painter.drawImage((newWidthIncreased - newWidth)/2, ((newWidthIncreased * ratio) - newHeight)/2 , image );
+                }
+                else
+                {
+                    newImage = newImage.scaled(newHeightIncreased / ratio, newHeightIncreased, Qt::IgnoreAspectRatio);
+                    painter.begin(&newImage);
+                    painter.drawImage(((newHeightIncreased / ratio) - newWidth)/2 , (newHeightIncreased - newHeight)/2, image );
+                }
             }
             else
             {
-                newImage = newImage.scaled(newHeightIncreased / ratio, newHeightIncreased, Qt::IgnoreAspectRatio);
-                painter.begin(&newImage);
-                painter.drawImage(((newHeightIncreased / ratio) - newWidth)/2 , (newHeightIncreased - newHeight)/2, image );
+                double bottomValue = percentualeBasso/100;
+                if (newWidth > newHeight + newHeight * bottomValue)
+                {
+                    newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
+                    painter.begin(&newImage);
+                    painter.drawImage((newWidthIncreased - newWidth)/2,
+                                      ((newWidthIncreased * ratio) - newHeight) - (newWidthIncreased * ratio) * bottomValue,
+                                      image);
+                }
+                else
+                {
+                    // FIXME
+                    int localWidthIncreased = (newHeightIncreased + newHeightIncreased * bottomValue) / ratio;
+                    int localHeightIncreased = newHeightIncreased + newHeightIncreased * bottomValue;
+
+                    newImage = newImage.scaled(localWidthIncreased, localHeightIncreased, Qt::IgnoreAspectRatio);
+                    painter.begin(&newImage);
+                    painter.drawImage((localWidthIncreased - newWidth)/2, (newWidth * percAumento/2)/100 , image );
+                }
             }
         }
         else if ( top != 0 && bottom == 0 && left != 0 && right != 0 )

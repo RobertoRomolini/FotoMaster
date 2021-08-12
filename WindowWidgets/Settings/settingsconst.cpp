@@ -26,5 +26,10 @@ const QString SettingsConst::radioButtonWebp = "radioButtonWebp";
 const QString SettingsConst::radioButtonSizePreview = "radioButtonSizePreview";
 const QString SettingsConst::radioButtonSizeFull = "radioButtonSizeFull";
 const QString SettingsConst::removeBgImageSize = "removeBgImageSize";
+const QString SettingsConst::percentualeBasso = "percentualeBasso";
+const QString SettingsConst::allineaBasso = "allineaBasso";
+const QString SettingsConst::changeImageFormat = "changeImageFormat";
+const QString SettingsConst::centraRiquadra = "centraRiquadra";
+
 
 
