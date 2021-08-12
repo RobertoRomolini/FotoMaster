@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <Tools/imageprocessor.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -508,437 +510,35 @@ void MainWindow::on_trasformaImmagini_clicked()
         {
             Logger::addLog("File name: " + fileList.at(i).absoluteFilePath() );
 
-            QImage image (fileList.at(i).absoluteFilePath());
-            QImage newImage;
-            if (imageReader.format() == "jpeg")
-            {
-                newImage.load(":/Files/Files/whiteImage.jpg");
-            }
-            else
-            {
-                newImage.load(":/Files/Files/pngTransparent.png");
-            }
+            ImageProcessor image (fileList.at(i).absoluteFilePath());
 
-            QPainter painter;
-            QImgOrient imageOrientation; //check the orientation of the image
-            QTransform imageRotate;
-            if ( imageOrientation.orientation(fileList.at(i).absoluteFilePath()) == 8) //check image orientation
-            {
-                 imageRotate.rotate(270);
-                 image = image.transformed(imageRotate);
-            }
-            if ( imageOrientation.orientation(fileList.at(i).absoluteFilePath()) == 6) //check image orientation
-            {
-                 imageRotate.rotate(90);
-                 image = image.transformed(imageRotate);
-            }
-            if ( imageOrientation.orientation(fileList.at(i).absoluteFilePath()) == 3 ) //check image orientation
-            {
-                 imageRotate.rotate(180);
-                 image = image.transformed(imageRotate);
-            }
-            image.save(qApp->applicationDirPath() + "/backup/" + fileList.at(i).fileName()  , 0 , 100); //save image backup
+            image.fixOrientationImage();
+
+            image.saveImage(qApp->applicationDirPath() + "/backup/" + fileList.at(i).fileName(), 100);
 
             if (ui->changeImageFormat->isChecked())
             {
                 Logger::addLog("'Trasforma' is checked");
-                newImage = newImage.scaled(image.width() , image.height() , Qt::IgnoreAspectRatio);
-                painter.begin(&newImage);
-                painter.drawImage( 0 , 0  , image );
+                image.modifyImageFormat();
             }
 
             else if (ui->centraRiquadra->isChecked())
             {
                 Logger::addLog("'Centra e Riquadra' is checked");
-                int top=0;
-                int bottom = 0;
-                int left = 0;
-                int right = 0;
-                Logger::addLog("Image dimension: " + QString::number(image.width()) + "x" + QString::number(image.height()));
-                QColor pixel;
-                for ( int i=0 ; i<image.height() ; i++ )
-                {
-                    for ( int j=0 ; j<image.width(); j++ )
-                    {
-                        pixel =  image.pixelColor( j , i );
 
-                        if (pixel.red() <= 255 - ui->tolleranza->value() &&
-                             pixel.green() <= 255 - ui->tolleranza->value() &&
-                             pixel.blue() <= 255 - ui->tolleranza->value() &&
-                             pixel.alphaF() > 0.02)
-                        {
-                            top = i;
-                            qDebug () << "Il colore del pixel a cui mi sono fermato Top: RGBA "
-                                << pixel.red() << "," << pixel.green() << "," << pixel.blue() << "," << pixel.alphaF();
-                            j=image.width();
-                            i=image.height();
-                        }
-                    }
+                image.centerImage(ui->tolleranza->value(),
+                                  Settings::getSettingsInt(SettingsConst::ratioHeight),
+                                  Settings::getSettingsInt(SettingsConst::ratioWidth),
+                                  Settings::getSettingsInt(SettingsConst::percAumento));
+
+                // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
+                if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
+                {
+                    image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
                 }
-                qDebug () << "Top: " << top;
-                for ( int i=image.height()-1 ; i>0 ; i-- )
+                if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
                 {
-                    for ( int j=0 ; j<image.width(); j++ )
-                    {
-                        pixel =  image.pixelColor( j , i );
-                        if (pixel.red() <= 255 - ui->tolleranza->value() &&
-                             pixel.green() <= 255 - ui->tolleranza->value() &&
-                             pixel.blue() <= 255 - ui->tolleranza->value() &&
-                             pixel.alphaF() > 0.02)
-                        {
-                            bottom = image.height() - i -1;
-                            qDebug () << "Il colore del pixel a cui mi sono fermato Bottom: RGBA "
-                                << pixel.red() << "," << pixel.green() << "," << pixel.blue() << "," << pixel.alphaF();
-                            j=image.width();
-                            i=0;
-                        }
-                    }
-                }
-                qDebug () << "Bottom: " << bottom;
-                for ( int i=0 ; i<image.width() ; i++ )
-                {
-                    for ( int j=0 ; j<image.height(); j++ )
-                    {
-                        pixel =  image.pixelColor( i , j );
-                        if (pixel.red() <= 255 - ui->tolleranza->value() &&
-                             pixel.green() <= 255 - ui->tolleranza->value() &&
-                             pixel.blue() <= 255 - ui->tolleranza->value() &&
-                             pixel.alphaF() > 0.02)
-                        {
-                            left = i;
-                            qDebug () << "Il colore del pixel a cui mi sono fermato Left: RGBA "
-                                << pixel.red() << "," << pixel.green() << "," << pixel.blue() << "," << pixel.alphaF();
-                            j=image.height();
-                            i=image.width();
-                        }
-                    }
-                }
-                qDebug () << "Left: " << left;
-                for ( int i=image.width()-1 ; i>0 ; i-- )
-                {
-                    for ( int j=0 ; j<image.height(); j++ )
-                    {
-                        pixel =  image.pixelColor( i , j );
-                        if (pixel.red() <= 255 - ui->tolleranza->value() &&
-                             pixel.green() <= 255 - ui->tolleranza->value() &&
-                             pixel.blue() <= 255 - ui->tolleranza->value() &&
-                             pixel.alphaF() > 0.02)
-                        {
-                            right = image.width()- i -1;
-                            qDebug () << "Il colore del pixel a cui mi sono fermato Right: RGBA "
-                                << pixel.red() << "," << pixel.green() << "," << pixel.blue() << "," << pixel.alphaF();
-                            j=image.height();
-                            i=0;
-                        }
-                    }
-                }
-                qDebug () << "Right: " << right;
-
-                // Calculate aspect ratio
-                double ratioHeight = Settings::getSettingsInt(SettingsConst::ratioHeight);
-                double ratioWidth = Settings::getSettingsInt(SettingsConst::ratioWidth);
-                double ratio = ratioHeight/ratioWidth;
-
-                if ( top == 0 && bottom == 0 && left == 0 && right == 0 )
-                {
-                    qDebug () << "L'oggetto tocca la foto da tutti i lati, la riquadro solamente";
-                    if (image.width() * ratio > image.height() || image.width() > image.height() / ratio)
-                    {
-                        newImage = newImage.scaled(image.width(), image.width() * ratio, Qt::IgnoreAspectRatio);
-                        painter.begin(&newImage);
-                        painter.drawImage(0, ((image.width() * ratio) - image.height())/2 , image );
-                    }
-                    else
-                    {
-                        newImage = newImage.scaled(image.height() / ratio, image.height(), Qt::IgnoreAspectRatio);
-                        painter.begin(&newImage);
-                        painter.drawImage(((image.height() / ratio) - image.width())/2 , 0, image );
-                    }
-                }
-                else
-                {
-                    int newWidth = image.width() - left - right;
-                    int newHeight = image.height() - top - bottom;
-                    QRect rect (left , top , newWidth , newHeight);
-                    image = image.copy(rect);
-
-                    int percAumento = Settings::getSettingsInt(SettingsConst::percAumento);
-                    int newWidthIncreased = newWidth + ((newWidth * percAumento)/100);
-                    int newHeightIncreased = newHeight + ((newHeight * percAumento)/100);
-                    int newWidthIncreasedHalf = newWidth + ((newWidth * percAumento/2)/100);
-                    int newHeightIncreasedHalf = newHeight + ((newHeight * percAumento/2)/100);
-
-                    if ( top != 0 && bottom != 0 && left != 0 && right != 0 )
-                    {
-                        qDebug () << "L'oggetto non tocca i bordi, procedo rimuovendo la parte eccedente";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage((newWidthIncreased - newWidth)/2, ((newWidthIncreased * ratio) - newHeight)/2 , image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreased / ratio, newHeightIncreased, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(((newHeightIncreased / ratio) - newWidth)/2 , (newHeightIncreased - newHeight)/2, image );
-                        }
-                    }
-                    else if ( top != 0 && bottom == 0 && left != 0 && right != 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo solo sotto";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage((newWidthIncreasedHalf - newWidth)/2, (newWidthIncreasedHalf * ratio) - newHeight , image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(((newHeightIncreasedHalf / ratio) - newWidth)/2 , newHeightIncreasedHalf - newHeight, image);
-                        }
-                    }
-                    else if ( top == 0 && bottom != 0 && left != 0 && right != 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo solo sopra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage((newWidthIncreasedHalf - newWidth)/2, 0 , image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(((newHeightIncreasedHalf / ratio) - newWidth)/2 , 0, image);
-                        }
-                    }
-                    else if ( top != 0 && bottom != 0 && left != 0 && right == 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo solo a destra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(newWidthIncreasedHalf - newWidth, ((newWidthIncreasedHalf * ratio) - newHeight)/2 , image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage((newHeightIncreasedHalf / ratio) - newWidth , (newHeightIncreasedHalf - newHeight)/2, image);
-                        }
-                    }
-                    else if ( top != 0 && bottom != 0 && left == 0 && right != 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo solo a sinistra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, ((newWidthIncreasedHalf * ratio) - newHeight)/2 , image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, (newHeightIncreasedHalf - newHeight)/2, image);
-                        }
-                    }
-                    else if ( top != 0 && bottom == 0 && left == 0 && right != 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo sotto e a sinistra";
-
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, (newWidthIncreasedHalf * ratio) - newHeight, image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, newHeightIncreasedHalf - newHeight, image);
-                        }
-                    }
-                    else if ( top != 0 && bottom == 0 && left != 0 && right == 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo sotto e a destra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(newWidthIncreasedHalf - newWidth, (newWidthIncreasedHalf * ratio) - newHeight , image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage((newHeightIncreasedHalf / ratio) - newWidth , newHeightIncreasedHalf - newHeight, image);
-                        }
-                    }
-                    else if ( top == 0 && bottom != 0 && left != 0 && right == 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo sopra e a destra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(newWidthIncreasedHalf - newWidth, 0, image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage((newHeightIncreasedHalf / ratio) - newWidth , 0, image);
-                        }
-                    }
-                    else if ( top == 0 && bottom != 0 && left == 0 && right != 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo sopra e a sinistra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, 0, image);
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, 0, image);
-                        }
-                    }
-                    else if ( top != 0 && bottom != 0 && left == 0 && right == 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo a destra e a sinistra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidth, newWidth * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, ((newWidth * ratio) - newHeight)/2 , image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreased / ratio, newHeightIncreased, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(((newHeightIncreased / ratio) - newWidth)/2 , (newHeightIncreased - newHeight)/2, image);
-                        }
-                    }
-                    else if ( top == 0 && bottom == 0 && left != 0 && right != 0 )
-                    {
-                        qDebug () << "L'oggetto tocca il bordo sopra e sotto";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage((newWidthIncreased - newWidth)/2, ((newWidthIncreased * ratio) - newHeight)/2, image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeight / ratio, newHeight, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(((newHeightIncreased / ratio) - newWidth)/2 ,0 , image);
-                        }
-                    }
-                    else if ( top != 0 && bottom == 0 && left == 0 && right == 0 )
-                    {
-                        qDebug () << "L'oggetto tocca tutti i lati tranne sopra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidth, newWidth * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, (newWidth * ratio) - newHeight, image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(((newHeightIncreasedHalf / ratio) - newWidth)/2, newHeightIncreasedHalf - newHeight , image);
-                        }
-                    }
-
-                    else if ( top == 0 && bottom == 0 && left != 0 && right == 0 )
-                    {
-                        qDebug () << "L'oggetto tocca tutti i lati tranne a sinistra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(newWidthIncreasedHalf - newWidth, ((newWidthIncreasedHalf * ratio) - newHeight)/2, image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeight, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage((newHeightIncreasedHalf / ratio) - newWidth, 0, image);
-                        }
-                    }
-                    else if ( top == 0 && bottom == 0 && left == 0 && right != 0 )
-                    {
-                        qDebug () << "L'oggetto tocca tutti i lati tranne a destra";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, ((newWidthIncreasedHalf * ratio) - newHeight)/2, image);
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeight, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, 0, image);
-                        }
-                    }
-                    else if (top == 0 && bottom != 0 && left == 0 && right == 0)
-                    {
-                        qDebug () << "L'oggetto tocca tutti i lati tranne sotto";
-                        if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
-                        {
-                            newImage = newImage.scaled(newWidthIncreasedHalf, newWidthIncreasedHalf * ratio, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(0, (newWidthIncreasedHalf * ratio) - newHeight, image );
-                        }
-                        else
-                        {
-                            newImage = newImage.scaled(newHeightIncreasedHalf / ratio, newHeightIncreasedHalf, Qt::IgnoreAspectRatio);
-                            painter.begin(&newImage);
-                            painter.drawImage(((newHeightIncreasedHalf / ratio) - newWidth)/2, 0 , image);
-                        }
-                    }
-                }
-                painter.end();
-            }
-
-            // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-            if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
-            {
-                int latoMin = Settings::getSettingsInt(SettingsConst::latoMin);
-
-                if (newImage.width() < latoMin)
-                {
-                    newImage = newImage.scaledToWidth(latoMin , Qt::SmoothTransformation );
-                }
-                else if (newImage.height() < latoMin)
-                {
-                    newImage = newImage.scaledToHeight(latoMin , Qt::SmoothTransformation );
-                }
-            }
-            else if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
-            {
-                int latoMax = Settings::getSettingsInt(SettingsConst::latoMax);
-
-                if (newImage.width() > latoMax)
-                {
-                    newImage = newImage.scaledToWidth(latoMax , Qt::SmoothTransformation );
-                }
-                else if (newImage.height() > latoMax)
-                {
-                    newImage = newImage.scaledToHeight(latoMax , Qt::SmoothTransformation );
+                    image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
                 }
             }
 
@@ -957,18 +557,19 @@ void MainWindow::on_trasformaImmagini_clicked()
 
             //Salva l'immagine in base alla qualità se il checkbox è spuntato e in base al formato di output scelto
             QString imageOutputFormat(Settings::getSettingsString(SettingsConst::imageOutputFormat));
+            QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat);
             if (Settings::getSettingsBool(SettingsConst::trasformaQualita))
             {
                 Logger::addLog("Save image in " + imageOutputFormat + " format with quality: " + QString::number(Settings::getSettingsInt(SettingsConst::qualitaSalvataggio)));
-                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat , nullptr, Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
+                image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
             }
             else
             {
                 Logger::addLog("Save image in " + imageOutputFormat + " format with quality: 100");
-                newImage.save(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat, nullptr, 100);
+                image.saveNewImage(newFilename);
             }
-            QFile newFile (ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat);
-            ui->contenutoCartella->aggiornaSingoloFile(QFileInfo(newFile) , newImage , i );
+            QFile newFile(newFilename);
+            ui->contenutoCartella->aggiornaSingoloFile(QFileInfo(newFile) , image.getNewImage() , i );
         }
     }
     ui->contenutoCartella->tableResize();

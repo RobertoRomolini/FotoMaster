@@ -77,7 +77,7 @@ void QTableWidgetFileList::aggiornaLista(QString directory)
 
 void QTableWidgetFileList::aggiornaSingoloFile(QFileInfo file , QImage image , int row)
 {
-
+    tableEditButton(file , row , 1);
     tableIcon (file , row , 2);
     tableFileName (file , row , 3);
     tableDimensioneImmagine(file , row , dimColumn);
