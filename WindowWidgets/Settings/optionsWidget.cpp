@@ -1,6 +1,8 @@
 #include "optionsWidget.h"
 #include "ui_optionsWidget.h"
 
+#include <Tools/simplecrypt.h>
+
 Options::Options(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Options)
@@ -38,6 +40,15 @@ Options::Options(QWidget *parent) :
     ui->urlRemoveBG->setText(Settings::getSettingsString(SettingsConst::urlRemoveBG));
     ui->radioButtonSizePreview->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonSizePreview));
     ui->radioButtonSizeFull->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonSizeFull));
+
+
+
+    // FIXME
+    SimpleCrypt crypt(3456345634645234);
+    QString pippo("ciao");
+    QString ciccio = crypt.encryptToString(pippo);
+    qDebug () << ciccio;
+    qDebug () << crypt.decryptToString(ciccio);
 }
 
 Options::~Options()
