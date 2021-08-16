@@ -11,31 +11,42 @@ public:
     static const QString directoryBackup;
     static const QString directoryMemory;
     static const QString percAumento;
-    static const QString qualitaSalvataggio;
-    static const QString trasformaQualita;
     static const QString latoMin;
     static const QString latoMax;
     static const QString ridimensionaMin;
     static const QString ridimensionaMax;
-    static const QString ratioWidth;
-    static const QString ratioHeight;
     static const QString apiKeyRemoveBG;
     static const QString urlRemoveBG;
     static const QString tolleranza;
     static const QString confrontoBianco;
     static const QString latoMinMD;
     static const QString dimMinFileSpinBox;
-    static const QString imageOutputFormat;
-    static const QString radioButtonJpg;
-    static const QString radioButtonPng;
-    static const QString radioButtonWebp;
     static const QString radioButtonSizePreview;
     static const QString radioButtonSizeFull;
     static const QString removeBgImageSize;
-    static const QString percentualeBasso;
-    static const QString allineaBasso;
     static const QString changeImageFormat;
     static const QString centraRiquadra;
+
+    static const QString ratioWidthJpg;
+    static const QString ratioHeightJpg;
+    static const QString ratioWidthPng;
+    static const QString ratioHeightPng;
+    static const QString ratioWidthWebp;
+    static const QString ratioHeightWebp;
+    static const QString outputJpg;
+    static const QString outputPng;
+    static const QString outputWebp;
+    static const QString qualitaSalvataggioJpg;
+    static const QString qualitaSalvataggioPng;
+    static const QString qualitaSalvataggioWebp;
+    static const QString backgroundJpg;
+    static const QString percentualeBassoJpg;
+    static const QString cbPercBassoJpg;
+    static const QString percentualeBassoPng;
+    static const QString cbPercBassoPng;
+    static const QString percentualeBassoWebp;
+    static const QString cbPercBassoWebp;
+
 
 
 };

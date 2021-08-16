@@ -22,18 +22,29 @@ Options::Options(QWidget *parent) :
 
     // Trasforma Immagini
     ui->percAumento->setValue(Settings::getSettingsInt(SettingsConst::percAumento));
-    ui->qualitaSalvataggio->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
-    ui->trasformaQualita->setChecked(Settings::getSettingsBool(SettingsConst::trasformaQualita));
     ui->latoMin->setValue(Settings::getSettingsInt(SettingsConst::latoMin));
     ui->latoMax->setValue(Settings::getSettingsInt(SettingsConst::latoMax));
     ui->ridimensionaMin->setChecked(Settings::getSettingsBool(SettingsConst::ridimensionaMin));
     ui->ridimensionaMax->setChecked(Settings::getSettingsBool(SettingsConst::ridimensionaMax));
-    ui->ratioWidth->setValue(Settings::getSettingsInt(SettingsConst::ratioWidth));
-    ui->ratioHeight->setValue(Settings::getSettingsInt(SettingsConst::ratioHeight));
-    ui->radioButtonJpg->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonJpg));
-    ui->radioButtonPng->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonPng));
-    ui->radioButtonWebp->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonWebp));
-    ui->percentualeBasso->setValue(Settings::getSettingsInt(SettingsConst::percentualeBasso));
+    ui->ratioWidthJpg->setValue(Settings::getSettingsInt(SettingsConst::ratioWidthJpg));
+    ui->ratioHeightJpg->setValue(Settings::getSettingsInt(SettingsConst::ratioHeightJpg));
+    ui->ratioWidthPng->setValue(Settings::getSettingsInt(SettingsConst::ratioWidthPng));
+    ui->ratioHeightPng->setValue(Settings::getSettingsInt(SettingsConst::ratioHeightPng));
+    ui->ratioWidthWebp->setValue(Settings::getSettingsInt(SettingsConst::ratioWidthWebp));
+    ui->ratioHeightWebp->setValue(Settings::getSettingsInt(SettingsConst::ratioHeightWebp));
+    ui->outputJpg->setChecked(Settings::getSettingsBool(SettingsConst::outputJpg));
+    ui->outputPng->setChecked(Settings::getSettingsBool(SettingsConst::outputPng));
+    ui->outputWebp->setChecked(Settings::getSettingsBool(SettingsConst::outputWebp));
+    ui->qualitaSalvataggioJpg->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
+    ui->qualitaSalvataggioPng->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
+    ui->qualitaSalvataggioWebp->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
+    ui->backgroundJpg->setText(Settings::getSettingsString(SettingsConst::backgroundJpg));
+    ui->cbPercBassoJpg->setChecked(Settings::getSettingsBool(SettingsConst::cbPercBassoJpg));
+    ui->percentualeBassoJpg->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoJpg));
+    ui->cbPercBassoPng->setChecked(Settings::getSettingsBool(SettingsConst::cbPercBassoPng));
+    ui->percentualeBassoPng->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoPng));
+    ui->cbPercBassoWebp->setChecked(Settings::getSettingsBool(SettingsConst::cbPercBassoWebp));
+    ui->percentualeBassoWebp->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoWebp));
 
     // Remove BG
     ui->apiKeyRemoveBG->setText(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG));
@@ -81,19 +92,29 @@ void Options::on_saveSettings_clicked()
 
     // Trasforma Immagini
     Settings::setSettings(SettingsConst::percAumento, ui->percAumento->value());
-    Settings::setSettings(SettingsConst::qualitaSalvataggio, ui->qualitaSalvataggio->value());
-    Settings::setSettings(SettingsConst::trasformaQualita, ui->trasformaQualita->isChecked());
     Settings::setSettings(SettingsConst::latoMin, ui->latoMin->value());
     Settings::setSettings(SettingsConst::latoMax, ui->latoMax->value());
     Settings::setSettings(SettingsConst::ridimensionaMin, ui->ridimensionaMin->isChecked());
     Settings::setSettings(SettingsConst::ridimensionaMax, ui->ridimensionaMax->isChecked());
-    Settings::setSettings(SettingsConst::ratioWidth, ui->ratioWidth->value());
-    Settings::setSettings(SettingsConst::ratioHeight, ui->ratioHeight->value());
-    Settings::setSettings(SettingsConst::imageOutputFormat, ui->imageOutputFormat->checkedButton()->text());
-    Settings::setSettings(SettingsConst::radioButtonJpg, ui->radioButtonJpg->isChecked());
-    Settings::setSettings(SettingsConst::radioButtonPng, ui->radioButtonPng->isChecked());
-    Settings::setSettings(SettingsConst::radioButtonWebp, ui->radioButtonWebp->isChecked());
-    Settings::setSettings(SettingsConst::percentualeBasso, ui->percentualeBasso->value());
+    Settings::setSettings(SettingsConst::outputJpg, ui->outputJpg->isChecked());
+    Settings::setSettings(SettingsConst::ratioWidthJpg, ui->ratioWidthJpg->value());
+    Settings::setSettings(SettingsConst::ratioHeightJpg, ui->ratioHeightJpg->value());
+    Settings::setSettings(SettingsConst::qualitaSalvataggioJpg, ui->qualitaSalvataggioJpg->value());
+    Settings::setSettings(SettingsConst::outputPng, ui->outputPng->isChecked());
+    Settings::setSettings(SettingsConst::ratioWidthPng, ui->ratioWidthPng->value());
+    Settings::setSettings(SettingsConst::ratioHeightPng, ui->ratioHeightPng->value());
+    Settings::setSettings(SettingsConst::qualitaSalvataggioPng, ui->qualitaSalvataggioPng->value());
+    Settings::setSettings(SettingsConst::ratioWidthWebp, ui->ratioWidthWebp->value());
+    Settings::setSettings(SettingsConst::ratioHeightWebp, ui->ratioHeightWebp->value());
+    Settings::setSettings(SettingsConst::outputWebp, ui->outputWebp->isChecked());
+    Settings::setSettings(SettingsConst::qualitaSalvataggioWebp, ui->qualitaSalvataggioWebp->value());
+    Settings::setSettings(SettingsConst::backgroundJpg, ui->backgroundJpg->text());
+    Settings::setSettings(SettingsConst::cbPercBassoJpg, ui->cbPercBassoJpg->isChecked());
+    Settings::setSettings(SettingsConst::percentualeBassoJpg, ui->percentualeBassoJpg->value());
+    Settings::setSettings(SettingsConst::cbPercBassoPng, ui->cbPercBassoPng->isChecked());
+    Settings::setSettings(SettingsConst::percentualeBassoPng, ui->percentualeBassoPng->value());
+    Settings::setSettings(SettingsConst::cbPercBassoWebp, ui->cbPercBassoWebp->isChecked());
+    Settings::setSettings(SettingsConst::percentualeBassoWebp, ui->percentualeBassoWebp->value());
 
     // Remove BG
     Settings::setSettings(SettingsConst::apiKeyRemoveBG, ui->apiKeyRemoveBG->text());
@@ -108,8 +129,6 @@ void Options::on_saveSettings_clicked()
 void Options::on_reset_settings_clicked()
 {
     ui->percAumento->setValue(8);
-    ui->qualitaSalvataggio->setValue(85);
-    ui->trasformaQualita->setChecked(true);
     ui->latoMin->setValue(600);
     ui->latoMax->setValue(4500);
     ui->ridimensionaMin->setChecked(true);
