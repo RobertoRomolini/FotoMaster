@@ -225,23 +225,29 @@ void ImageProcessor::centerImage(int tolleranza, double ratioHeight, double rati
             else
             {
                 double bottomValue = percentualeBasso/100;
-                if (newWidth > newHeight + newHeight * bottomValue)
+                double newHeightWithBottom = newHeightIncreasedHalf + newHeightIncreasedHalf * bottomValue;
+                double newWidthWithBottom = newHeightWithBottom / ratio;
+
+                if (newWidthWithBottom < newWidthIncreased)
                 {
                     newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
                     painter.begin(&newImage);
-                    painter.drawImage((newWidthIncreased - newWidth)/2,
-                                      ((newWidthIncreased * ratio) - newHeight) - (newWidthIncreased * ratio) * bottomValue,
-                                      image);
+                    painter.drawImage((newWidthIncreased - newWidth)/2, newWidthIncreased * ratio - newHeight - newWidthIncreased * ratio * bottomValue , image);
                 }
                 else
                 {
-                    // FIXME
-                    int localWidthIncreased = (newHeightIncreased + newHeightIncreased * bottomValue) / ratio;
-                    int localHeightIncreased = newHeightIncreased + newHeightIncreased * bottomValue;
-
-                    newImage = newImage.scaled(localWidthIncreased, localHeightIncreased, Qt::IgnoreAspectRatio);
-                    painter.begin(&newImage);
-                    painter.drawImage((localWidthIncreased - newWidth)/2, (newWidth * percAumento/2)/100 , image );
+                    if (newWidth * ratio > newHeight || newWidth > newHeight / ratio)
+                    {
+                        newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
+                        painter.begin(&newImage);
+                        painter.drawImage((newWidthIncreased - newWidth)/2, ((newWidthIncreased * ratio) - newHeight)/2 , image );
+                    }
+                    else
+                    {
+                        newImage = newImage.scaled(newHeightIncreased / ratio, newHeightIncreased, Qt::IgnoreAspectRatio);
+                        painter.begin(&newImage);
+                        painter.drawImage(((newHeightIncreased / ratio) - newWidth)/2 , (newHeightIncreased - newHeight)/2, image );
+                    }
                 }
             }
         }
