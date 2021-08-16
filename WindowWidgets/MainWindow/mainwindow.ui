@@ -1065,7 +1065,7 @@ QSpinBox::down-button:hover
      <rect>
       <x>180</x>
       <y>583</y>
-      <width>61</width>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
@@ -1078,7 +1078,7 @@ QSpinBox::down-button:hover
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Centra l'immagine inserendola in un riquadro con l'aspect ratio inserito nelle opzioni&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
-     <string>Centra</string>
+     <string>Trasforma Immagine</string>
     </property>
     <property name="checked">
      <bool>true</bool>
@@ -1309,33 +1309,6 @@ margin-right: 7px;
      <string/>
     </property>
    </widget>
-   <widget class="QRadioButtonCustom" name="allineaBasso">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>583</y>
-      <width>121</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Allinea l'immagine al basso inserendola in un riquadro con l'aspect ratio inserito nelle opzioni&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Allinea dal basso</string>
-    </property>
-    <property name="checked">
-     <bool>false</bool>
-    </property>
-    <attribute name="buttonGroup">
-     <string notr="true">trasformaImmaginiGroup</string>
-    </attribute>
-   </widget>
    <zorder>opzioniTabellaBox</zorder>
    <zorder>trasformaImmaginiBox</zorder>
    <zorder>sostituisciRapidoBox</zorder>
@@ -1387,7 +1360,6 @@ margin-right: 7px;
    <zorder>label_5</zorder>
    <zorder>creditiRimanenti</zorder>
    <zorder>refreshCrediti</zorder>
-   <zorder>allineaBasso</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
