@@ -8,6 +8,7 @@
 #include "WindowWidgets/Settings/settings.h"
 #include "WindowWidgets/Settings/settingsconst.h"
 #include "CustomWidgets/qmoveimagepushbutton.h"
+#include <Tools/imageprocessor.h>
 #include "Tools/logger.h"
 #include "Tools/resizewindow.h"
 #include <QCoreApplication>
@@ -59,6 +60,9 @@ private:
 
     // Collega azioni del menu a tendina
     void restoreSettings();
+
+    // Metodo per trasformare le immagini
+    void trasformaImmagini(QString outputFormat, QFileInfo tempFile, int ratioHeight, int ratioWidth, int quality, QString hexColorBg = nullptr);
 
 private slots:
     //Azionano la sostituzione dei nomi dei file

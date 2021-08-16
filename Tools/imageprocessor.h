@@ -11,7 +11,7 @@
 class ImageProcessor
 {
 public:
-    explicit ImageProcessor(QString filename, QString outputformat);
+    explicit ImageProcessor(QString filename);
 
     void fixOrientationImage();
     void saveNewImage(QString filePath, int quality = 100);
@@ -26,16 +26,19 @@ public:
     void scaledNewImageToMin(int latoMin);
     void scaledNewImageToMax(int latoMax);
 
-    void centerImage(int tolleranza, double ratioHeight, double ratioWidth, int percAumento, double percentualeBasso = -1);
+    void centerImage(double ratioHeight, double ratioWidth, int percAumento, double percentualeBasso, int tolleranza);
 
     QImage getNewImage();
+
+    const QString &getOutputFormat() const;
+
+    void setNewImage(QString filename, QString hexColorBg = nullptr);
 
 private:
     QImage image;
     QImage newImage;
     QString filename;
-
-    void setNewImage(QString filename);
+    QString outputFormat;
 };
 
 #endif // IMAGEPROCESSOR_H

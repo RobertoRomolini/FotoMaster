@@ -3,10 +3,9 @@
 
 #include <QFileInfo>
 
-ImageProcessor::ImageProcessor(QString filename, QString outputformat)
+ImageProcessor::ImageProcessor(QString filename)
 {
     this->image.load(filename);
-    this->setNewImage(outputformat);
 }
 
 void ImageProcessor::fixOrientationImage()
@@ -163,10 +162,9 @@ void ImageProcessor::scaledNewImageToMax(int latoMax)
     }
 }
 
-void ImageProcessor::centerImage(int tolleranza, double ratioHeight, double ratioWidth, int percAumento, double percentualeBasso)
+void ImageProcessor::centerImage(double ratioHeight, double ratioWidth, int percAumento, double percentualeBasso, int tolleranza)
 {
     QPainter painter;
-
     int top = this->pixelImageTop(tolleranza);
     int bottom = this->pixelImageBottom(tolleranza);
     int left = this->pixelImageLeft(tolleranza);
@@ -197,7 +195,7 @@ void ImageProcessor::centerImage(int tolleranza, double ratioHeight, double rati
         int newWidth = image.width() - left - right;
         int newHeight = image.height() - top - bottom;
         QRect rect (left , top , newWidth , newHeight);
-        image = image.copy(rect);
+        QImage image = this->image.copy(rect);
 
         int newWidthIncreased = newWidth + ((newWidth * percAumento)/100);
         int newHeightIncreased = newHeight + ((newHeight * percAumento)/100);
@@ -225,14 +223,13 @@ void ImageProcessor::centerImage(int tolleranza, double ratioHeight, double rati
             else
             {
                 double bottomValue = percentualeBasso/100;
-                double newHeightWithBottom = newHeightIncreasedHalf + newHeightIncreasedHalf * bottomValue;
-                double newWidthWithBottom = newHeightWithBottom / ratio;
-
-                if (newWidthWithBottom < newWidthIncreased)
+                int x = (newWidthIncreased - newWidth)/2;
+                int y = newWidthIncreased * ratio - newHeight - newWidthIncreased * ratio * bottomValue;
+                if (y > 0)
                 {
                     newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
                     painter.begin(&newImage);
-                    painter.drawImage((newWidthIncreased - newWidth)/2, newWidthIncreased * ratio - newHeight - newWidthIncreased * ratio * bottomValue , image);
+                    painter.drawImage(x, y, image);
                 }
                 else
                 {
@@ -486,14 +483,20 @@ QImage ImageProcessor::getNewImage()
     return this->newImage;
 }
 
+const QString &ImageProcessor::getOutputFormat() const
+{
+    return outputFormat;
+}
+
 //-----------------------------------------------------------------------------------------//
 //                                     Private Methods
 //-----------------------------------------------------------------------------------------//
-void ImageProcessor::setNewImage(QString outputFormat)
+void ImageProcessor::setNewImage(QString outputFormat, QString hexColorBg)
 {
     if (outputFormat == "jpg")
     {
         newImage.load(":/Files/Files/whiteImage.jpg");
+        newImage.setPixelColor(0, 0, QColor("#" + hexColorBg));
     }
     else
     {

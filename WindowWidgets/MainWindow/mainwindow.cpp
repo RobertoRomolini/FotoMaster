@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <Tools/imageprocessor.h>
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -183,7 +181,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->confrontoBianco->setValue(Settings::getSettingsInt(SettingsConst::confrontoBianco));
     ui->latoMinMD->setValue(Settings::getSettingsInt(SettingsConst::latoMinMD));
     ui->dimMinFileSpinBox->setValue(Settings::getSettingsInt(SettingsConst::dimMinFileSpinBox));
-    ui->allineaBasso->setChecked(Settings::getSettingsBool(SettingsConst::allineaBasso));
     ui->centraRiquadra->setChecked(Settings::getSettingsBool(SettingsConst::centraRiquadra));
     ui->changeImageFormat->setChecked(Settings::getSettingsBool(SettingsConst::changeImageFormat));
 
@@ -489,12 +486,17 @@ void MainWindow::on_trasformaImmagini_clicked()
     //Controllo se la cartella è stata aggiornata prima di lanciare la funzione
     ui->contenutoCartella->checkTableUpdate(ui->directory->text());
 
-
     QDir dir(ui->directory->text());
     QList<QFileInfo> fileList = dir.entryInfoList();
     QProgressDialog progress("Elaborazione foto..." , "Annulla" , 0 , fileList.size() , this);
     progress.setWindowModality(Qt::WindowModal);
     progress.setMinimumDuration(200);
+
+    //Creo la cartella temporanea di appoggio dei file
+    if (! QDir(ui->directory->text() + "/temp").exists())
+    {
+        QDir().mkpath(ui->directory->text() + "/temp" );
+    }
 
     for ( int i=0 ; i < fileList.size() ; i++ )
     {
@@ -504,15 +506,17 @@ void MainWindow::on_trasformaImmagini_clicked()
             break;
         }
 
-        QImageReader imageReader (fileList.at(i).absoluteFilePath());
+        QImageReader imageReader(fileList.at(i).absoluteFilePath());
 
         if ( imageReader.canRead() && ui->contenutoCartella->item( i , 0 )->checkState() == Qt::Checked)
         {
             Logger::addLog("File name: " + fileList.at(i).absoluteFilePath() );
 
-            QString imageOutputFormat(Settings::getSettingsString(SettingsConst::imageOutputFormat));
+            imageReader.setFileName("");
 
-            ImageProcessor image (fileList.at(i).absoluteFilePath(), imageOutputFormat);
+            QFile::rename(fileList.at(i).absoluteFilePath(), ui->directory->text() + "/temp/" + fileList.at(i).fileName());
+
+            ImageProcessor image (ui->directory->text() + "/temp/" + fileList.at(i).fileName());
 
             image.fixOrientationImage();
 
@@ -521,70 +525,127 @@ void MainWindow::on_trasformaImmagini_clicked()
             if (ui->changeImageFormat->isChecked())
             {
                 Logger::addLog("'Trasforma' is checked");
-                image.modifyImageFormat();
-            }
-
-            else
-            {
-                if (ui->centraRiquadra->isChecked())
+                if (Settings::getSettingsBool(SettingsConst::outputJpg))
                 {
-                    Logger::addLog("'Centra' is checked");
-                    image.centerImage(ui->tolleranza->value(),
-                                      Settings::getSettingsInt(SettingsConst::ratioHeight),
-                                      Settings::getSettingsInt(SettingsConst::ratioWidth),
-                                      Settings::getSettingsInt(SettingsConst::percAumento));
+                    image.setNewImage("jpg");
+                    image.modifyImageFormat();
+                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg");
+                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
                 }
-                else if (ui->allineaBasso->isChecked())
+                if (Settings::getSettingsBool(SettingsConst::outputPng))
                 {
-                      Logger::addLog("'Allinea dal basso' is checked");
-                      image.centerImage(ui->tolleranza->value(),
-                                        Settings::getSettingsInt(SettingsConst::ratioHeight),
-                                        Settings::getSettingsInt(SettingsConst::ratioWidth),
-                                        Settings::getSettingsInt(SettingsConst::percAumento),
-                                        Settings::getSettingsInt(SettingsConst::percentualeBasso));
+                    image.setNewImage("png");
+                    image.modifyImageFormat();
+                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".png");
+                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
                 }
-
-                // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-                if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
+                if (Settings::getSettingsBool(SettingsConst::outputWebp))
                 {
-                    image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
-                }
-                if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
-                {
-                    image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
+                    image.setNewImage("webp");
+                    image.modifyImageFormat();
+                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".webp");
+                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
                 }
             }
+            else if (ui->centraRiquadra->isChecked())
+            {
+                Logger::addLog("'Centra' is checked");
 
-            //Assegno un nuovo file per poterlo eliminare
-            imageReader.setFileName("");
+                double percBasso = -1;
 
-            //Elimino il file precedente
-            if (QFile::remove(fileList.at(i).absoluteFilePath()))
-            {
-                 Logger::addLog("Delete the first file: " + fileList.at(i).absoluteFilePath());
-            }
-            else
-            {
-                Logger::addLog("Unable to delete the first file: " + fileList.at(i).absoluteFilePath());
-            }
+                if (Settings::getSettingsBool(SettingsConst::outputJpg))
+                {
+                    if (Settings::getSettingsBool(SettingsConst::cbPercBassoJpg))
+                    {
+                        percBasso = Settings::getSettingsInt(SettingsConst::percentualeBassoJpg);
+                    }
 
-            //Salva l'immagine in base alla qualità se il checkbox è spuntato e in base al formato di output scelto
-            QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + "." + imageOutputFormat);
-            if (Settings::getSettingsBool(SettingsConst::trasformaQualita))
-            {
-                Logger::addLog("Save image in " + imageOutputFormat + " format with quality: " + QString::number(Settings::getSettingsInt(SettingsConst::qualitaSalvataggio)));
-                image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggio));
+                    image.setNewImage("jpg", Settings::getSettingsString(SettingsConst::backgroundJpg));
+                    image.centerImage(Settings::getSettingsInt(SettingsConst::ratioHeightJpg),
+                                      Settings::getSettingsInt(SettingsConst::ratioWidthJpg),
+                                      Settings::getSettingsInt(SettingsConst::percAumento),
+                                      percBasso,
+                                      ui->tolleranza->value());
+
+                    // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
+                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
+                    {
+                        image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
+                    }
+                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
+                    {
+                        image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
+                    }
+
+                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg");
+                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
+                }
+
+                if (Settings::getSettingsBool(SettingsConst::outputPng))
+                {
+                    if (Settings::getSettingsBool(SettingsConst::cbPercBassoPng))
+                    {
+                        percBasso = Settings::getSettingsInt(SettingsConst::percentualeBassoPng);
+                    }
+
+                    image.setNewImage("png");
+                    image.centerImage(Settings::getSettingsInt(SettingsConst::ratioHeightPng),
+                                      Settings::getSettingsInt(SettingsConst::ratioWidthPng),
+                                      Settings::getSettingsInt(SettingsConst::percAumento),
+                                      percBasso,
+                                      ui->tolleranza->value());
+
+                    // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
+                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
+                    {
+                        image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
+                    }
+                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
+                    {
+                        image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
+                    }
+
+                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".png");
+                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
+                }
+
+                if (Settings::getSettingsBool(SettingsConst::outputWebp))
+                {
+                    if (Settings::getSettingsBool(SettingsConst::cbPercBassoWebp))
+                    {
+                        percBasso = Settings::getSettingsInt(SettingsConst::percentualeBassoWebp);
+                    }
+
+                    image.setNewImage("webp");
+                    image.centerImage(Settings::getSettingsInt(SettingsConst::ratioHeightWebp),
+                                      Settings::getSettingsInt(SettingsConst::ratioWidthWebp),
+                                      Settings::getSettingsInt(SettingsConst::percAumento),
+                                      percBasso,
+                                      ui->tolleranza->value());
+
+                    // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
+                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
+                    {
+                        image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
+                    }
+                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
+                    {
+                        image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
+                    }
+
+                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".webp");
+                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
+                }
+
             }
-            else
-            {
-                Logger::addLog("Save image in " + imageOutputFormat + " format with quality: 100");
-                image.saveNewImage(newFilename);
-            }
-            QFile newFile(newFilename);
-            ui->contenutoCartella->aggiornaSingoloFile(QFileInfo(newFile) , image.getNewImage() , i );
         }
     }
-    ui->contenutoCartella->tableResize();
+
+    //Elimino la cartella temp
+    QDir tempDirectory(ui->directory->text() + "/temp");
+    tempDirectory.removeRecursively();
+
+    ui->contenutoCartella->aggiornaLista(ui->directory->text());
 }
 
 //-------------------------------------------------------------------------------------------------------------//
@@ -596,7 +657,6 @@ void MainWindow::closeEvent(QCloseEvent *)
     Settings::setSettings(SettingsConst::confrontoBianco, ui->confrontoBianco->value());
     Settings::setSettings(SettingsConst::latoMinMD, ui->latoMinMD->value());
     Settings::setSettings(SettingsConst::dimMinFileSpinBox, ui->dimMinFileSpinBox->value());
-    Settings::setSettings(SettingsConst::allineaBasso, ui->allineaBasso->isChecked());
     Settings::setSettings(SettingsConst::centraRiquadra, ui->centraRiquadra->isChecked());
     Settings::setSettings(SettingsConst::changeImageFormat, ui->changeImageFormat->isChecked());
 
@@ -613,7 +673,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->trasformaImmagini);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox);
     resizeWindow->moveWidgetY(ui->changeImageFormat);
-    resizeWindow->moveWidgetY(ui->allineaBasso);
 
     resizeWindow->moveWidgetY(ui->label_5);
     resizeWindow->moveWidgetY(ui->refreshCrediti);
@@ -731,8 +790,6 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->fileOutputRemoveBG);
     resizeWindow->setObjectGeometry(ui->removeBg);
     resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox_2);
-    resizeWindow->setObjectGeometry(ui->allineaBasso);
-
 }
 
 //-----------------------------------------------------------------------------------------------------//
