@@ -45,6 +45,7 @@ Options::Options(QWidget *parent) :
     ui->percentualeBassoPng->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoPng));
     ui->cbPercBassoWebp->setChecked(Settings::getSettingsBool(SettingsConst::cbPercBassoWebp));
     ui->percentualeBassoWebp->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoWebp));
+    ui->saveImageFolders->setChecked(Settings::getSettingsBool(SettingsConst::saveImageFolders));
 
     // Remove BG
     SimpleCrypt crypt(SettingsConst::simpleCryptKey);
@@ -110,6 +111,7 @@ void Options::on_saveSettings_clicked()
     Settings::setSettings(SettingsConst::percentualeBassoPng, ui->percentualeBassoPng->value());
     Settings::setSettings(SettingsConst::cbPercBassoWebp, ui->cbPercBassoWebp->isChecked());
     Settings::setSettings(SettingsConst::percentualeBassoWebp, ui->percentualeBassoWebp->value());
+    Settings::setSettings(SettingsConst::saveImageFolders, ui->saveImageFolders->isChecked());
 
     // Remove BG
     SimpleCrypt crypt(SettingsConst::simpleCryptKey);
