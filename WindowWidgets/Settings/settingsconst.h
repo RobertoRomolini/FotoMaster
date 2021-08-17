@@ -8,6 +8,8 @@ class SettingsConst
 public:
     SettingsConst();
 
+    static const quint64 simpleCryptKey;
+
     static const QString directoryBackup;
     static const QString directoryMemory;
     static const QString percAumento;
@@ -26,7 +28,6 @@ public:
     static const QString removeBgImageSize;
     static const QString changeImageFormat;
     static const QString centraRiquadra;
-
     static const QString ratioWidthJpg;
     static const QString ratioHeightJpg;
     static const QString ratioWidthPng;
@@ -46,6 +47,11 @@ public:
     static const QString cbPercBassoPng;
     static const QString percentualeBassoWebp;
     static const QString cbPercBassoWebp;
+    static const QString removeBgFormatJpg;
+    static const QString removeBgFormatPng;
+    static const QString removeBgFormatZip;
+    static const QString removeBgImageFormat;
+
 
 
 

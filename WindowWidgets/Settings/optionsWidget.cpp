@@ -47,19 +47,14 @@ Options::Options(QWidget *parent) :
     ui->percentualeBassoWebp->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoWebp));
 
     // Remove BG
-    ui->apiKeyRemoveBG->setText(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG));
+    SimpleCrypt crypt(SettingsConst::simpleCryptKey);
+    ui->apiKeyRemoveBG->setText(crypt.decryptToString(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG)));
     ui->urlRemoveBG->setText(Settings::getSettingsString(SettingsConst::urlRemoveBG));
     ui->radioButtonSizePreview->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonSizePreview));
     ui->radioButtonSizeFull->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonSizeFull));
-
-
-
-    // FIXME
-    SimpleCrypt crypt(3456345634645234);
-    QString pippo("ciao");
-    QString ciccio = crypt.encryptToString(pippo);
-    qDebug () << ciccio;
-    qDebug () << crypt.decryptToString(ciccio);
+    ui->removeBgFormatJpg->setChecked(Settings::getSettingsBool(SettingsConst::removeBgFormatJpg));
+    ui->removeBgFormatPng->setChecked(Settings::getSettingsBool(SettingsConst::removeBgFormatPng));
+    ui->removeBgFormatZip->setChecked(Settings::getSettingsBool(SettingsConst::removeBgFormatZip));
 }
 
 Options::~Options()
@@ -117,11 +112,16 @@ void Options::on_saveSettings_clicked()
     Settings::setSettings(SettingsConst::percentualeBassoWebp, ui->percentualeBassoWebp->value());
 
     // Remove BG
-    Settings::setSettings(SettingsConst::apiKeyRemoveBG, ui->apiKeyRemoveBG->text());
+    SimpleCrypt crypt(SettingsConst::simpleCryptKey);
+    Settings::setSettings(SettingsConst::apiKeyRemoveBG, crypt.encryptToString(ui->apiKeyRemoveBG->text()));
     Settings::setSettings(SettingsConst::urlRemoveBG, ui->urlRemoveBG->text());
     Settings::setSettings(SettingsConst::removeBgImageSize, ui->removeBgImageSize->checkedButton()->text());
     Settings::setSettings(SettingsConst::radioButtonSizePreview, ui->radioButtonSizePreview->isChecked());
     Settings::setSettings(SettingsConst::radioButtonSizeFull, ui->radioButtonSizeFull->isChecked());
+    Settings::setSettings(SettingsConst::removeBgFormatJpg, ui->removeBgFormatJpg->isChecked());
+    Settings::setSettings(SettingsConst::removeBgFormatPng, ui->removeBgFormatPng->isChecked());
+    Settings::setSettings(SettingsConst::removeBgFormatZip, ui->removeBgFormatZip->isChecked());
+    Settings::setSettings(SettingsConst::removeBgImageFormat, ui->removeBgImageFormat->checkedButton()->text());
 
     this->close();
 }

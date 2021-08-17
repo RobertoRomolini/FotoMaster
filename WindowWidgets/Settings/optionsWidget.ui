@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -1604,6 +1604,72 @@ border-radius: 5px;</string>
       <string notr="true">removeBgImageSize</string>
      </attribute>
     </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Formato immagine</string>
+     </property>
+    </widget>
+    <widget class="QRadioButtonCustom" name="removeBgFormatJpg">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>120</y>
+       <width>41</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>jpg</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">removeBgImageFormat</string>
+     </attribute>
+    </widget>
+    <widget class="QRadioButtonCustom" name="removeBgFormatPng">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>120</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>png</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">removeBgImageFormat</string>
+     </attribute>
+    </widget>
+    <widget class="QRadioButtonCustom" name="removeBgFormatZip">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>120</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>zip</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">removeBgImageFormat</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QPushButtonBlue" name="reset_settings">
@@ -1650,7 +1716,7 @@ border-radius: 5px;</string>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="imageOutputFormat"/>
   <buttongroup name="removeBgImageSize"/>
+  <buttongroup name="removeBgImageFormat"/>
  </buttongroups>
 </ui>
