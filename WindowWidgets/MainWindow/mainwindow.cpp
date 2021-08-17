@@ -360,7 +360,6 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
     QFileInfo fileInfo(absoluthFilePath);
 
     QByteArray data (reply->readAll());
-    qDebug () << reply;
 
     //Sposto i file nella cartella "originali" se non ci sono errori
     if (reply->error() == 0)
@@ -399,8 +398,6 @@ void MainWindow::chiamataCreditiRemoveBg()
 
 void MainWindow::rispostaCreditiRemoveBg(QNetworkReply *reply)
 {
-
-    qDebug () << reply;
     QJsonDocument jsonResponse = QJsonDocument::fromJson(reply->readAll());
     QJsonObject jsonObject = jsonResponse.object();
 

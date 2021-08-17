@@ -21,12 +21,12 @@ SHORT QImgOrient::orientation(QString fname)
     ULONG_PTR gdiplusToken;
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
     Image* image = Image::FromFile(fname.toStdWString().c_str());
-    UINT size = 0;
-    UINT    count = 0;
+    unsigned int size = 0;
+    unsigned int count = 0;
     image->GetPropertySize(&size, &count);
     PropertyItem* properties = (PropertyItem*)malloc(size);
     image->GetAllPropertyItems(size, count, properties);
-    for(int i=0; i<count; i++)
+    for(unsigned int i=0; i<count; i++)
     {
         if(properties[i].id == PropertyTagOrientation)
             result = *((SHORT*)(properties[i].value));
