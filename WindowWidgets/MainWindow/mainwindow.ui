@@ -1063,7 +1063,7 @@ QSpinBox::down-button:hover
    <widget class="QRadioButtonCustom" name="centraRiquadra">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>210</x>
       <y>583</y>
       <width>151</width>
       <height>20</height>
@@ -1090,7 +1090,7 @@ QSpinBox::down-button:hover
    <widget class="QRadioButtonCustom" name="changeImageFormat">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>50</x>
       <y>583</y>
       <width>151</width>
       <height>20</height>
@@ -1197,62 +1197,6 @@ border-radius: 5px;</string>
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QComboBox" name="fileOutputRemoveBG">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>633</y>
-      <width>61</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Helvetica</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QComboBox
-{
-	background-color: rgb(245, 245, 245);
-	border: 1px solid black;
-	border-radius: 5px;
-	font: 10pt 'Helvetica';
-}
-
-QComboBox::drop-down 
-{
-    border: 0px; /* This seems to replace the whole arrow of the combo box */
-}
-
-QComboBox::down-arrow
-{
-    border-image: url(:/Files/Files/down.png);
-	background-color: rgb(245, 245, 245);
-width: 15px;
-margin-right: 7px;
-}</string>
-    </property>
-    <item>
-     <property name="text">
-      <string>jpg</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>png</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>zip</string>
-     </property>
-    </item>
-   </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
@@ -1356,7 +1300,6 @@ margin-right: 7px;
    <zorder>changeImageFormat</zorder>
    <zorder>trasformaImmaginiBox_2</zorder>
    <zorder>removeBg</zorder>
-   <zorder>fileOutputRemoveBG</zorder>
    <zorder>label_5</zorder>
    <zorder>creditiRimanenti</zorder>
    <zorder>refreshCrediti</zorder>
