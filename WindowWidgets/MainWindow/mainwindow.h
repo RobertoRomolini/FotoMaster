@@ -64,6 +64,9 @@ private:
     // Metodo per trasformare le immagini
     void trasformaImmagini(QString outputFormat, QFileInfo tempFile, int ratioHeight, int ratioWidth, int quality, QString hexColorBg = nullptr);
 
+    // Controlla lato immagine
+    ImageProcessor checkSideSize(ImageProcessor image);
+
 private slots:
     //Azionano la sostituzione dei nomi dei file
     void on_annullaModifiche_clicked();

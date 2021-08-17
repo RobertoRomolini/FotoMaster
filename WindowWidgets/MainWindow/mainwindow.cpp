@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <Tools/simplecrypt.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -297,7 +299,7 @@ void MainWindow::chiamataRemoveBg()
 
                     QHttpPart format;
                     format.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"format\""));
-                    format.setBody(ui->fileOutputRemoveBG->currentText().toUtf8());
+                    format.setBody(Settings::getSettingsString(SettingsConst::removeBgImageFormat).toUtf8());
 
                     QHttpPart size;
                     size.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"size\""));
@@ -318,10 +320,10 @@ void MainWindow::chiamataRemoveBg()
                     multiPart->append(format);
                     multiPart->append(imagePart);
 
+                    SimpleCrypt crypt(SettingsConst::simpleCryptKey);
                     QNetworkRequest request;
                     request.setUrl(QUrl(Settings::getSettingsString(SettingsConst::urlRemoveBG)));
-                    request.setRawHeader("X-Api-Key", Settings::getSettingsString(SettingsConst::apiKeyRemoveBG).toUtf8());
-
+                    request.setRawHeader("X-Api-Key", crypt.decryptToString(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG)).toUtf8());
 
                     QNetworkReply *reply = manager->post(request , multiPart);
 
@@ -350,11 +352,7 @@ void MainWindow::chiamataRemoveBg()
             //Aggiorno la tabella una volta finito
             ui->contenutoCartella->aggiornaLista(ui->directory->text());
         }
-
     }
-
-
-
 }
 
 void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePath)
@@ -370,9 +368,9 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
         QFile::rename(absoluthFilePath  , ui->directory->text() + "/originali/" +fileInfo.fileName());
     }
 
-    if (ui->fileOutputRemoveBG->currentText().toUtf8() == "zip")
+    if (Settings::getSettingsString(SettingsConst::removeBgImageFormat).toUtf8() == "zip")
     {
-        QFile file (ui->directory->text() + "/" + fileInfo.completeBaseName() +"." + ui->fileOutputRemoveBG->currentText().toUtf8());
+        QFile file (ui->directory->text() + "/" + fileInfo.completeBaseName() +".zip");
         file.open(QIODevice::WriteOnly);
         file.write(data);
         file.flush();
@@ -382,7 +380,7 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
     {
         QPixmap img;
         img.loadFromData(data);
-        img.save(ui->directory->text() + "/" + fileInfo.completeBaseName() +"." + ui->fileOutputRemoveBG->currentText().toUtf8() );
+        img.save(ui->directory->text() + "/" + fileInfo.completeBaseName() +"." + Settings::getSettingsString(SettingsConst::removeBgImageFormat).toUtf8() );
     }
     manager->disconnect();
     reply->deleteLater();
@@ -390,13 +388,13 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
 
 void MainWindow::chiamataCreditiRemoveBg()
 {
+    SimpleCrypt crypt(SettingsConst::simpleCryptKey);
     QNetworkRequest request;
     request.setUrl(QUrl("https://api.remove.bg/v1.0/account"));
-    request.setRawHeader("X-Api-Key", Settings::getSettingsString(SettingsConst::apiKeyRemoveBG).toUtf8());
+    request.setRawHeader("X-Api-Key", crypt.decryptToString(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG)).toUtf8());
 
     connect(managerCrediti, &QNetworkAccessManager::finished, this, &MainWindow::rispostaCreditiRemoveBg);
     managerCrediti->get(request);
-
 }
 
 void MainWindow::rispostaCreditiRemoveBg(QNetworkReply *reply)
@@ -411,7 +409,6 @@ void MainWindow::rispostaCreditiRemoveBg(QNetworkReply *reply)
     managerCrediti->disconnect();
     reply->deleteLater();
 }
-
 
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 //
@@ -567,15 +564,7 @@ void MainWindow::on_trasformaImmagini_clicked()
                                       percBasso,
                                       ui->tolleranza->value());
 
-                    // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
-                    {
-                        image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
-                    }
-                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
-                    {
-                        image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
-                    }
+                    image = this->checkSideSize(image);
 
                     QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg");
                     image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
@@ -595,15 +584,7 @@ void MainWindow::on_trasformaImmagini_clicked()
                                       percBasso,
                                       ui->tolleranza->value());
 
-                    // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
-                    {
-                        image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
-                    }
-                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
-                    {
-                        image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
-                    }
+                    image = this->checkSideSize(image);
 
                     QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".png");
                     image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
@@ -623,15 +604,7 @@ void MainWindow::on_trasformaImmagini_clicked()
                                       percBasso,
                                       ui->tolleranza->value());
 
-                    // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
-                    {
-                        image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
-                    }
-                    if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
-                    {
-                        image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
-                    }
+                    image = this->checkSideSize(image);
 
                     QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".webp");
                     image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
@@ -648,6 +621,21 @@ void MainWindow::on_trasformaImmagini_clicked()
     ui->contenutoCartella->aggiornaLista(ui->directory->text());
 }
 
+ImageProcessor MainWindow::checkSideSize(ImageProcessor image)
+{
+    // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
+    if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
+    {
+        image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
+    }
+    if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
+    {
+        image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
+    }
+
+    return image;
+}
+
 //-------------------------------------------------------------------------------------------------------------//
 //                                         Overrided methods
 //-------------------------------------------------------------------------------------------------------------//
@@ -659,7 +647,6 @@ void MainWindow::closeEvent(QCloseEvent *)
     Settings::setSettings(SettingsConst::dimMinFileSpinBox, ui->dimMinFileSpinBox->value());
     Settings::setSettings(SettingsConst::centraRiquadra, ui->centraRiquadra->isChecked());
     Settings::setSettings(SettingsConst::changeImageFormat, ui->changeImageFormat->isChecked());
-
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -673,11 +660,9 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->trasformaImmagini);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox);
     resizeWindow->moveWidgetY(ui->changeImageFormat);
-
     resizeWindow->moveWidgetY(ui->label_5);
     resizeWindow->moveWidgetY(ui->refreshCrediti);
     resizeWindow->moveWidgetY(ui->creditiRimanenti);
-    resizeWindow->moveWidgetY(ui->fileOutputRemoveBG);
     resizeWindow->moveWidgetY(ui->removeBg);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox_2);
 
@@ -730,7 +715,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     //Resize Width
     resizeWindow->resizeWidgetX(ui->directory);
-
 
     ui->contenutoCartella->tableResize();
 }
@@ -787,7 +771,6 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->label_5);
     resizeWindow->setObjectGeometry(ui->refreshCrediti);
     resizeWindow->setObjectGeometry(ui->creditiRimanenti);
-    resizeWindow->setObjectGeometry(ui->fileOutputRemoveBG);
     resizeWindow->setObjectGeometry(ui->removeBg);
     resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox_2);
 }
@@ -929,14 +912,12 @@ void MainWindow::on_contenutoCartella_itemDoubleClicked(QTableWidgetItem *item)
 
 void MainWindow::on_selezionaTutto_stateChanged(int state)
 {
-
     ui->percentualeBianco->setChecked(state);
     ui->mostraDimensione->setChecked(state);
     ui->dimensioneFile->setChecked(state);
     ui->mostraImmagini->setChecked(state);
     ui->sfondoBianco->setChecked(state);
     ui->immaginiQuadrate->setChecked(state);
-
 }
 
 //--------------------------------------------------------------------------------------------------------------//
