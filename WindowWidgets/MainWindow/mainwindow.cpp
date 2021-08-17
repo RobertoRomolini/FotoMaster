@@ -26,38 +26,20 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon indietro (":/Files/Files/indietro.png");
     ui->indietroDirectory->setIcon(indietro);
     ui->indietroDirectory->setIconSize(QSize(22, 22));
-    QIcon backupIcon (":/Files/Files/backupFolder.png");
-    ui->backupFolder->setIcon(backupIcon);
-    ui->backupFolder->setIconSize(QSize(22, 22));
+    QIcon backupIcon (":/Files/Files/settings.png");
+    ui->settingsButton->setIcon(backupIcon);
+    ui->settingsButton->setIconSize(QSize(22, 22));
     QIcon refreshRemoveBgIcon (":/Files/Files/refreshIcon.png");
     ui->refreshCrediti->setIcon(refreshRemoveBgIcon);
     ui->refreshCrediti->setIconSize(QSize(18, 18));
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //
-    //                                           Crea le cartelle di sistema e verifica che la cartella di backup non superi i 200 MB
+    //                                           Crea le cartelle di sistema
     //
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     QDir dirTemp (qApp->applicationDirPath() + "/temp/");
-    QDir dirBackup (qApp->applicationDirPath() + "/backup/");
-    QFileInfoList list = dirBackup.entryInfoList();
-    long int sizex = 0;
-    for(int i = 0; i < list.size(); ++i)
-    {
-        QFileInfo fileInfo = list.at(i);
-        if ( fileInfo.fileName() != "." && fileInfo.fileName() != ".." )
-        {
-            sizex +=  fileInfo.size();
-        }
-    }
-    if ( sizex > 200000000 )
-    {
-        dirBackup.removeRecursively();
-    }
-    qDebug () << "La dimensione della cartella Backup è: " << sizex/1000000 << " Megabytes";
     if (!dirTemp.exists())
         dirTemp.mkpath(qApp->applicationDirPath() + "/temp/");
-    if (!dirBackup.exists())
-        dirBackup.mkpath(qApp->applicationDirPath() + "/backup/");
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //
@@ -265,9 +247,9 @@ void MainWindow::chiamataRemoveBg()
         if ( ret == 0)
         {
             //Creo la cartella originali se non esiste
-            if (! QDir(ui->directory->text() + "/originali").exists())
+            if (! QDir(ui->directory->text() + "/originali_remove_bg").exists())
             {
-                QDir().mkpath(ui->directory->text() + "/originali" );
+                QDir().mkpath(ui->directory->text() + "/originali_remove_bg" );
             }
 
             //Creo la cartella temporanea di appoggio dei file
@@ -364,7 +346,7 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
     //Sposto i file nella cartella "originali" se non ci sono errori
     if (reply->error() == 0)
     {
-        QFile::rename(absoluthFilePath  , ui->directory->text() + "/originali/" +fileInfo.fileName());
+        QFile::rename(absoluthFilePath  , ui->directory->text() + "/originali_remove_bg/" +fileInfo.fileName());
     }
 
     if (Settings::getSettingsString(SettingsConst::removeBgImageFormat).toUtf8() == "zip")
@@ -463,13 +445,13 @@ void MainWindow::restoreSettings()
 {
     ui->tolleranza->setValue(15);
     ui->confrontoBianco->setValue( 50);
-    ui->latoMinMD->setValue( 600);
+    ui->latoMinMD->setValue(600);
     ui->dimMinFileSpinBox->setValue(500);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 //
-//                                          Modifica l'immagine riquadrandola o salvandola in jpeg in base alle spunte inserite
+//                                                      Modifica l'immagine riquadrandola
 //
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -490,6 +472,30 @@ void MainWindow::on_trasformaImmagini_clicked()
     if (! QDir(ui->directory->text() + "/temp").exists())
     {
         QDir().mkpath(ui->directory->text() + "/temp" );
+    }
+
+    //Creo la cartella di nackup
+    if (! QDir(ui->directory->text() + "/originali_foto_master").exists())
+    {
+        QDir().mkpath(ui->directory->text() + "/originali_foto_master" );
+    }
+
+    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+    {
+        if (!QDir(ui->directory->text() + "/jpg").exists() && Settings::getSettingsBool(SettingsConst::outputJpg))
+        {
+            QDir().mkpath(ui->directory->text() + "/jpg" );
+        }
+
+        if (!QDir(ui->directory->text() + "/png").exists() && Settings::getSettingsBool(SettingsConst::outputPng))
+        {
+            QDir().mkpath(ui->directory->text() + "/png" );
+        }
+
+        if (!QDir(ui->directory->text() + "/webp").exists() && Settings::getSettingsBool(SettingsConst::outputWebp))
+        {
+            QDir().mkpath(ui->directory->text() + "/webp" );
+        }
     }
 
     for ( int i=0 ; i < fileList.size() ; i++ )
@@ -514,31 +520,46 @@ void MainWindow::on_trasformaImmagini_clicked()
 
             image.fixOrientationImage();
 
-            image.saveImage(qApp->applicationDirPath() + "/backup/" + fileList.at(i).fileName(), 100);
+            image.saveImage(ui->directory->text() + "/originali_foto_master/" + fileList.at(i).fileName(), 100);
+
+            QString newBasename(ui->directory->text() + "/" + fileList.at(i).completeBaseName());
 
             if (ui->changeImageFormat->isChecked())
             {
                 Logger::addLog("'Trasforma' is checked");
+
                 if (Settings::getSettingsBool(SettingsConst::outputJpg))
                 {
                     image.setNewImage("jpg");
                     image.modifyImageFormat();
-                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg");
-                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
+                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    {
+                        newBasename = ui->directory->text() + "/jpg/" + fileList.at(i).completeBaseName();
+                    }
+
+                    image.saveNewImage(newBasename + ".jpg", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
                 }
                 if (Settings::getSettingsBool(SettingsConst::outputPng))
                 {
                     image.setNewImage("png");
                     image.modifyImageFormat();
-                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".png");
-                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
+                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    {
+                        newBasename = ui->directory->text() + "/png/" + fileList.at(i).completeBaseName();
+                    }
+
+                    image.saveNewImage(newBasename + ".png", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
                 }
                 if (Settings::getSettingsBool(SettingsConst::outputWebp))
                 {
                     image.setNewImage("webp");
                     image.modifyImageFormat();
-                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".webp");
-                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
+                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    {
+                        newBasename = ui->directory->text() + "/webp/" + fileList.at(i).completeBaseName();
+                    }
+
+                    image.saveNewImage(newBasename + ".webp", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
                 }
             }
             else if (ui->centraRiquadra->isChecked())
@@ -563,8 +584,12 @@ void MainWindow::on_trasformaImmagini_clicked()
 
                     image = this->checkSideSize(image);
 
-                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".jpg");
-                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
+                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    {
+                        newBasename = ui->directory->text() + "/jpg/" + fileList.at(i).completeBaseName();
+                    }
+
+                    image.saveNewImage(newBasename + ".jpg", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
                 }
 
                 if (Settings::getSettingsBool(SettingsConst::outputPng))
@@ -583,8 +608,12 @@ void MainWindow::on_trasformaImmagini_clicked()
 
                     image = this->checkSideSize(image);
 
-                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".png");
-                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
+                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    {
+                        newBasename = ui->directory->text() + "/png/" + fileList.at(i).completeBaseName();
+                    }
+
+                    image.saveNewImage(newBasename + ".png", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
                 }
 
                 if (Settings::getSettingsBool(SettingsConst::outputWebp))
@@ -603,8 +632,12 @@ void MainWindow::on_trasformaImmagini_clicked()
 
                     image = this->checkSideSize(image);
 
-                    QString newFilename(ui->directory->text() + "/" + fileList.at(i).completeBaseName() + ".webp");
-                    image.saveNewImage(newFilename, Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
+                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    {
+                        newBasename = ui->directory->text() + "/webp/" + fileList.at(i).completeBaseName();
+                    }
+
+                    image.saveNewImage(newBasename + ".webp", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
                 }
 
             }
@@ -667,7 +700,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->selezionaDeseleziona);
     resizeWindow->moveWidgetX(ui->indietroDirectory);
     resizeWindow->moveWidgetX(ui->scegliCartella);
-    resizeWindow->moveWidgetX(ui->backupFolder);
+    resizeWindow->moveWidgetX(ui->settingsButton);
     resizeWindow->moveWidgetX(ui->sostituisci1);
     resizeWindow->moveWidgetX(ui->sostituisci2);
     resizeWindow->moveWidgetX(ui->sostituisci3);
@@ -723,7 +756,7 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->indietroDirectory);
     resizeWindow->setObjectGeometry(ui->selezionaDeseleziona);
     resizeWindow->setObjectGeometry(ui->directory);
-    resizeWindow->setObjectGeometry(ui->backupFolder);
+    resizeWindow->setObjectGeometry(ui->settingsButton);
     resizeWindow->setObjectGeometry(ui->sostituisci1);
     resizeWindow->setObjectGeometry(ui->sostituisci2);
     resizeWindow->setObjectGeometry(ui->sostituisci3);
@@ -856,10 +889,9 @@ void MainWindow::on_scegliCartella_clicked()
 //                                                          Apre la cartella di backup
 //--------------------------------------------------------------------------------------------------------------//
 
-void MainWindow::on_backupFolder_clicked()
+void MainWindow::on_settingsButton_clicked()
 {
-
-    QDesktopServices::openUrl(QUrl::fromLocalFile(qApp->applicationDirPath() + "/backup"));
+    options->exec();
 }
 
 //--------------------------------------------------------------------------------------------------------------//

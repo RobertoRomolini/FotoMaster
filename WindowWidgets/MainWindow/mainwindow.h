@@ -94,7 +94,7 @@ private slots:
     void on_aggiorna_clicked();
 
     //Apre la cartella di backup
-    void on_backupFolder_clicked();
+    void on_settingsButton_clicked();
 
 
 
