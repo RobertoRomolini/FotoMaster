@@ -191,7 +191,6 @@ void ImageProcessor::centerImage(double ratioHeight, double ratioWidth, int perc
     }
     else
     {
-
         int newWidth = image.width() - left - right;
         int newHeight = image.height() - top - bottom;
         QRect rect (left , top , newWidth , newHeight);
@@ -225,7 +224,7 @@ void ImageProcessor::centerImage(double ratioHeight, double ratioWidth, int perc
                 double bottomValue = percentualeBasso/100;
                 int x = (newWidthIncreased - newWidth)/2;
                 int y = newWidthIncreased * ratio - newHeight - newWidthIncreased * ratio * bottomValue;
-                if (y > 0)
+                if (y > 10)
                 {
                     newImage = newImage.scaled(newWidthIncreased, newWidthIncreased * ratio, Qt::IgnoreAspectRatio);
                     painter.begin(&newImage);
