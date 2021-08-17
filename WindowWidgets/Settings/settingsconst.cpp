@@ -45,6 +45,9 @@ const QString SettingsConst::removeBgFormatJpg = "removeBgFormatJpg";
 const QString SettingsConst::removeBgFormatPng = "removeBgFormatPng";
 const QString SettingsConst::removeBgFormatZip = "removeBgFormatZip";
 const QString SettingsConst::removeBgImageFormat = "removeBgImageFormat";
+const QString SettingsConst::saveImageFolders = "saveImageFolders";
+
+
 
 
 

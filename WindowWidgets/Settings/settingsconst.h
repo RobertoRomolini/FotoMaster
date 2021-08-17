@@ -51,6 +51,7 @@ public:
     static const QString removeBgFormatPng;
     static const QString removeBgFormatZip;
     static const QString removeBgImageFormat;
+    static const QString saveImageFolders;
 
 
 
