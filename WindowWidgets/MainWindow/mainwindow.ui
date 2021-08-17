@@ -598,7 +598,7 @@ border-radius: 5px;</string>
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButtonBlue" name="backupFolder">
+   <widget class="QPushButtonBlue" name="settingsButton">
     <property name="geometry">
      <rect>
       <x>900</x>
@@ -1295,7 +1295,7 @@ border-radius: 5px;</string>
    <zorder>trasformaImmagini</zorder>
    <zorder>opzioniTabellaLine</zorder>
    <zorder>selezionaDeseleziona</zorder>
-   <zorder>backupFolder</zorder>
+   <zorder>settingsButton</zorder>
    <zorder>selezionaTutto</zorder>
    <zorder>changeImageFormat</zorder>
    <zorder>trasformaImmaginiBox_2</zorder>

@@ -17,5 +17,6 @@
         <file>Files/up.png</file>
         <file>Files/refreshIcon.png</file>
         <file>Files/whiteImage.jpg</file>
+        <file>Files/settings.png</file>
     </qresource>
 </RCC>
