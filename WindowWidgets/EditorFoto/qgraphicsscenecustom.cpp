@@ -2,25 +2,24 @@
 
 QGraphicsSceneCustom::QGraphicsSceneCustom (QWidget *parent) : QGraphicsScene(parent)
 {
-    temporaryImage = 0;
 
 }
 
 void QGraphicsSceneCustom::loadImage(QString fileName , int heightGraphicsView , QDoubleSpinBox *zoomPercentage)
 {
-    QFile copyFile (fileName);
-    copyFile.copy(  qApp->applicationDirPath() + "/temp/temporaryImage/"  + QString (QString::number(temporaryImage)) + ".jpg");
+    this->fileName = fileName;
     image.load (fileName);
     pixmapItem = new QGraphicsPixmapItem (addPixmap(QPixmap::fromImage(image)));
     double hGraph (heightGraphicsView);
     double hPixmap (image.height());
     zoomPercentage->setValue(100* hGraph /  hPixmap);
     setSceneRect(0,0,image.width(),image.height());
+    backupImages.append(image);
 }
 
 void QGraphicsSceneCustom::saveClose(QString fileName)
 {
-    if ( temporaryImage > 0 )
+    if (!isSaved)
     {
         QMessageBox deleteConfirm;
         deleteConfirm.setText("Sei sicuro di voler uscire senza salvare?          ");
@@ -37,27 +36,14 @@ void QGraphicsSceneCustom::saveClose(QString fileName)
 void QGraphicsSceneCustom::save(QString fileName)
 {
     image.save(fileName, 0 , 90 );
+    isSaved = true;
 }
 
 void QGraphicsSceneCustom::undo()
 {
-    if ( temporaryImage > 0 )
-    {
-        temporaryImage--;
-        image.load(qApp->applicationDirPath() + "/temp/temporaryImage/" + QString (QString::number(temporaryImage)) + ".jpg");
-        pixmapItem = (addPixmap(QPixmap::fromImage(image)));
-        QFile deleteFile (qApp->applicationDirPath() + "/temp/temporaryImage/" + QString (QString::number(temporaryImage + 1)) + ".jpg");
-        deleteFile.remove();
-    }
-}
-
-void QGraphicsSceneCustom::saveImageUndo()
-{
-    if ( mousePosPress.x() >= 0 && mousePosPress.x() <= width() && mousePosPress.y() >= 0 && mousePosPress.y() <= height())
-    {
-        temporaryImage++;
-        image.save( qApp->applicationDirPath() + "/temp/temporaryImage/" + QString (QString::number(temporaryImage)) + ".jpg", 0 , 90 );
-    }
+    isSaved = false;
+    image = this->getLastImageBackupImage();
+    pixmapItem = (addPixmap(QPixmap::fromImage(this->getLastImageBackupImage())));
 }
 
 void QGraphicsSceneCustom::selectedPixelColor(QLabel *label)
@@ -67,6 +53,7 @@ void QGraphicsSceneCustom::selectedPixelColor(QLabel *label)
 
 void QGraphicsSceneCustom::changePixelColor(QColor colorFound , QColor colorRepleace , int tolerance)
 {
+    this->saveImageUndo();
     for ( int i=0 ; i<image.width() ; i++ )
     {
         for ( int j=0 ; j<image.height(); j++ )
@@ -81,15 +68,15 @@ void QGraphicsSceneCustom::changePixelColor(QColor colorFound , QColor colorRepl
             }
         }
     }
-    temporaryImage++;
-    image.save( qApp->applicationDirPath() + "/temp/temporaryImage/" + QString (QString::number(temporaryImage)) + ".jpg", 0 , 90 );
+
     clear();
     pixmapItem = (addPixmap(QPixmap::fromImage(image)));
 }
 
 void QGraphicsSceneCustom::restoreImageClick(double dimension)
 {
-    QPixmap pix = QPixmap ("D:/Desktop/4 - Copy/scontornata.jpg").copy(mousePosPress.x()- dimension/2, mousePosPress.y()- dimension/2 , dimension , dimension);
+    this->saveImageUndo();
+    QPixmap pix = QPixmap (this->fileName).copy(mousePosPress.x()- dimension/2, mousePosPress.y()- dimension/2 , dimension , dimension);
     QPainterPath path;
     painter.begin(&image);
     painter.setRenderHint( QPainter::Antialiasing );
@@ -103,7 +90,8 @@ void QGraphicsSceneCustom::restoreImageClick(double dimension)
 
 void QGraphicsSceneCustom::restoreImageMove(double dimension)
 {
-    QPixmap pix = QPixmap ("D:/Desktop/4 - Copy/scontornata.jpg").copy(mousePosMove.x()- dimension/2, mousePosMove.y()- dimension/2 , dimension , dimension);
+    this->saveImageUndo();
+    QPixmap pix = QPixmap (this->fileName).copy(mousePosMove.x()- dimension/2, mousePosMove.y()- dimension/2 , dimension , dimension);
     QPainterPath path;
     painter.begin(&image);
     painter.setRenderHint( QPainter::Antialiasing );
@@ -117,6 +105,7 @@ void QGraphicsSceneCustom::restoreImageMove(double dimension)
 
 void QGraphicsSceneCustom::eraserLine( double dimension)
 {
+    this->saveImageUndo();
     QPen pen(Qt::white , dimension , Qt::SolidLine , Qt::RoundCap , Qt::RoundJoin);
     painter.begin(&image);
     painter.setRenderHint( QPainter::Antialiasing );
@@ -129,6 +118,7 @@ void QGraphicsSceneCustom::eraserLine( double dimension)
 
 void QGraphicsSceneCustom::eraserPoint(double dimension)
 {
+    this->saveImageUndo();
     QPen pen(Qt::white , dimension , Qt::SolidLine , Qt::RoundCap , Qt::RoundJoin);
     painter.begin(&image);
     painter.setRenderHint( QPainter::Antialiasing );
@@ -141,6 +131,7 @@ void QGraphicsSceneCustom::eraserPoint(double dimension)
 
 void QGraphicsSceneCustom::eraserLinePointToPoint( double dimension)
 {
+    this->saveImageUndo();
     QPen pen(Qt::white , dimension , Qt::SolidLine , Qt::RoundCap , Qt::RoundJoin);
     painter.begin(&image);
     painter.setRenderHint( QPainter::Antialiasing );
@@ -154,6 +145,7 @@ void QGraphicsSceneCustom::eraserLinePointToPoint( double dimension)
 
 void QGraphicsSceneCustom::eraserLineGradient(double dimension , double gradient)
 {
+    this->saveImageUndo();
     QRadialGradient radial ( mousePosMove , dimension/2);
     radial.setColorAt( 0 ,Qt::white);
     radial.setColorAt( gradient ,Qt::white);
@@ -172,6 +164,7 @@ void QGraphicsSceneCustom::eraserLineGradient(double dimension , double gradient
 
 void QGraphicsSceneCustom::eraserPointGradient(double dimension, double gradient)
 {
+    this->saveImageUndo();
     QRadialGradient radial ( mousePosPress , dimension/2);
     radial.setColorAt( 0 ,Qt::white);
     radial.setColorAt( gradient ,Qt::white);
@@ -257,5 +250,28 @@ bool QGraphicsSceneCustom::event(QEvent *event)
         break;
     }
     return QGraphicsScene::event(event);
+}
+
+QImage QGraphicsSceneCustom::getLastImageBackupImage()
+{
+    if (!backupImages.isEmpty())
+    {
+        QImage lastImage = backupImages.last();
+        backupImages.removeLast();
+        return lastImage;
+    }
+
+    return this->image;
+}
+
+void QGraphicsSceneCustom::saveImageUndo()
+{
+    backupImages.append(image);
+    isSaved = false;
+}
+
+void QGraphicsSceneCustom::clearImageBackup()
+{
+    backupImages.clear();
 }
 

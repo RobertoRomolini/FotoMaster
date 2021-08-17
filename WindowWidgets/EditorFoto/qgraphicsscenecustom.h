@@ -26,21 +26,21 @@ public:
     void save(QString fileName);
     void saveClose(QString fileName);
     void undo();
-    void saveImageUndo();
     void selectedPixelColor (QLabel *label);
     void changePixelColor(QColor colorFound , QColor colorRepleace , int tolerance);
     void restoreImageClick (double dimension);
     void restoreImageMove(double dimension);
     void eraserLinePointToPoint( double dimension);
 
+    void saveImageUndo();
+    void clearImageBackup();
+    QImage getLastImageBackupImage();
+
 protected:
     virtual bool event(QEvent *event) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent  *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent  *event) override;
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent  *event) override;
-
-
-
 
 signals:
     void signalEnterMouse ();
@@ -55,9 +55,11 @@ signals:
     void shiftLeftButtonClick ();
 
 private:
+    QString fileName;
     QImage image;
     QPainter painter;
-    int temporaryImage;
+    bool isSaved;
+    QList<QImage> backupImages;
 };
 
 #endif // QGRAPHICSSCENECUSTOM_H

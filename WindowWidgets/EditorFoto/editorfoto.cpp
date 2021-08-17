@@ -42,12 +42,10 @@ EditorFoto::~EditorFoto()
 
 void EditorFoto::closeEvent (QCloseEvent *)
 {
-    QDir dirTemporary (qApp->applicationDirPath() + "/temp/temporaryImage/");
-    dirTemporary.removeRecursively();
     scene->saveClose(ui->nameImage->toolTip());
     scene->removeItem(scene->pixmapItem);
     scene->clear();
-
+    scene->clearImageBackup();
     emit closeWindow();
 }
 
@@ -68,11 +66,6 @@ void EditorFoto::changeLabel(QString labelText , QString toolTip)
     ui->nameImage->setText(labelText);
     ui->nameImage->setToolTip(toolTip);
     ui->nameImage->adjustSize();
-    QDir dirTemporary (qApp->applicationDirPath() + "/temp/temporaryImage/");
-    if (!dirTemporary.exists())
-    {
-        dirTemporary.mkpath(qApp->applicationDirPath() + "/temp/temporaryImage/");
-    }
     showImage();
 }
 //________________________________________________//
@@ -237,10 +230,7 @@ void EditorFoto::actionLeftButtonMove()
 
 void EditorFoto::actionLeftButtonReleased()
 {
-    if(ui->eraserButton->isChecked())
-    {
-        scene->saveImageUndo();
-    }
+
 }
 void EditorFoto::actionShiftLeftButtonClick()
 {
