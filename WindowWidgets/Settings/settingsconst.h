@@ -52,9 +52,7 @@ public:
     static const QString removeBgFormatZip;
     static const QString removeBgImageFormat;
     static const QString saveImageFolders;
-
-
-
+    static const QString changeImageFormatDropdown;
 
 };
 
