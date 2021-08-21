@@ -147,8 +147,8 @@ void Options::on_reset_settings_clicked()
     ui->ratioWidthWebp->setValue(2);
     ui->ratioHeightWebp->setValue(3);
     ui->qualitaSalvataggioJpg->setValue(85);
-    ui->qualitaSalvataggioPng->setValue(90);
-    ui->qualitaSalvataggioWebp->setValue(90);
+    ui->qualitaSalvataggioPng->setValue(85);
+    ui->qualitaSalvataggioWebp->setValue(85);
     ui->backgroundJpg->setText("ffffff");
     ui->percentualeBassoJpg->setValue(16);
     ui->percentualeBassoPng->setValue(16);

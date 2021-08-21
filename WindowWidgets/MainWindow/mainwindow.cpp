@@ -510,7 +510,7 @@ void MainWindow::on_trasformaImmagini_clicked()
 
             image.fixOrientationImage();
 
-            image.saveImage(ui->directory->text() + "/originali_foto_master/" + fileList.at(i).fileName(), 100);
+            image.saveImage(ui->directory->text() + "/originali_foto_master/" + fileList.at(i).fileName(), 85);
 
             QString newBasename(ui->directory->text() + "/" + fileList.at(i).completeBaseName());
 
@@ -523,7 +523,7 @@ void MainWindow::on_trasformaImmagini_clicked()
                 image.setNewImage(imageFormat);
                 image.modifyImageFormat();
 
-                image.saveNewImage(newBasename + "." + imageFormat, 90);
+                image.saveNewImage(newBasename + "." + imageFormat, 85);
             }
             else if (ui->centraRiquadra->isChecked())
             {
@@ -678,6 +678,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->creditiRimanenti);
     resizeWindow->moveWidgetY(ui->removeBg);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox_2);
+    resizeWindow->moveWidgetY(ui->changeImageFormatDropdown);
 
     //Muove solo X
     resizeWindow->moveWidgetY(ui->selezionaDeseleziona);
@@ -786,6 +787,7 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->creditiRimanenti);
     resizeWindow->setObjectGeometry(ui->removeBg);
     resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox_2);
+    resizeWindow->setObjectGeometry(ui->changeImageFormatDropdown);
 }
 
 //-----------------------------------------------------------------------------------------------------//
