@@ -5,7 +5,6 @@
 #include <QSettings>
 #include <QCoreApplication>
 #include <QFileDialog>
-#include <WindowWidgets/Settings/settings.h>
 #include <WindowWidgets/Settings/settingsconst.h>
 
 namespace Ui {

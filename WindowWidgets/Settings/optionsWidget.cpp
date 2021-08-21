@@ -9,53 +9,53 @@ Options::Options(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
     //-------------------------------------------------------------------------------//
     //                        Imposto le impostazioni da file
     //-------------------------------------------------------------------------------//
+    QSettings settings;
     // Generale
-    QString directoryBackup = Settings::getSettingsString(SettingsConst::directoryBackup);
+    QString directoryBackup = settings.value(SettingsConst::directoryBackup).toString();
     if ( QDir(directoryBackup).exists()) //se la directory non esiste il programma crasha
     {
         ui->directoryBackup->setText(directoryBackup);
     }
 
     // Trasforma Immagini
-    ui->percAumento->setValue(Settings::getSettingsInt(SettingsConst::percAumento));
-    ui->latoMin->setValue(Settings::getSettingsInt(SettingsConst::latoMin));
-    ui->latoMax->setValue(Settings::getSettingsInt(SettingsConst::latoMax));
-    ui->ridimensionaMin->setChecked(Settings::getSettingsBool(SettingsConst::ridimensionaMin));
-    ui->ridimensionaMax->setChecked(Settings::getSettingsBool(SettingsConst::ridimensionaMax));
-    ui->ratioWidthJpg->setValue(Settings::getSettingsInt(SettingsConst::ratioWidthJpg));
-    ui->ratioHeightJpg->setValue(Settings::getSettingsInt(SettingsConst::ratioHeightJpg));
-    ui->ratioWidthPng->setValue(Settings::getSettingsInt(SettingsConst::ratioWidthPng));
-    ui->ratioHeightPng->setValue(Settings::getSettingsInt(SettingsConst::ratioHeightPng));
-    ui->ratioWidthWebp->setValue(Settings::getSettingsInt(SettingsConst::ratioWidthWebp));
-    ui->ratioHeightWebp->setValue(Settings::getSettingsInt(SettingsConst::ratioHeightWebp));
-    ui->outputJpg->setChecked(Settings::getSettingsBool(SettingsConst::outputJpg));
-    ui->outputPng->setChecked(Settings::getSettingsBool(SettingsConst::outputPng));
-    ui->outputWebp->setChecked(Settings::getSettingsBool(SettingsConst::outputWebp));
-    ui->qualitaSalvataggioJpg->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
-    ui->qualitaSalvataggioPng->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
-    ui->qualitaSalvataggioWebp->setValue(Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
-    ui->backgroundJpg->setText(Settings::getSettingsString(SettingsConst::backgroundJpg));
-    ui->cbPercBassoJpg->setChecked(Settings::getSettingsBool(SettingsConst::cbPercBassoJpg));
-    ui->percentualeBassoJpg->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoJpg));
-    ui->cbPercBassoPng->setChecked(Settings::getSettingsBool(SettingsConst::cbPercBassoPng));
-    ui->percentualeBassoPng->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoPng));
-    ui->cbPercBassoWebp->setChecked(Settings::getSettingsBool(SettingsConst::cbPercBassoWebp));
-    ui->percentualeBassoWebp->setValue(Settings::getSettingsInt(SettingsConst::percentualeBassoWebp));
-    ui->saveImageFolders->setChecked(Settings::getSettingsBool(SettingsConst::saveImageFolders));
+    ui->percAumento->setValue(settings.value(SettingsConst::percAumento).toInt());
+    ui->latoMin->setValue(settings.value(SettingsConst::latoMin).toInt());
+    ui->latoMax->setValue(settings.value(SettingsConst::latoMax).toInt());
+    ui->ridimensionaMin->setChecked(settings.value(SettingsConst::ridimensionaMin).toBool());
+    ui->ridimensionaMax->setChecked(settings.value(SettingsConst::ridimensionaMax).toBool());
+    ui->ratioWidthJpg->setValue(settings.value(SettingsConst::ratioWidthJpg).toInt());
+    ui->ratioHeightJpg->setValue(settings.value(SettingsConst::ratioHeightJpg).toInt());
+    ui->ratioWidthPng->setValue(settings.value(SettingsConst::ratioWidthPng).toInt());
+    ui->ratioHeightPng->setValue(settings.value(SettingsConst::ratioHeightPng).toInt());
+    ui->ratioWidthWebp->setValue(settings.value(SettingsConst::ratioWidthWebp).toInt());
+    ui->ratioHeightWebp->setValue(settings.value(SettingsConst::ratioHeightWebp).toInt());
+    ui->outputJpg->setChecked(settings.value(SettingsConst::outputJpg).toBool());
+    ui->outputPng->setChecked(settings.value(SettingsConst::outputPng).toBool());
+    ui->outputWebp->setChecked(settings.value(SettingsConst::outputWebp).toBool());
+    ui->qualitaSalvataggioJpg->setValue(settings.value(SettingsConst::qualitaSalvataggioJpg).toInt());
+    ui->qualitaSalvataggioPng->setValue(settings.value(SettingsConst::qualitaSalvataggioPng).toInt());
+    ui->qualitaSalvataggioWebp->setValue(settings.value(SettingsConst::qualitaSalvataggioWebp).toInt());
+    ui->backgroundJpg->setText(settings.value(SettingsConst::backgroundJpg).toString());
+    ui->cbPercBassoJpg->setChecked(settings.value(SettingsConst::cbPercBassoJpg).toBool());
+    ui->percentualeBassoJpg->setValue(settings.value(SettingsConst::percentualeBassoJpg).toInt());
+    ui->cbPercBassoPng->setChecked(settings.value(SettingsConst::cbPercBassoPng).toBool());
+    ui->percentualeBassoPng->setValue(settings.value(SettingsConst::percentualeBassoPng).toInt());
+    ui->cbPercBassoWebp->setChecked(settings.value(SettingsConst::cbPercBassoWebp).toBool());
+    ui->percentualeBassoWebp->setValue(settings.value(SettingsConst::percentualeBassoWebp).toInt());
+    ui->saveImageFolders->setChecked(settings.value(SettingsConst::saveImageFolders).toBool());
 
     // Remove BG
     SimpleCrypt crypt(SettingsConst::simpleCryptKey);
-    ui->apiKeyRemoveBG->setText(crypt.decryptToString(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG)));
-    ui->urlRemoveBG->setText(Settings::getSettingsString(SettingsConst::urlRemoveBG));
-    ui->radioButtonSizePreview->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonSizePreview));
-    ui->radioButtonSizeFull->setChecked(Settings::getSettingsBool(SettingsConst::radioButtonSizeFull));
-    ui->removeBgFormatJpg->setChecked(Settings::getSettingsBool(SettingsConst::removeBgFormatJpg));
-    ui->removeBgFormatPng->setChecked(Settings::getSettingsBool(SettingsConst::removeBgFormatPng));
-    ui->removeBgFormatZip->setChecked(Settings::getSettingsBool(SettingsConst::removeBgFormatZip));
+    ui->apiKeyRemoveBG->setText(crypt.decryptToString(settings.value(SettingsConst::apiKeyRemoveBG).toString()));
+    ui->urlRemoveBG->setText(settings.value(SettingsConst::urlRemoveBG).toString());
+    ui->radioButtonSizePreview->setChecked(settings.value(SettingsConst::radioButtonSizePreview).toBool());
+    ui->radioButtonSizeFull->setChecked(settings.value(SettingsConst::radioButtonSizeFull).toBool());
+    ui->removeBgFormatJpg->setChecked(settings.value(SettingsConst::removeBgFormatJpg).toBool());
+    ui->removeBgFormatPng->setChecked(settings.value(SettingsConst::removeBgFormatPng).toBool());
+    ui->removeBgFormatZip->setChecked(settings.value(SettingsConst::removeBgFormatZip).toBool());
 }
 
 Options::~Options()
@@ -83,47 +83,48 @@ void Options::on_deleteDirectory_clicked()
 
 void Options::on_saveSettings_clicked()
 {
+    QSettings settings;
     // Generale
-    Settings::setSettings(SettingsConst::directoryBackup, ui->directoryBackup->text());
+    settings.setValue(SettingsConst::directoryBackup, ui->directoryBackup->text());
 
     // Trasforma Immagini
-    Settings::setSettings(SettingsConst::percAumento, ui->percAumento->value());
-    Settings::setSettings(SettingsConst::latoMin, ui->latoMin->value());
-    Settings::setSettings(SettingsConst::latoMax, ui->latoMax->value());
-    Settings::setSettings(SettingsConst::ridimensionaMin, ui->ridimensionaMin->isChecked());
-    Settings::setSettings(SettingsConst::ridimensionaMax, ui->ridimensionaMax->isChecked());
-    Settings::setSettings(SettingsConst::outputJpg, ui->outputJpg->isChecked());
-    Settings::setSettings(SettingsConst::ratioWidthJpg, ui->ratioWidthJpg->value());
-    Settings::setSettings(SettingsConst::ratioHeightJpg, ui->ratioHeightJpg->value());
-    Settings::setSettings(SettingsConst::qualitaSalvataggioJpg, ui->qualitaSalvataggioJpg->value());
-    Settings::setSettings(SettingsConst::outputPng, ui->outputPng->isChecked());
-    Settings::setSettings(SettingsConst::ratioWidthPng, ui->ratioWidthPng->value());
-    Settings::setSettings(SettingsConst::ratioHeightPng, ui->ratioHeightPng->value());
-    Settings::setSettings(SettingsConst::qualitaSalvataggioPng, ui->qualitaSalvataggioPng->value());
-    Settings::setSettings(SettingsConst::ratioWidthWebp, ui->ratioWidthWebp->value());
-    Settings::setSettings(SettingsConst::ratioHeightWebp, ui->ratioHeightWebp->value());
-    Settings::setSettings(SettingsConst::outputWebp, ui->outputWebp->isChecked());
-    Settings::setSettings(SettingsConst::qualitaSalvataggioWebp, ui->qualitaSalvataggioWebp->value());
-    Settings::setSettings(SettingsConst::backgroundJpg, ui->backgroundJpg->text());
-    Settings::setSettings(SettingsConst::cbPercBassoJpg, ui->cbPercBassoJpg->isChecked());
-    Settings::setSettings(SettingsConst::percentualeBassoJpg, ui->percentualeBassoJpg->value());
-    Settings::setSettings(SettingsConst::cbPercBassoPng, ui->cbPercBassoPng->isChecked());
-    Settings::setSettings(SettingsConst::percentualeBassoPng, ui->percentualeBassoPng->value());
-    Settings::setSettings(SettingsConst::cbPercBassoWebp, ui->cbPercBassoWebp->isChecked());
-    Settings::setSettings(SettingsConst::percentualeBassoWebp, ui->percentualeBassoWebp->value());
-    Settings::setSettings(SettingsConst::saveImageFolders, ui->saveImageFolders->isChecked());
+    settings.setValue(SettingsConst::percAumento, ui->percAumento->value());
+    settings.setValue(SettingsConst::latoMin, ui->latoMin->value());
+    settings.setValue(SettingsConst::latoMax, ui->latoMax->value());
+    settings.setValue(SettingsConst::ridimensionaMin, ui->ridimensionaMin->isChecked());
+    settings.setValue(SettingsConst::ridimensionaMax, ui->ridimensionaMax->isChecked());
+    settings.setValue(SettingsConst::outputJpg, ui->outputJpg->isChecked());
+    settings.setValue(SettingsConst::ratioWidthJpg, ui->ratioWidthJpg->value());
+    settings.setValue(SettingsConst::ratioHeightJpg, ui->ratioHeightJpg->value());
+    settings.setValue(SettingsConst::qualitaSalvataggioJpg, ui->qualitaSalvataggioJpg->value());
+    settings.setValue(SettingsConst::outputPng, ui->outputPng->isChecked());
+    settings.setValue(SettingsConst::ratioWidthPng, ui->ratioWidthPng->value());
+    settings.setValue(SettingsConst::ratioHeightPng, ui->ratioHeightPng->value());
+    settings.setValue(SettingsConst::qualitaSalvataggioPng, ui->qualitaSalvataggioPng->value());
+    settings.setValue(SettingsConst::ratioWidthWebp, ui->ratioWidthWebp->value());
+    settings.setValue(SettingsConst::ratioHeightWebp, ui->ratioHeightWebp->value());
+    settings.setValue(SettingsConst::outputWebp, ui->outputWebp->isChecked());
+    settings.setValue(SettingsConst::qualitaSalvataggioWebp, ui->qualitaSalvataggioWebp->value());
+    settings.setValue(SettingsConst::backgroundJpg, ui->backgroundJpg->text());
+    settings.setValue(SettingsConst::cbPercBassoJpg, ui->cbPercBassoJpg->isChecked());
+    settings.setValue(SettingsConst::percentualeBassoJpg, ui->percentualeBassoJpg->value());
+    settings.setValue(SettingsConst::cbPercBassoPng, ui->cbPercBassoPng->isChecked());
+    settings.setValue(SettingsConst::percentualeBassoPng, ui->percentualeBassoPng->value());
+    settings.setValue(SettingsConst::cbPercBassoWebp, ui->cbPercBassoWebp->isChecked());
+    settings.setValue(SettingsConst::percentualeBassoWebp, ui->percentualeBassoWebp->value());
+    settings.setValue(SettingsConst::saveImageFolders, ui->saveImageFolders->isChecked());
 
     // Remove BG
     SimpleCrypt crypt(SettingsConst::simpleCryptKey);
-    Settings::setSettings(SettingsConst::apiKeyRemoveBG, crypt.encryptToString(ui->apiKeyRemoveBG->text()));
-    Settings::setSettings(SettingsConst::urlRemoveBG, ui->urlRemoveBG->text());
-    Settings::setSettings(SettingsConst::removeBgImageSize, ui->removeBgImageSize->checkedButton()->text());
-    Settings::setSettings(SettingsConst::radioButtonSizePreview, ui->radioButtonSizePreview->isChecked());
-    Settings::setSettings(SettingsConst::radioButtonSizeFull, ui->radioButtonSizeFull->isChecked());
-    Settings::setSettings(SettingsConst::removeBgFormatJpg, ui->removeBgFormatJpg->isChecked());
-    Settings::setSettings(SettingsConst::removeBgFormatPng, ui->removeBgFormatPng->isChecked());
-    Settings::setSettings(SettingsConst::removeBgFormatZip, ui->removeBgFormatZip->isChecked());
-    Settings::setSettings(SettingsConst::removeBgImageFormat, ui->removeBgImageFormat->checkedButton()->text());
+    settings.setValue(SettingsConst::apiKeyRemoveBG, crypt.encryptToString(ui->apiKeyRemoveBG->text()));
+    settings.setValue(SettingsConst::urlRemoveBG, ui->urlRemoveBG->text());
+    settings.setValue(SettingsConst::removeBgImageSize, ui->removeBgImageSize->checkedButton()->text());
+    settings.setValue(SettingsConst::radioButtonSizePreview, ui->radioButtonSizePreview->isChecked());
+    settings.setValue(SettingsConst::radioButtonSizeFull, ui->radioButtonSizeFull->isChecked());
+    settings.setValue(SettingsConst::removeBgFormatJpg, ui->removeBgFormatJpg->isChecked());
+    settings.setValue(SettingsConst::removeBgFormatPng, ui->removeBgFormatPng->isChecked());
+    settings.setValue(SettingsConst::removeBgFormatZip, ui->removeBgFormatZip->isChecked());
+    settings.setValue(SettingsConst::removeBgImageFormat, ui->removeBgImageFormat->checkedButton()->text());
 
     this->close();
 }
@@ -136,6 +137,25 @@ void Options::on_reset_settings_clicked()
     ui->ridimensionaMin->setChecked(true);
     ui->ridimensionaMax->setChecked(true);
     ui->radioButtonSizeFull->setChecked(true);
+    ui->saveImageFolders->setChecked(true);
+    ui->outputJpg->setChecked(true);
+    ui->outputPng->setChecked(true);
+    ui->ratioWidthJpg->setValue(1);
+    ui->ratioHeightJpg->setValue(1);
+    ui->ratioWidthPng->setValue(2);
+    ui->ratioHeightPng->setValue(3);
+    ui->ratioWidthWebp->setValue(2);
+    ui->ratioHeightWebp->setValue(3);
+    ui->qualitaSalvataggioJpg->setValue(85);
+    ui->qualitaSalvataggioPng->setValue(90);
+    ui->qualitaSalvataggioWebp->setValue(90);
+    ui->backgroundJpg->setText("ffffff");
+    ui->percentualeBassoJpg->setValue(16);
+    ui->percentualeBassoPng->setValue(16);
+    ui->percentualeBassoWebp->setValue(16);
+    ui->urlRemoveBG->setText("https://api.remove.bg/v1.0/removebg");
+    ui->radioButtonSizeFull->setChecked(true);
+    ui->removeBgFormatPng->setChecked(true);
 }
 
 

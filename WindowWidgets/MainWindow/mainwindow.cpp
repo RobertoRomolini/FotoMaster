@@ -46,14 +46,15 @@ MainWindow::MainWindow(QWidget *parent)
     //                                                       Apre la directory di default o in alternativa l'ultima cercata
     //
     //------------------------------------------------------------------------------------------------------------------------------------------------//
-    QString directoryBackup(Settings::getSettingsString(SettingsConst::directoryBackup));
+    QSettings settings;
+    QString directoryBackup(settings.value(SettingsConst::directoryBackup).toString());
     if (directoryBackup != "" && QDir(directoryBackup).exists() )
     {
         ui->directory->setText(directoryBackup);
     }
     else
     {
-        QString line = Settings::getSettingsString(SettingsConst::directoryMemory);
+        QString line = settings.value(SettingsConst::directoryMemory).toString();
         if ( QDir(line).exists()) //se la directory non esiste il programma crasha
         {
             ui->directory->setText(line);
@@ -87,8 +88,6 @@ MainWindow::MainWindow(QWidget *parent)
     {
         ui->anteprimaFile->vediAnteprima(qApp->applicationDirPath() + "/temp/database5.csv" );
     });
-
-
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //
@@ -161,12 +160,13 @@ MainWindow::MainWindow(QWidget *parent)
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //                                             Setta le impostazioni dall'ultima chiusura
     //------------------------------------------------------------------------------------------------------------------------------------------------//
-    ui->tolleranza->setValue(Settings::getSettingsInt(SettingsConst::tolleranza));
-    ui->confrontoBianco->setValue(Settings::getSettingsInt(SettingsConst::confrontoBianco));
-    ui->latoMinMD->setValue(Settings::getSettingsInt(SettingsConst::latoMinMD));
-    ui->dimMinFileSpinBox->setValue(Settings::getSettingsInt(SettingsConst::dimMinFileSpinBox));
-    ui->centraRiquadra->setChecked(Settings::getSettingsBool(SettingsConst::centraRiquadra));
-    ui->changeImageFormat->setChecked(Settings::getSettingsBool(SettingsConst::changeImageFormat));
+    ui->tolleranza->setValue(settings.value(SettingsConst::tolleranza).toInt());
+    ui->confrontoBianco->setValue(settings.value(SettingsConst::confrontoBianco).toInt());
+    ui->latoMinMD->setValue(settings.value(SettingsConst::latoMinMD).toInt());
+    ui->dimMinFileSpinBox->setValue(settings.value(SettingsConst::dimMinFileSpinBox).toInt());
+    ui->centraRiquadra->setChecked(settings.value(SettingsConst::centraRiquadra).toBool());
+    ui->changeImageFormat->setChecked(settings.value(SettingsConst::changeImageFormat).toBool());
+    ui->changeImageFormatDropdown->setCurrentText(settings.value(SettingsConst::changeImageFormatDropdown).toString());
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //                                            Comunica alla tabella i valori di Mainwindow
@@ -260,7 +260,10 @@ void MainWindow::chiamataRemoveBg()
 
             QProgressDialog progress("Invio foto a removebg..." , "Annulla" , 0 , fileList.size() , this);
             progress.setWindowModality(Qt::WindowModal);
+            progress.setWindowTitle("FotoMaster");
             progress.setMinimumDuration(200);
+
+            QSettings settings;
 
             for ( int i=0 ; i < fileList.size() ; i++ )
             {
@@ -281,11 +284,11 @@ void MainWindow::chiamataRemoveBg()
 
                     QHttpPart format;
                     format.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"format\""));
-                    format.setBody(Settings::getSettingsString(SettingsConst::removeBgImageFormat).toUtf8());
+                    format.setBody(settings.value(SettingsConst::removeBgImageFormat).toString().toUtf8());
 
                     QHttpPart size;
                     size.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"size\""));
-                    size.setBody(Settings::getSettingsString(SettingsConst::removeBgImageSize).toUtf8());
+                    size.setBody(settings.value(SettingsConst::removeBgImageSize).toString().toUtf8());
 
                     QHttpPart imagePart;
                     imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; filename=\""+ fileList.at(i).fileName() +"\"; name=\"image_file\";"));
@@ -304,8 +307,8 @@ void MainWindow::chiamataRemoveBg()
 
                     SimpleCrypt crypt(SettingsConst::simpleCryptKey);
                     QNetworkRequest request;
-                    request.setUrl(QUrl(Settings::getSettingsString(SettingsConst::urlRemoveBG)));
-                    request.setRawHeader("X-Api-Key", crypt.decryptToString(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG)).toUtf8());
+                    request.setUrl(QUrl(settings.value(SettingsConst::urlRemoveBG).toString()));
+                    request.setRawHeader("X-Api-Key", crypt.decryptToString(settings.value(SettingsConst::apiKeyRemoveBG).toString()).toUtf8());
 
                     QNetworkReply *reply = manager->post(request , multiPart);
 
@@ -339,6 +342,7 @@ void MainWindow::chiamataRemoveBg()
 
 void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePath)
 {
+    QSettings settings;
     QFileInfo fileInfo(absoluthFilePath);
 
     QByteArray data (reply->readAll());
@@ -349,7 +353,7 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
         QFile::rename(absoluthFilePath  , ui->directory->text() + "/originali_remove_bg/" +fileInfo.fileName());
     }
 
-    if (Settings::getSettingsString(SettingsConst::removeBgImageFormat).toUtf8() == "zip")
+    if (settings.value(SettingsConst::removeBgImageFormat).toString().toUtf8() == "zip")
     {
         QFile file (ui->directory->text() + "/" + fileInfo.completeBaseName() +".zip");
         file.open(QIODevice::WriteOnly);
@@ -361,7 +365,7 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
     {
         QPixmap img;
         img.loadFromData(data);
-        img.save(ui->directory->text() + "/" + fileInfo.completeBaseName() +"." + Settings::getSettingsString(SettingsConst::removeBgImageFormat).toUtf8() );
+        img.save(ui->directory->text() + "/" + fileInfo.completeBaseName() +"." + settings.value(SettingsConst::removeBgImageFormat).toString().toUtf8() );
     }
     manager->disconnect();
     reply->deleteLater();
@@ -369,10 +373,11 @@ void MainWindow::rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePat
 
 void MainWindow::chiamataCreditiRemoveBg()
 {
+    QSettings settings;
     SimpleCrypt crypt(SettingsConst::simpleCryptKey);
     QNetworkRequest request;
     request.setUrl(QUrl("https://api.remove.bg/v1.0/account"));
-    request.setRawHeader("X-Api-Key", crypt.decryptToString(Settings::getSettingsString(SettingsConst::apiKeyRemoveBG)).toUtf8());
+    request.setRawHeader("X-Api-Key", crypt.decryptToString(settings.value(SettingsConst::apiKeyRemoveBG).toString()).toUtf8());
 
     connect(managerCrediti, &QNetworkAccessManager::finished, this, &MainWindow::rispostaCreditiRemoveBg);
     managerCrediti->get(request);
@@ -465,8 +470,11 @@ void MainWindow::on_trasformaImmagini_clicked()
     QDir dir(ui->directory->text());
     QList<QFileInfo> fileList = dir.entryInfoList();
     QProgressDialog progress("Elaborazione foto..." , "Annulla" , 0 , fileList.size() , this);
+    progress.setWindowTitle("FotoMaster");
     progress.setWindowModality(Qt::WindowModal);
     progress.setMinimumDuration(200);
+
+    QSettings settings;
 
     //Creo la cartella temporanea di appoggio dei file
     if (! QDir(ui->directory->text() + "/temp").exists())
@@ -478,24 +486,6 @@ void MainWindow::on_trasformaImmagini_clicked()
     if (! QDir(ui->directory->text() + "/originali_foto_master").exists())
     {
         QDir().mkpath(ui->directory->text() + "/originali_foto_master" );
-    }
-
-    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
-    {
-        if (!QDir(ui->directory->text() + "/jpg").exists() && Settings::getSettingsBool(SettingsConst::outputJpg))
-        {
-            QDir().mkpath(ui->directory->text() + "/jpg" );
-        }
-
-        if (!QDir(ui->directory->text() + "/png").exists() && Settings::getSettingsBool(SettingsConst::outputPng))
-        {
-            QDir().mkpath(ui->directory->text() + "/png" );
-        }
-
-        if (!QDir(ui->directory->text() + "/webp").exists() && Settings::getSettingsBool(SettingsConst::outputWebp))
-        {
-            QDir().mkpath(ui->directory->text() + "/webp" );
-        }
     }
 
     for ( int i=0 ; i < fileList.size() ; i++ )
@@ -528,118 +518,108 @@ void MainWindow::on_trasformaImmagini_clicked()
             {
                 Logger::addLog("'Trasforma' is checked");
 
-                if (Settings::getSettingsBool(SettingsConst::outputJpg))
-                {
-                    image.setNewImage("jpg");
-                    image.modifyImageFormat();
-                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
-                    {
-                        newBasename = ui->directory->text() + "/jpg/" + fileList.at(i).completeBaseName();
-                    }
+                QString imageFormat(ui->changeImageFormatDropdown->currentText());
 
-                    image.saveNewImage(newBasename + ".jpg", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
-                }
-                if (Settings::getSettingsBool(SettingsConst::outputPng))
-                {
-                    image.setNewImage("png");
-                    image.modifyImageFormat();
-                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
-                    {
-                        newBasename = ui->directory->text() + "/png/" + fileList.at(i).completeBaseName();
-                    }
+                image.setNewImage(imageFormat);
+                image.modifyImageFormat();
 
-                    image.saveNewImage(newBasename + ".png", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
-                }
-                if (Settings::getSettingsBool(SettingsConst::outputWebp))
-                {
-                    image.setNewImage("webp");
-                    image.modifyImageFormat();
-                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
-                    {
-                        newBasename = ui->directory->text() + "/webp/" + fileList.at(i).completeBaseName();
-                    }
-
-                    image.saveNewImage(newBasename + ".webp", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
-                }
+                image.saveNewImage(newBasename + "." + imageFormat, 90);
             }
             else if (ui->centraRiquadra->isChecked())
             {
                 Logger::addLog("'Centra' is checked");
 
-                double percBasso = -1;
-
-                if (Settings::getSettingsBool(SettingsConst::outputJpg))
+                if (settings.value(SettingsConst::saveImageFolders).toBool())
                 {
-                    if (Settings::getSettingsBool(SettingsConst::cbPercBassoJpg))
+                    if (!QDir(ui->directory->text() + "/jpg").exists() && settings.value(SettingsConst::outputJpg).toBool())
                     {
-                        percBasso = Settings::getSettingsInt(SettingsConst::percentualeBassoJpg);
+                        QDir().mkpath(ui->directory->text() + "/jpg" );
                     }
 
-                    image.setNewImage("jpg", Settings::getSettingsString(SettingsConst::backgroundJpg));
-                    image.centerImage(Settings::getSettingsInt(SettingsConst::ratioHeightJpg),
-                                      Settings::getSettingsInt(SettingsConst::ratioWidthJpg),
-                                      Settings::getSettingsInt(SettingsConst::percAumento),
+                    if (!QDir(ui->directory->text() + "/png").exists() && settings.value(SettingsConst::outputPng).toBool())
+                    {
+                        QDir().mkpath(ui->directory->text() + "/png" );
+                    }
+
+                    if (!QDir(ui->directory->text() + "/webp").exists() && settings.value(SettingsConst::outputWebp).toBool())
+                    {
+                        QDir().mkpath(ui->directory->text() + "/webp" );
+                    }
+                }
+
+                double percBasso = -1;
+
+                if (settings.value(SettingsConst::outputJpg).toBool())
+                {
+                    if (settings.value(SettingsConst::cbPercBassoJpg).toBool())
+                    {
+                        percBasso = settings.value(SettingsConst::percentualeBassoJpg).toInt();
+                    }
+
+                    image.setNewImage("jpg", settings.value(SettingsConst::backgroundJpg).toString());
+                    image.centerImage(settings.value(SettingsConst::ratioHeightJpg).toInt(),
+                                      settings.value(SettingsConst::ratioWidthJpg).toInt(),
+                                      settings.value(SettingsConst::percAumento).toInt(),
                                       percBasso,
                                       ui->tolleranza->value());
 
                     image = this->checkSideSize(image);
 
-                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    if (settings.value(SettingsConst::saveImageFolders).toBool())
                     {
                         newBasename = ui->directory->text() + "/jpg/" + fileList.at(i).completeBaseName();
                     }
 
-                    image.saveNewImage(newBasename + ".jpg", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioJpg));
+                    image.saveNewImage(newBasename + ".jpg", settings.value(SettingsConst::qualitaSalvataggioJpg).toInt());
                 }
 
-                if (Settings::getSettingsBool(SettingsConst::outputPng))
+                if (settings.value(SettingsConst::outputPng).toBool())
                 {
-                    if (Settings::getSettingsBool(SettingsConst::cbPercBassoPng))
+                    if (settings.value(SettingsConst::cbPercBassoPng).toBool())
                     {
-                        percBasso = Settings::getSettingsInt(SettingsConst::percentualeBassoPng);
+                        percBasso = settings.value(SettingsConst::percentualeBassoPng).toInt();
                     }
 
                     image.setNewImage("png");
-                    image.centerImage(Settings::getSettingsInt(SettingsConst::ratioHeightPng),
-                                      Settings::getSettingsInt(SettingsConst::ratioWidthPng),
-                                      Settings::getSettingsInt(SettingsConst::percAumento),
+                    image.centerImage(settings.value(SettingsConst::ratioHeightPng).toInt(),
+                                      settings.value(SettingsConst::ratioWidthPng).toInt(),
+                                      settings.value(SettingsConst::percAumento).toInt(),
                                       percBasso,
                                       ui->tolleranza->value());
 
                     image = this->checkSideSize(image);
 
-                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    if (settings.value(SettingsConst::saveImageFolders).toBool())
                     {
                         newBasename = ui->directory->text() + "/png/" + fileList.at(i).completeBaseName();
                     }
 
-                    image.saveNewImage(newBasename + ".png", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioPng));
+                    image.saveNewImage(newBasename + ".png", settings.value(SettingsConst::qualitaSalvataggioPng).toInt());
                 }
 
-                if (Settings::getSettingsBool(SettingsConst::outputWebp))
+                if (settings.value(SettingsConst::outputWebp).toBool())
                 {
-                    if (Settings::getSettingsBool(SettingsConst::cbPercBassoWebp))
+                    if (settings.value(SettingsConst::cbPercBassoWebp).toBool())
                     {
-                        percBasso = Settings::getSettingsInt(SettingsConst::percentualeBassoWebp);
+                        percBasso = settings.value(SettingsConst::percentualeBassoWebp).toInt();
                     }
 
                     image.setNewImage("webp");
-                    image.centerImage(Settings::getSettingsInt(SettingsConst::ratioHeightWebp),
-                                      Settings::getSettingsInt(SettingsConst::ratioWidthWebp),
-                                      Settings::getSettingsInt(SettingsConst::percAumento),
+                    image.centerImage(settings.value(SettingsConst::ratioHeightWebp).toInt(),
+                                      settings.value(SettingsConst::ratioWidthWebp).toInt(),
+                                      settings.value(SettingsConst::percAumento).toInt(),
                                       percBasso,
                                       ui->tolleranza->value());
 
                     image = this->checkSideSize(image);
 
-                    if (Settings::getSettingsBool(SettingsConst::saveImageFolders))
+                    if (settings.value(SettingsConst::saveImageFolders).toBool())
                     {
                         newBasename = ui->directory->text() + "/webp/" + fileList.at(i).completeBaseName();
                     }
 
-                    image.saveNewImage(newBasename + ".webp", Settings::getSettingsInt(SettingsConst::qualitaSalvataggioWebp));
+                    image.saveNewImage(newBasename + ".webp", settings.value(SettingsConst::qualitaSalvataggioWebp).toInt());
                 }
-
             }
         }
     }
@@ -653,14 +633,15 @@ void MainWindow::on_trasformaImmagini_clicked()
 
 ImageProcessor MainWindow::checkSideSize(ImageProcessor image)
 {
+    QSettings settings;
     // Controlla se il lato è minore o maggiore del valore dello spinbox e ridimensiona la foto
-    if (Settings::getSettingsBool(SettingsConst::ridimensionaMin))
+    if (settings.value(SettingsConst::ridimensionaMin).toBool())
     {
-        image.scaledNewImageToMin(Settings::getSettingsInt(SettingsConst::latoMin));
+        image.scaledNewImageToMin(settings.value(SettingsConst::latoMin).toInt());
     }
-    if (Settings::getSettingsBool(SettingsConst::ridimensionaMax))
+    if (settings.value(SettingsConst::ridimensionaMax).toBool())
     {
-        image.scaledNewImageToMax(Settings::getSettingsInt(SettingsConst::latoMax));
+        image.scaledNewImageToMax(settings.value(SettingsConst::latoMax).toInt());
     }
 
     return image;
@@ -671,12 +652,14 @@ ImageProcessor MainWindow::checkSideSize(ImageProcessor image)
 //-------------------------------------------------------------------------------------------------------------//
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    Settings::setSettings(SettingsConst::tolleranza, ui->tolleranza->value());
-    Settings::setSettings(SettingsConst::confrontoBianco, ui->confrontoBianco->value());
-    Settings::setSettings(SettingsConst::latoMinMD, ui->latoMinMD->value());
-    Settings::setSettings(SettingsConst::dimMinFileSpinBox, ui->dimMinFileSpinBox->value());
-    Settings::setSettings(SettingsConst::centraRiquadra, ui->centraRiquadra->isChecked());
-    Settings::setSettings(SettingsConst::changeImageFormat, ui->changeImageFormat->isChecked());
+    QSettings settings;
+    settings.setValue(SettingsConst::tolleranza, ui->tolleranza->value());
+    settings.setValue(SettingsConst::confrontoBianco, ui->confrontoBianco->value());
+    settings.setValue(SettingsConst::latoMinMD, ui->latoMinMD->value());
+    settings.setValue(SettingsConst::dimMinFileSpinBox, ui->dimMinFileSpinBox->value());
+    settings.setValue(SettingsConst::centraRiquadra, ui->centraRiquadra->isChecked());
+    settings.setValue(SettingsConst::changeImageFormat, ui->changeImageFormat->isChecked());
+    settings.setValue(SettingsConst::changeImageFormatDropdown, ui->changeImageFormatDropdown->currentText());
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -873,11 +856,12 @@ void MainWindow::on_annullaModifiche_clicked()
 
 void MainWindow::on_scegliCartella_clicked()
 {
-    QString line = Settings::getSettingsString(SettingsConst::directoryMemory);
+    QSettings settings;
+    QString line = settings.value(SettingsConst::directoryMemory).toString();
     QString filename = QFileDialog::getExistingDirectory(this, "Scegli Cartella" , line);
     if (line != filename && filename != "")
     {
-        Settings::setSettings(SettingsConst::directoryMemory, filename);
+        settings.setValue(SettingsConst::directoryMemory, filename);
     }
     if (filename.isEmpty())
         return;
@@ -910,12 +894,12 @@ void MainWindow::on_aggiorna_clicked()
 
 void MainWindow::on_indietroDirectory_clicked()
 {
-
+    QSettings settings;
     QString directory = ui->directory->text();
     directory.truncate(directory.lastIndexOf(QChar('/')));
     ui->directory->setText(directory);
     ui->contenutoCartella->aggiornaLista(ui->directory->text());
-    Settings::setSettings(SettingsConst::directoryMemory, directory);
+    settings.setValue(SettingsConst::directoryMemory, directory);
 }
 
 //--------------------------------------------------------------------------------------------------------------//
@@ -924,6 +908,7 @@ void MainWindow::on_indietroDirectory_clicked()
 
 void MainWindow::on_contenutoCartella_itemDoubleClicked(QTableWidgetItem *item)
 {
+    QSettings settings;
     QString directory = item->text();
     QFile file (directory);
     QFileInfo fileInfo (file);
@@ -931,7 +916,7 @@ void MainWindow::on_contenutoCartella_itemDoubleClicked(QTableWidgetItem *item)
     {
         ui->directory->setText(directory);
         ui->contenutoCartella->aggiornaLista(ui->directory->text());
-        Settings::setSettings(SettingsConst::directoryMemory, directory);
+        settings.setValue(SettingsConst::directoryMemory, directory);
     }
 }
 

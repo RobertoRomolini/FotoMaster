@@ -5,7 +5,6 @@
 #include "WindowWidgets/EditorFoto/editorfoto.h"
 #include "Tools/qimgorient.h"
 #include "WindowWidgets/Settings/optionsWidget.h"
-#include "WindowWidgets/Settings/settings.h"
 #include "WindowWidgets/Settings/settingsconst.h"
 #include "CustomWidgets/qmoveimagepushbutton.h"
 #include <Tools/imageprocessor.h>

@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -1768,7 +1768,7 @@ border-radius: 5px;</string>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="removeBgImageFormat"/>
   <buttongroup name="removeBgImageSize"/>
+  <buttongroup name="removeBgImageFormat"/>
  </buttongroups>
 </ui>

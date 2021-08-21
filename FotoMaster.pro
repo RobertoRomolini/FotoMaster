@@ -37,7 +37,6 @@ SOURCES += \
     Tools/resizewindow.cpp \
     Tools/qimgorient.cpp \
     WindowWidgets/Settings/optionsWidget.cpp \
-    WindowWidgets/Settings/settings.cpp \
     WindowWidgets/Settings/settingsconst.cpp \
     main.cpp \
 
@@ -64,7 +63,6 @@ HEADERS += \
     Tools/resizewindow.h \
     Tools/qimgorient.h \
     WindowWidgets/Settings/optionsWidget.h \
-    WindowWidgets/Settings/settings.h \
     WindowWidgets/Settings/settingsconst.h
 
 
