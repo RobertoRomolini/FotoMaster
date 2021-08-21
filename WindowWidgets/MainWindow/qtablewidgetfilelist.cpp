@@ -36,6 +36,7 @@ void QTableWidgetFileList::aggiornaLista(QString directory)
     QList<QFileInfo> fileList = dir.entryInfoList();
 
     QProgressDialog progress("Caricamento elementi..." , "Annulla" , 0 , fileList.size() , this);
+    progress.setWindowTitle("FotoMaster");
     progress.setWindowModality(Qt::WindowModal);
     progress.setMinimumDuration(200);
 
@@ -866,6 +867,7 @@ void QTableWidgetFileList::dropEvent(QDropEvent *event)
         QList<QUrl> urls = event->mimeData()->urls();
 
         QProgressDialog progress("Copio i file nella cartella..." , "Annulla" , 0 , urls.size() , this);
+        progress.setWindowTitle("FotoMaster");
         progress.setWindowModality(Qt::WindowModal);
         progress.setMinimumDuration(1);
         for (int i=0; i< urls.size() ; i++ )
