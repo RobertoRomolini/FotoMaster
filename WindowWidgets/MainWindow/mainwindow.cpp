@@ -60,8 +60,6 @@ MainWindow::MainWindow(QWidget *parent)
             ui->directory->setText(line);
         }
     }
-    ui->contenutoCartella->aggiornaLista(ui->directory->text());
-
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //
@@ -167,6 +165,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->centraRiquadra->setChecked(settings.value(SettingsConst::centraRiquadra).toBool());
     ui->changeImageFormat->setChecked(settings.value(SettingsConst::changeImageFormat).toBool());
     ui->changeImageFormatDropdown->setCurrentText(settings.value(SettingsConst::changeImageFormatDropdown).toString());
+    ui->immaginiQuadrate->setChecked(settings.value(ui->immaginiQuadrate->objectName()).toBool());
+    ui->sfondoBianco->setChecked(settings.value(ui->sfondoBianco->objectName()).toBool());
+    ui->mostraImmagini->setChecked(settings.value(ui->mostraImmagini->objectName()).toBool());
+    ui->percentualeBianco->setChecked(settings.value(ui->percentualeBianco->objectName()).toBool());
+    ui->mostraDimensione->setChecked(settings.value(ui->mostraDimensione->objectName()).toBool());
+    ui->dimensioneFile->setChecked(settings.value(ui->dimensioneFile->objectName()).toBool());
 
     //------------------------------------------------------------------------------------------------------------------------------------------------//
     //                                            Comunica alla tabella i valori di Mainwindow
@@ -199,6 +203,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Aggiorno i crediti rimanenti quando apro l'applicazione
     chiamataCreditiRemoveBg();
+
+    // Aggiorna la tabella
+    ui->contenutoCartella->aggiornaLista(ui->directory->text());
 
 }
 
@@ -660,6 +667,12 @@ void MainWindow::closeEvent(QCloseEvent *)
     settings.setValue(SettingsConst::centraRiquadra, ui->centraRiquadra->isChecked());
     settings.setValue(SettingsConst::changeImageFormat, ui->changeImageFormat->isChecked());
     settings.setValue(SettingsConst::changeImageFormatDropdown, ui->changeImageFormatDropdown->currentText());
+    settings.setValue(ui->immaginiQuadrate->objectName(), ui->immaginiQuadrate->isChecked());
+    settings.setValue(ui->sfondoBianco->objectName(), ui->sfondoBianco->isChecked());
+    settings.setValue(ui->mostraImmagini->objectName(), ui->mostraImmagini->isChecked());
+    settings.setValue(ui->percentualeBianco->objectName(), ui->percentualeBianco->isChecked());
+    settings.setValue(ui->mostraDimensione->objectName(), ui->mostraDimensione->isChecked());
+    settings.setValue(ui->dimensioneFile->objectName(), ui->dimensioneFile->isChecked());
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
