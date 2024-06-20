@@ -692,6 +692,10 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->removeBg);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox_2);
     resizeWindow->moveWidgetY(ui->changeImageFormatDropdown);
+    resizeWindow->moveWidgetY(ui->label_6);
+    resizeWindow->moveWidgetY(ui->clipDropCredits);
+    resizeWindow->moveWidgetY(ui->sendToClipDrop);
+    resizeWindow->moveWidgetY(ui->trasformaImmaginiBox_3);
 
     //Muove solo X
     resizeWindow->moveWidgetY(ui->selezionaDeseleziona);
@@ -801,6 +805,10 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->removeBg);
     resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox_2);
     resizeWindow->setObjectGeometry(ui->changeImageFormatDropdown);
+    resizeWindow->setObjectGeometry(ui->clipDropCredits);
+    resizeWindow->setObjectGeometry(ui->sendToClipDrop);
+    resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox_3);
+    resizeWindow->setObjectGeometry(ui->label_6);
 }
 
 //-----------------------------------------------------------------------------------------------------//
