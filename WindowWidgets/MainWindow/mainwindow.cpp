@@ -201,6 +201,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect( ui->removeBg , &QPushButtonGreen::clicked , this , &MainWindow::chiamataRemoveBg);
     connect( ui->refreshCrediti , &QPushButtonGreen::clicked , this , &MainWindow::chiamataCreditiRemoveBg);
 
+    //Collega il tasto clipDrop al metodo
+    connect( ui->sendToClipDrop , &QPushButtonGreen::clicked , this , &MainWindow::sendImagesToClipDrop);
+    ui->clipDropCredits->setText(settings.value(SettingsConst::clipDropCredits).toString());
+    ui->clipDropCreditsUpdatedAt->setText(settings.value(SettingsConst::clipDropCreditsUpdatedAt).toString());
+
     //Aggiorno i crediti rimanenti quando apro l'applicazione
     chiamataCreditiRemoveBg();
 
@@ -215,55 +220,172 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::createFolderIfNotExists(QString folderName)
+{
+    if (!QDir(ui->directory->text() + "/" + folderName).exists())
+    {
+        QDir().mkpath(ui->directory->text() + "/" + folderName);
+    }
+}
+
+QList<QFileInfo> MainWindow::getImagesToSend(QString directory)
+{
+    QDir dir(directory);
+    QList<QFileInfo> fileList = dir.entryInfoList();
+    QList<QFileInfo> newFileList;
+    for ( int i=0 ; i < fileList.size() ; i++ )
+    {
+        QImageReader imageReader (fileList.at(i).absoluteFilePath());
+        if ((imageReader.format() == "jpeg" || imageReader.format() == "png") && ui->contenutoCartella->item( i , 0 )->checkState() == Qt::Checked){
+          newFileList.append(fileList.at(i));
+        }
+    }
+    return newFileList;
+}
+
+void MainWindow::sendImagesToClipDrop()
+{
+    //Controllo se la tabella è aggiornata
+    ui->contenutoCartella->checkTableUpdate(ui->directory->text());
+
+    QList<QFileInfo> fileList = this->getImagesToSend(ui->directory->text());
+
+    QMessageBox sendConfirmation;
+
+    if (fileList.count() != 0)
+    {
+        sendConfirmation.setText("Sei sicuro di voler inviare a ClipDrop.co " + QString::number(fileList.count()) + " immagine/i?          ");
+        sendConfirmation.addButton("Si" , QMessageBox::YesRole);
+        sendConfirmation.addButton("No" , QMessageBox::NoRole);
+
+        int ret = sendConfirmation.exec();
+        if ( ret == 0)
+        {
+            this->createFolderIfNotExists("originali_clip_drop");
+            this->createFolderIfNotExists("temp");
+
+            QProgressDialog progress("Invio foto a ClipDrop..." , "Annulla" , 0 , fileList.size() , this);
+            progress.setWindowModality(Qt::WindowModal);
+            progress.setWindowTitle("FotoMaster");
+            progress.setMinimumDuration(200);
+
+            QSettings settings;
+
+            for ( int i=0 ; i < fileList.size() ; i++ )
+            {
+                progress.setValue(i);
+                if (progress.wasCanceled())
+                {
+                    break;
+                }
+
+                //Creo la chiamata post al server
+                QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+                QHttpPart imagePart;
+                imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; filename=\""+ fileList.at(i).fileName() +"\"; name=\"image_file\";"));
+                //Copio il file nella cartella temp
+                QFile::copy(fileList.at(i).absoluteFilePath()  , ui->directory->text() + "/temp/" + fileList.at(i).fileName());
+                QFile *file = new QFile( ui->directory->text() + "/temp/" + fileList.at(i).fileName());
+                file->open(QIODevice::ReadOnly);
+                imagePart.setBodyDevice(file);
+
+                //Setto il parent in modo che venga eliminato quando elimino quest'ultimo
+                file->setParent(multiPart);
+
+                multiPart->append(imagePart);
+
+                SimpleCrypt crypt(SettingsConst::simpleCryptKey);
+                QNetworkRequest request;
+                request.setUrl(QUrl(this->clipDropApiBaseUrl + "/remove-background/v1"));
+                request.setRawHeader("x-api-key", crypt.decryptToString(settings.value(SettingsConst::clipDropApiKey).toString()).toUtf8());
+
+                QNetworkReply *reply = clipDropManager->post(request , multiPart);
+
+                //Setto il parent in modo che venga eliminato quando elimino quest'ultimo
+                multiPart->setParent(reply);
+
+                QString absoluthFilePath = fileList.at(i).absoluteFilePath();
+                connect(clipDropManager, &QNetworkAccessManager::finished, this, [reply , absoluthFilePath , this ]
+                {
+                    responseFromClipDrop(reply , absoluthFilePath);
+                });
+
+                //Attende la risposta prima di proseguire con il loop
+                QEventLoop loop;
+                connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+                loop.exec();
+
+                //Chiudo il file altirmenti non posso cancellare la cartella temporanea
+                file->close();
+
+
+            }
+            //Elimino la cartella temp
+            QDir tempDirectory(ui->directory->text() + "/temp");
+            tempDirectory.removeRecursively();
+            //Aggiorno la tabella una volta finito
+            ui->contenutoCartella->aggiornaLista(ui->directory->text());
+        }
+    }
+
+}
+
+void MainWindow::responseFromClipDrop(QNetworkReply *reply , QString absoluthFilePath)
+{
+    QSettings settings;
+    QFileInfo fileInfo(absoluthFilePath);
+
+    QByteArray data (reply->readAll());
+
+    //Sposto i file nella cartella "originali" se non ci sono errori
+    if (reply->error() == 0)
+    {
+        QFile::rename(absoluthFilePath  , ui->directory->text() + "/originali_clip_drop/" +fileInfo.fileName());
+    }
+
+    QString fileExtension = settings.value(SettingsConst::clipDropImageFormat).toString().toUtf8();
+    QPixmap img;
+    img.loadFromData(data);
+    img.save(ui->directory->text() + "/" + fileInfo.completeBaseName() +"." +  fileExtension);
+
+    QString remainingCredits = QString::number(reply->rawHeader("x-remaining-credits").toInt());
+    ui->clipDropCredits->setText(remainingCredits);
+    QString now = QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm");
+    ui->clipDropCreditsUpdatedAt->setText(now);
+    settings.setValue(SettingsConst::clipDropCredits, remainingCredits);
+    settings.setValue(SettingsConst::clipDropCreditsUpdatedAt, now);
+
+    clipDropManager->disconnect();
+    reply->deleteLater();
+}
+
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 //
 //                                                                                             Remove BG
 //
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 
+
 void MainWindow::chiamataRemoveBg()
 {
-
     //Controllo se la tabella è aggiornata
     ui->contenutoCartella->checkTableUpdate(ui->directory->text());
 
-    //Creo una lista di file
-    QDir dir(ui->directory->text());
-    QList<QFileInfo> fileList = dir.entryInfoList();
+    QList<QFileInfo> fileList = getImagesToSend(ui->directory->text());
+    QMessageBox sendConfirmation;
 
-    //Conto le immagini inviabili a remove bg
-    int numeroImmagini = 0;
-    for ( int i=0 ; i < fileList.size() ; i++ )
+    if (fileList.count() != 0)
     {
-        QImageReader image (fileList.at(i).absoluteFilePath());
-        if ((image.format() == "jpeg" || image.format() == "png") && ui->contenutoCartella->item( i , 0 )->checkState() == Qt::Checked)
-        {
-            numeroImmagini++;
-        }
-    }
+        sendConfirmation.setText("Sei sicuro di voler inviare a removebg " + QString::number(fileList.count()) + " immagine/i?          ");
+        sendConfirmation.addButton("Si" , QMessageBox::YesRole);
+        sendConfirmation.addButton("No" , QMessageBox::NoRole);
 
-    //Chiedo conferma prima di inviare i file a removebg
-    QMessageBox confermaInvio;
-    QString valueNumbers = QString::number(numeroImmagini);
-    if (numeroImmagini != 0)
-    {
-        confermaInvio.setText("Sei sicuro di voler inviare a removebg " + valueNumbers + " immagine/i?          ");
-        confermaInvio.addButton("Si" , QMessageBox::YesRole);
-        confermaInvio.addButton("No" , QMessageBox::NoRole);
-        int ret = confermaInvio.exec();
+        int ret = sendConfirmation.exec();
         if ( ret == 0)
         {
-            //Creo la cartella originali se non esiste
-            if (! QDir(ui->directory->text() + "/originali_remove_bg").exists())
-            {
-                QDir().mkpath(ui->directory->text() + "/originali_remove_bg" );
-            }
-
-            //Creo la cartella temporanea di appoggio dei file
-            if (! QDir(ui->directory->text() + "/temp").exists())
-            {
-                QDir().mkpath(ui->directory->text() + "/temp" );
-            }
+            this->createFolderIfNotExists("originali_remove_bg");
+            this->createFolderIfNotExists("temp");
 
             QProgressDialog progress("Invio foto a removebg..." , "Annulla" , 0 , fileList.size() , this);
             progress.setWindowModality(Qt::WindowModal);
@@ -489,7 +611,7 @@ void MainWindow::on_trasformaImmagini_clicked()
         QDir().mkpath(ui->directory->text() + "/temp" );
     }
 
-    //Creo la cartella di nackup
+    //Creo la cartella di backup
     if (! QDir(ui->directory->text() + "/originali_foto_master").exists())
     {
         QDir().mkpath(ui->directory->text() + "/originali_foto_master" );
@@ -679,7 +801,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
     resizeWindow->setWidthHeightIncrement(event , this);
 
-    //Muove solo Y
+    //Move only Y
     resizeWindow->moveWidgetY(ui->centraRiquadra);
     resizeWindow->moveWidgetY(ui->tolleranza);
     resizeWindow->moveWidgetY(ui->label_4);
@@ -694,6 +816,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     resizeWindow->moveWidgetY(ui->changeImageFormatDropdown);
     resizeWindow->moveWidgetY(ui->label_6);
     resizeWindow->moveWidgetY(ui->clipDropCredits);
+    resizeWindow->moveWidgetY(ui->clipDropCreditsUpdatedAt);
     resizeWindow->moveWidgetY(ui->sendToClipDrop);
     resizeWindow->moveWidgetY(ui->trasformaImmaginiBox_3);
 
@@ -809,6 +932,7 @@ void MainWindow::setElementPosition()
     resizeWindow->setObjectGeometry(ui->sendToClipDrop);
     resizeWindow->setObjectGeometry(ui->trasformaImmaginiBox_3);
     resizeWindow->setObjectGeometry(ui->label_6);
+    resizeWindow->setObjectGeometry(ui->clipDropCreditsUpdatedAt);
 }
 
 //-----------------------------------------------------------------------------------------------------//

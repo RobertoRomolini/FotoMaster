@@ -47,6 +47,12 @@ const QString SettingsConst::removeBgFormatZip = "removeBgFormatZip";
 const QString SettingsConst::removeBgImageFormat = "removeBgImageFormat";
 const QString SettingsConst::saveImageFolders = "saveImageFolders";
 const QString SettingsConst::changeImageFormatDropdown = "changeImageFormatDropdown";
+const QString SettingsConst::clipDropApiKey = "clipDropApiKey";
+const QString SettingsConst::clipDropFormatJpg = "clipDropFormatJpg";
+const QString SettingsConst::clipDropFormatPng = "clipDropFormatPng";
+const QString SettingsConst::clipDropImageFormat = "clipDropImageFormat";
+const QString SettingsConst::clipDropCredits = "clipDropCredits";
+const QString SettingsConst::clipDropCreditsUpdatedAt = "clipDropCreditsUpdatedAt";
 
 
 

@@ -56,6 +56,11 @@ Options::Options(QWidget *parent) :
     ui->removeBgFormatJpg->setChecked(settings.value(SettingsConst::removeBgFormatJpg).toBool());
     ui->removeBgFormatPng->setChecked(settings.value(SettingsConst::removeBgFormatPng).toBool());
     ui->removeBgFormatZip->setChecked(settings.value(SettingsConst::removeBgFormatZip).toBool());
+
+    // ClipDrop
+    ui->apiKeyClipDrop->setText(crypt.decryptToString(settings.value(SettingsConst::clipDropApiKey).toString()));
+    ui->clipDropFormatJpg->setChecked(settings.value(SettingsConst::clipDropFormatJpg).toBool());
+    ui->clipDropFormatPng->setChecked(settings.value(SettingsConst::clipDropFormatPng).toBool());
 }
 
 Options::~Options()
@@ -114,7 +119,7 @@ void Options::on_saveSettings_clicked()
     settings.setValue(SettingsConst::percentualeBassoWebp, ui->percentualeBassoWebp->value());
     settings.setValue(SettingsConst::saveImageFolders, ui->saveImageFolders->isChecked());
 
-    // Remove BG
+    // RemoveBG
     SimpleCrypt crypt(SettingsConst::simpleCryptKey);
     settings.setValue(SettingsConst::apiKeyRemoveBG, crypt.encryptToString(ui->apiKeyRemoveBG->text()));
     settings.setValue(SettingsConst::urlRemoveBG, ui->urlRemoveBG->text());
@@ -125,6 +130,12 @@ void Options::on_saveSettings_clicked()
     settings.setValue(SettingsConst::removeBgFormatPng, ui->removeBgFormatPng->isChecked());
     settings.setValue(SettingsConst::removeBgFormatZip, ui->removeBgFormatZip->isChecked());
     settings.setValue(SettingsConst::removeBgImageFormat, ui->removeBgImageFormat->checkedButton()->text());
+
+    // ClipDrop
+    settings.setValue(SettingsConst::clipDropApiKey, crypt.encryptToString(ui->apiKeyClipDrop->text()));
+    settings.setValue(SettingsConst::clipDropFormatJpg, ui->clipDropFormatJpg->isChecked());
+    settings.setValue(SettingsConst::clipDropFormatPng, ui->clipDropFormatPng->isChecked());
+    settings.setValue(SettingsConst::clipDropImageFormat, ui->clipDropImageFormat->checkedButton()->text());
 
     this->close();
 }
@@ -156,6 +167,7 @@ void Options::on_reset_settings_clicked()
     ui->urlRemoveBG->setText("https://api.remove.bg/v1.0/removebg");
     ui->radioButtonSizeFull->setChecked(true);
     ui->removeBgFormatPng->setChecked(true);
+    ui->clipDropFormatPng->setChecked(true);
 }
 
 

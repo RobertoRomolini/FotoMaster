@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Foto Master 3.1 - Developed by R. Romolini</string>
+   <string>Foto Master 3.2 - Developed by R. Romolini</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLineEdit" name="directory">
@@ -1169,9 +1169,9 @@ border-radius: 5px;</string>
    <widget class="QPushButtonGreen" name="removeBg">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>233</x>
       <y>628</y>
-      <width>160</width>
+      <width>130</width>
       <height>31</height>
      </rect>
     </property>
@@ -1221,7 +1221,7 @@ border-radius: 5px;</string>
      <rect>
       <x>100</x>
       <y>633</y>
-      <width>61</width>
+      <width>71</width>
       <height>21</height>
      </rect>
     </property>
@@ -1243,7 +1243,7 @@ border-radius: 5px;</string>
    <widget class="QPushButtonBlue" name="refreshCrediti">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>190</x>
       <y>630</y>
       <width>27</width>
       <height>27</height>
@@ -1321,9 +1321,9 @@ border-radius: 5px;</string>
    <widget class="QPushButtonGreen" name="sendToClipDrop">
     <property name="geometry">
      <rect>
-      <x>565</x>
+      <x>595</x>
       <y>628</y>
-      <width>160</width>
+      <width>130</width>
       <height>31</height>
      </rect>
     </property>
@@ -1353,7 +1353,31 @@ border-radius: 5px;</string>
    <widget class="QLabel" name="clipDropCredits">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>460</x>
+      <y>633</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Verdana</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="clipDropCreditsUpdatedAt">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
       <y>633</y>
       <width>71</width>
       <height>21</height>
@@ -1429,6 +1453,7 @@ border-radius: 5px;</string>
    <zorder>sendToClipDrop</zorder>
    <zorder>label_6</zorder>
    <zorder>clipDropCredits</zorder>
+   <zorder>clipDropCreditsUpdatedAt</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
