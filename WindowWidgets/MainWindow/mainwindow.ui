@@ -1169,7 +1169,7 @@ border-radius: 5px;</string>
    <widget class="QPushButtonGreen" name="removeBg">
     <property name="geometry">
      <rect>
-      <x>233</x>
+      <x>238</x>
       <y>628</y>
       <width>130</width>
       <height>31</height>
@@ -1321,7 +1321,7 @@ border-radius: 5px;</string>
    <widget class="QPushButtonGreen" name="sendToClipDrop">
     <property name="geometry">
      <rect>
-      <x>595</x>
+      <x>600</x>
       <y>628</y>
       <width>130</width>
       <height>31</height>
@@ -1353,9 +1353,9 @@ border-radius: 5px;</string>
    <widget class="QLabel" name="clipDropCredits">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>450</x>
       <y>633</y>
-      <width>51</width>
+      <width>54</width>
       <height>21</height>
      </rect>
     </property>
@@ -1377,16 +1377,16 @@ border-radius: 5px;</string>
    <widget class="QLabel" name="clipDropCreditsUpdatedAt">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>633</y>
-      <width>71</width>
-      <height>21</height>
+      <x>514</x>
+      <y>629</y>
+      <width>80</width>
+      <height>29</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Verdana</family>
-      <pointsize>10</pointsize>
+      <pointsize>8</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -1395,7 +1395,7 @@ border-radius: 5px;</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <zorder>opzioniTabellaBox</zorder>
@@ -1461,7 +1461,7 @@ border-radius: 5px;</string>
      <x>0</x>
      <y>0</y>
      <width>1270</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menububo">

@@ -351,7 +351,7 @@ void MainWindow::responseFromClipDrop(QNetworkReply *reply , QString absoluthFil
 
     QString remainingCredits = QString::number(reply->rawHeader("x-remaining-credits").toInt());
     ui->clipDropCredits->setText(remainingCredits);
-    QString now = QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm");
+    QString now = QDateTime::currentDateTime().toString("dd/MM/yyyy\nHH:mm");
     ui->clipDropCreditsUpdatedAt->setText(now);
     settings.setValue(SettingsConst::clipDropCredits, remainingCredits);
     settings.setValue(SettingsConst::clipDropCreditsUpdatedAt, now);
