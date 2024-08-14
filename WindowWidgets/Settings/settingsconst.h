@@ -53,7 +53,13 @@ public:
     static const QString removeBgImageFormat;
     static const QString saveImageFolders;
     static const QString changeImageFormatDropdown;
-
+    static const QString clipDropApiKey;
+    static const QString clipDropFormatJpg;
+    static const QString clipDropFormatPng;
+    static const QString clipDropImageFormat;
+    static const QString clipDropCredits;
+    static const QString clipDropCreditsUpdatedAt;
+    static const QString isLogEnabled;
 };
 
 #endif // SETTINGSCONST_H

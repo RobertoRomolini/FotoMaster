@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -140,6 +140,19 @@ border-radius: 5px;</string>
      </property>
      <property name="text">
       <string>Scegli Directory</string>
+     </property>
+    </widget>
+    <widget class="QRadioButtonCustom" name="isLogEnabled">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>90</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Abilita Log</string>
      </property>
     </widget>
    </widget>
@@ -1723,6 +1736,125 @@ border-radius: 5px;</string>
      </attribute>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>ClipDrop</string>
+    </attribute>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>181</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>API Key ClipDrop</string>
+     </property>
+    </widget>
+    <widget class="Line" name="trasformaImmaginiBox_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>581</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid black;
+background-color: rgb(200, 200, 200);
+border-radius: 5px;</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="apiKeyClipDrop">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>40</y>
+       <width>561</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+	background-color: rgb(245, 245, 245);
+	border: 1px solid black;
+	border-radius: 5px;
+	font: 10pt 'Helvetica';
+}</string>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_19">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Formato immagine</string>
+     </property>
+    </widget>
+    <widget class="QRadioButtonCustom" name="clipDropFormatPng">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>90</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>png</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">clipDropImageFormat</string>
+     </attribute>
+    </widget>
+    <widget class="QRadioButtonCustom" name="clipDropFormatJpg">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>90</y>
+       <width>41</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>jpg</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">clipDropImageFormat</string>
+     </attribute>
+    </widget>
+    <zorder>trasformaImmaginiBox_4</zorder>
+    <zorder>label_5</zorder>
+    <zorder>apiKeyClipDrop</zorder>
+    <zorder>label_19</zorder>
+    <zorder>clipDropFormatPng</zorder>
+    <zorder>clipDropFormatJpg</zorder>
+   </widget>
   </widget>
   <widget class="QPushButtonBlue" name="reset_settings">
    <property name="geometry">
@@ -1768,7 +1900,8 @@ border-radius: 5px;</string>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="removeBgImageSize"/>
   <buttongroup name="removeBgImageFormat"/>
+  <buttongroup name="removeBgImageSize"/>
+  <buttongroup name="clipDropImageFormat"/>
  </buttongroups>
 </ui>

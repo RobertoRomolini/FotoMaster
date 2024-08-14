@@ -32,18 +32,29 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    // Remove BG
+    QString clipDropApiBaseUrl = "https://clipdrop-api.co";
+
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     QNetworkAccessManager *managerCrediti = new QNetworkAccessManager(this);
+
+    QList<QFileInfo> getImagesToSend(QString directory);
+
+    // Remove BG
     void chiamataRemoveBg ();
     void rispostaRemoveBg(QNetworkReply *reply , QString absoluthFilePath);
     void chiamataCreditiRemoveBg ();
     void rispostaCreditiRemoveBg(QNetworkReply *reply);
 
+    //ClipDrop
+    QNetworkAccessManager *clipDropManager = new QNetworkAccessManager(this);
+    void sendImagesToClipDrop();
+    void responseFromClipDrop(QNetworkReply *reply , QString absoluthFilePath);
 
     // Sostituisci le parole dei nomi file come nel database
     void sostituisci(QString);
     void cancellaDatiFile (QString nomeFile);
+
+    void createFolderIfNotExists(QString folderName);
 
     // Istanza pagina modifica dati database
     modificaDati *database = new modificaDati (this);
