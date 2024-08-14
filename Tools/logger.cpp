@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <QFileInfo>
 #include <QTextStream>
+#include "WindowWidgets/Settings/settingsconst.h"
 
 Logger::Logger(QObject *parent) : QObject(parent)
 {
@@ -11,14 +12,18 @@ Logger::Logger(QObject *parent) : QObject(parent)
 
 bool Logger::shouldLog;
 
-void Logger::addLog(QString logMessage)
+void Logger::logInfo(QString message)
 {
-    QFile file(getLogFilename());
-    if(file.open(QFile::Append | QFile::Text))
-    {
-        QTextStream out(&file);
-        out << "[" << QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss") << "]: " << logMessage << Qt::endl;
-        file.close();
+    QSettings settings;
+
+    if(settings.value(SettingsConst::isLogEnabled).toBool()){
+        QFile file(getLogFilename());
+        if(file.open(QFile::Append | QFile::Text))
+        {
+            QTextStream out(&file);
+            out << "[" << QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss") << "]: " << message << Qt::endl;
+            file.close();
+        }
     }
 }
 

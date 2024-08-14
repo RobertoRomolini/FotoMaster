@@ -245,7 +245,7 @@ QList<QFileInfo> MainWindow::getImagesToSend(QString directory)
 
 void MainWindow::sendImagesToClipDrop()
 {
-    //Controllo se la tabella è aggiornata
+    Logger::logInfo("Start to send images to ClipDrop...");
     ui->contenutoCartella->checkTableUpdate(ui->directory->text());
 
     QList<QFileInfo> fileList = this->getImagesToSend(ui->directory->text());
@@ -254,6 +254,7 @@ void MainWindow::sendImagesToClipDrop()
 
     if (fileList.count() != 0)
     {
+        Logger::logInfo("Open message box send confirmation");
         sendConfirmation.setText("Sei sicuro di voler inviare a ClipDrop.co " + QString::number(fileList.count()) + " immagine/i?          ");
         sendConfirmation.addButton("Si" , QMessageBox::YesRole);
         sendConfirmation.addButton("No" , QMessageBox::NoRole);
@@ -261,6 +262,7 @@ void MainWindow::sendImagesToClipDrop()
         int ret = sendConfirmation.exec();
         if ( ret == 0)
         {
+            Logger::logInfo("Create folders");
             this->createFolderIfNotExists("originali_clip_drop");
             this->createFolderIfNotExists("temp");
 
@@ -273,6 +275,8 @@ void MainWindow::sendImagesToClipDrop()
 
             for ( int i=0 ; i < fileList.size() ; i++ )
             {
+                Logger::logInfo("Prepare request for file: " + fileList.at(i).fileName());
+
                 progress.setValue(i);
                 if (progress.wasCanceled())
                 {
@@ -300,6 +304,7 @@ void MainWindow::sendImagesToClipDrop()
                 request.setUrl(QUrl(this->clipDropApiBaseUrl + "/remove-background/v1"));
                 request.setRawHeader("x-api-key", crypt.decryptToString(settings.value(SettingsConst::clipDropApiKey).toString()).toUtf8());
 
+                Logger::logInfo("Send request for file: " + fileList.at(i).fileName());
                 QNetworkReply *reply = clipDropManager->post(request , multiPart);
 
                 //Setto il parent in modo che venga eliminato quando elimino quest'ultimo
@@ -319,7 +324,6 @@ void MainWindow::sendImagesToClipDrop()
                 //Chiudo il file altirmenti non posso cancellare la cartella temporanea
                 file->close();
 
-
             }
             //Elimino la cartella temp
             QDir tempDirectory(ui->directory->text() + "/temp");
@@ -333,6 +337,7 @@ void MainWindow::sendImagesToClipDrop()
 
 void MainWindow::responseFromClipDrop(QNetworkReply *reply , QString absoluthFilePath)
 {
+    Logger::logInfo("Get response for file: " + absoluthFilePath);
     QSettings settings;
     QFileInfo fileInfo(absoluthFilePath);
 
@@ -341,7 +346,10 @@ void MainWindow::responseFromClipDrop(QNetworkReply *reply , QString absoluthFil
     //Sposto i file nella cartella "originali" se non ci sono errori
     if (reply->error() == 0)
     {
+        Logger::logInfo("Response without errors");
         QFile::rename(absoluthFilePath  , ui->directory->text() + "/originali_clip_drop/" +fileInfo.fileName());
+    }else{
+        Logger::logInfo("Error response: " + reply->errorString());
     }
 
     QString fileExtension = settings.value(SettingsConst::clipDropImageFormat).toString().toUtf8();
@@ -402,63 +410,56 @@ void MainWindow::chiamataRemoveBg()
                     break;
                 }
 
-                QImageReader imageReader (fileList.at(i).absoluteFilePath());
+                //Creo la chiamata post al server
+                QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
-                if ((imageReader.format() == "jpeg" || imageReader.format() == "png") && ui->contenutoCartella->item( i , 0 )->checkState() == Qt::Checked)
+                QHttpPart format;
+                format.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"format\""));
+                format.setBody(settings.value(SettingsConst::removeBgImageFormat).toString().toUtf8());
+
+                QHttpPart size;
+                size.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"size\""));
+                size.setBody(settings.value(SettingsConst::removeBgImageSize).toString().toUtf8());
+
+                QHttpPart imagePart;
+                imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; filename=\""+ fileList.at(i).fileName() +"\"; name=\"image_file\";"));
+                //Copio il file nella cartella temp
+                QFile::copy(fileList.at(i).absoluteFilePath()  , ui->directory->text() + "/temp/" + fileList.at(i).fileName());
+                QFile *file = new QFile( ui->directory->text() + "/temp/" + fileList.at(i).fileName());
+                file->open(QIODevice::ReadOnly);
+                imagePart.setBodyDevice(file);
+
+                //Setto il parent in modo che venga eliminato quando elimino quest'ultimo
+                file->setParent(multiPart);
+
+                multiPart->append(size);
+                multiPart->append(format);
+                multiPart->append(imagePart);
+
+                SimpleCrypt crypt(SettingsConst::simpleCryptKey);
+                QNetworkRequest request;
+                request.setUrl(QUrl(settings.value(SettingsConst::urlRemoveBG).toString()));
+                request.setRawHeader("X-Api-Key", crypt.decryptToString(settings.value(SettingsConst::apiKeyRemoveBG).toString()).toUtf8());
+
+                QNetworkReply *reply = manager->post(request , multiPart);
+
+                //Setto il parent in modo che venga eliminato quando elimino quest'ultimo
+                multiPart->setParent(reply);
+
+                QString absoluthFilePath = fileList.at(i).absoluteFilePath();
+                connect(manager, &QNetworkAccessManager::finished, this, [reply , absoluthFilePath , this ]
                 {
-                    imageReader.setFileName("");
+                    rispostaRemoveBg(reply , absoluthFilePath);
+                });
 
-                    //Creo la chiamata post al server
-                    QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+                //Attende la risposta prima di proseguire con il loop
+                QEventLoop loop;
+                connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+                loop.exec();
 
-                    QHttpPart format;
-                    format.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"format\""));
-                    format.setBody(settings.value(SettingsConst::removeBgImageFormat).toString().toUtf8());
+                //Chiudo il file altirmenti non posso cancellare la cartella temporanea
+                file->close();
 
-                    QHttpPart size;
-                    size.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"size\""));
-                    size.setBody(settings.value(SettingsConst::removeBgImageSize).toString().toUtf8());
-
-                    QHttpPart imagePart;
-                    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; filename=\""+ fileList.at(i).fileName() +"\"; name=\"image_file\";"));
-                    //Copio il file nella cartella temp
-                    QFile::copy(fileList.at(i).absoluteFilePath()  , ui->directory->text() + "/temp/" + fileList.at(i).fileName());
-                    QFile *file = new QFile( ui->directory->text() + "/temp/" + fileList.at(i).fileName());
-                    file->open(QIODevice::ReadOnly);
-                    imagePart.setBodyDevice(file);
-
-                    //Setto il parent in modo che venga eliminato quando elimino quest'ultimo
-                    file->setParent(multiPart);
-
-                    multiPart->append(size);
-                    multiPart->append(format);
-                    multiPart->append(imagePart);
-
-                    SimpleCrypt crypt(SettingsConst::simpleCryptKey);
-                    QNetworkRequest request;
-                    request.setUrl(QUrl(settings.value(SettingsConst::urlRemoveBG).toString()));
-                    request.setRawHeader("X-Api-Key", crypt.decryptToString(settings.value(SettingsConst::apiKeyRemoveBG).toString()).toUtf8());
-
-                    QNetworkReply *reply = manager->post(request , multiPart);
-
-                    //Setto il parent in modo che venga eliminato quando elimino quest'ultimo
-                    multiPart->setParent(reply);
-
-                    QString absoluthFilePath = fileList.at(i).absoluteFilePath();
-                    connect(manager, &QNetworkAccessManager::finished, this, [reply , absoluthFilePath , this ]
-                    {
-                        rispostaRemoveBg(reply , absoluthFilePath);
-                    });
-
-                    //Attende la risposta prima di proseguire con il loop
-                    QEventLoop loop;
-                    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-                    loop.exec();
-
-                    //Chiudo il file altirmenti non posso cancellare la cartella temporanea
-                    file->close();
-
-                }
             }
             //Elimino la cartella temp
             QDir tempDirectory(ui->directory->text() + "/temp");
@@ -517,8 +518,8 @@ void MainWindow::rispostaCreditiRemoveBg(QNetworkReply *reply)
     QJsonDocument jsonResponse = QJsonDocument::fromJson(reply->readAll());
     QJsonObject jsonObject = jsonResponse.object();
 
-    int crediti = jsonObject.value("data").toObject().value("attributes").toObject().value("credits").toObject().value("total").toInt();
-    ui->creditiRimanenti->setText(QString::number(crediti));
+    double credits = jsonObject.value("data").toObject().value("attributes").toObject().value("credits").toObject().value("total").toDouble();
+    ui->creditiRimanenti->setText(QString::number(static_cast<int>(credits)));
     managerCrediti->disconnect();
     reply->deleteLater();
 }
@@ -591,7 +592,7 @@ void MainWindow::restoreSettings()
 
 void MainWindow::on_trasformaImmagini_clicked()
 {
-    Logger::addLog("Click on button 'Trasforma Immagini'");
+    Logger::logInfo("Click on button 'Trasforma Immagini'");
 
     //Controllo se la cartella è stata aggiornata prima di lanciare la funzione
     ui->contenutoCartella->checkTableUpdate(ui->directory->text());
@@ -629,7 +630,7 @@ void MainWindow::on_trasformaImmagini_clicked()
 
         if ( imageReader.canRead() && ui->contenutoCartella->item( i , 0 )->checkState() == Qt::Checked)
         {
-            Logger::addLog("File name: " + fileList.at(i).absoluteFilePath() );
+            Logger::logInfo("File name: " + fileList.at(i).absoluteFilePath() );
 
             imageReader.setFileName("");
 
@@ -645,7 +646,7 @@ void MainWindow::on_trasformaImmagini_clicked()
 
             if (ui->changeImageFormat->isChecked())
             {
-                Logger::addLog("'Trasforma' is checked");
+                Logger::logInfo("'Trasforma' is checked");
 
                 QString imageFormat(ui->changeImageFormatDropdown->currentText());
 
@@ -656,7 +657,7 @@ void MainWindow::on_trasformaImmagini_clicked()
             }
             else if (ui->centraRiquadra->isChecked())
             {
-                Logger::addLog("'Centra' is checked");
+                Logger::logInfo("'Centra' is checked");
 
                 if (settings.value(SettingsConst::saveImageFolders).toBool())
                 {

@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -140,6 +140,19 @@ border-radius: 5px;</string>
      </property>
      <property name="text">
       <string>Scegli Directory</string>
+     </property>
+    </widget>
+    <widget class="QRadioButtonCustom" name="isLogEnabled">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>90</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Abilita Log</string>
      </property>
     </widget>
    </widget>
@@ -1887,8 +1900,8 @@ border-radius: 5px;</string>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="removeBgImageSize"/>
   <buttongroup name="removeBgImageFormat"/>
+  <buttongroup name="removeBgImageSize"/>
   <buttongroup name="clipDropImageFormat"/>
  </buttongroups>
 </ui>

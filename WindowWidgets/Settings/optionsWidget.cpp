@@ -19,6 +19,7 @@ Options::Options(QWidget *parent) :
     {
         ui->directoryBackup->setText(directoryBackup);
     }
+    ui->isLogEnabled->setChecked(settings.value(SettingsConst::isLogEnabled).toBool());
 
     // Trasforma Immagini
     ui->percAumento->setValue(settings.value(SettingsConst::percAumento).toInt());
@@ -91,6 +92,7 @@ void Options::on_saveSettings_clicked()
     QSettings settings;
     // Generale
     settings.setValue(SettingsConst::directoryBackup, ui->directoryBackup->text());
+    settings.setValue(SettingsConst::isLogEnabled, ui->isLogEnabled->isChecked());
 
     // Trasforma Immagini
     settings.setValue(SettingsConst::percAumento, ui->percAumento->value());

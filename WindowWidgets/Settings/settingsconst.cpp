@@ -53,6 +53,7 @@ const QString SettingsConst::clipDropFormatPng = "clipDropFormatPng";
 const QString SettingsConst::clipDropImageFormat = "clipDropImageFormat";
 const QString SettingsConst::clipDropCredits = "clipDropCredits";
 const QString SettingsConst::clipDropCreditsUpdatedAt = "clipDropCreditsUpdatedAt";
+const QString SettingsConst::isLogEnabled = "isLogEnabled";
 
 
 

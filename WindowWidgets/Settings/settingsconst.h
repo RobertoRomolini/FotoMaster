@@ -59,7 +59,7 @@ public:
     static const QString clipDropImageFormat;
     static const QString clipDropCredits;
     static const QString clipDropCreditsUpdatedAt;
-
+    static const QString isLogEnabled;
 };
 
 #endif // SETTINGSCONST_H
